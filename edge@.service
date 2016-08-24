@@ -16,10 +16,10 @@ Description=edge
 Type=simple
 Environment="BOOT_JVM_OPTIONS='-Djava.awt.headless=true -Xms256m -Xmx512m'"
 Environment="DISPLAY=:0"
-ExecStart=/usr/local/bin/boot run -p %i
+ExecStart=/home/bor/local/bin/boot run -p %i
 Restart=always
-User=edge
-WorkingDirectory=/home/edge/edge
+User=bor
+WorkingDirectory=/home/bor/Projects/edge
 
 [Install]
 WantedBy=multi-user.target

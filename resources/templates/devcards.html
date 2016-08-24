@@ -1,0 +1,18 @@
+{% extends "_wrapper.html" %}
+
+{% block main %}
+
+<h1>Devcards</h1>
+
+<p>API tests for natsume-server</p>
+
+<section>
+  <form id="search" method="GET">
+    <input type="text" name="q" value="{{ q }}"/>
+    <input type="submit" value="Search"/>
+  </form>
+</section>
+
+<script src="devcards.js" type="text/javascript"></script>
+
+{% endblock %}

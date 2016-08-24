@@ -29,6 +29,16 @@
                      (selmer/render-file "index.html" {:title "Edge Index"
                                                        :ctx ctx}))}}})]
 
+    ["devcards.html"
+     (yada/resource
+      {:id :edge.resources/index
+       :methods
+       {:get
+        {:produces #{"text/html"}
+         :response (fn [ctx]
+                     (selmer/render-file "devcards.html" {:title "Devcards"
+                                                          :ctx ctx}))}}})]
+
     ["" (assoc (yada/redirect :edge.resources/index) :id :edge.resources/content)]
 
     ;; Add some pairs (as vectors) here. First item is the path, second is the handler.

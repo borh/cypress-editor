@@ -12,4 +12,4 @@
     (println "Phonebook")
     (phonebook/init section))
 
-  (println "Congratulations - your environment seems to be working"))
+  (println "Congratulations - your environment seems to be working!"))

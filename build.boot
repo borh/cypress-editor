@@ -14,14 +14,14 @@
  :asset-paths #{"assets"}
  :dependencies
  '[[adzerk/boot-cljs "1.7.228-1" :scope "test"]
-   [adzerk/boot-cljs-repl "0.3.2" :scope "test"]
-   [adzerk/boot-reload "0.4.11" :scope "test"]
+   [adzerk/boot-cljs-repl "0.3.3" :scope "test"]
+   [adzerk/boot-reload "0.4.12" :scope "test"]
    [weasel "0.7.0" :scope "test"] ;; Websocket Server
    [deraen/boot-sass "0.2.1" :scope "test"]
-   [reloaded.repl "0.2.1" :scope "test"]
+   [reloaded.repl "0.2.2" :scope "test"]
 
-   [org.clojure/clojure "1.8.0"]
-   [org.clojure/clojurescript "1.9.14"]
+   [org.clojure/clojure "1.9.0-alpha10"]
+   [org.clojure/clojurescript "1.9.225"]
 
    [org.clojure/tools.nrepl "0.2.12"]
 
@@ -29,27 +29,29 @@
    [com.cemerick/piggieback "0.2.1" :scope "test"]
 
    ;; Server deps
-   [aero "1.0.0-beta5"]
+   [aero "1.0.0"]
    [aleph "0.4.1"]
    [bidi "2.0.9"]
    [com.stuartsierra/component "0.3.1"]
    [hiccup "1.0.5"]
    [org.clojure/tools.namespace "0.2.11"]
-   [prismatic/schema "1.0.4"]
-   [selmer "1.0.4"]
-   [yada "1.1.28"]
+   [prismatic/schema "1.1.3"]
+   [selmer "1.0.7"]
+   [yada "1.1.31"]
 
    ;; App deps
    [reagent "0.6.0-rc"]
-   [com.cognitect/transit-clj "0.8.285"]
+   [re-frame "0.8.0"]
+   [devcards "0.2.1-7"]
+   [com.cognitect/transit-clj "0.8.288"]
    ;;[com.cognitect/transit-cljs "0.8.239"]
 
    ;; Logging
    [org.clojure/tools.logging "0.3.1"]
-   [org.slf4j/jcl-over-slf4j "1.7.18"]
-   [org.slf4j/jul-to-slf4j "1.7.18"]
-   [org.slf4j/log4j-over-slf4j "1.7.18"]
-   [ch.qos.logback/logback-classic "1.1.5"
+   [org.slf4j/jcl-over-slf4j "1.7.21"]
+   [org.slf4j/jul-to-slf4j "1.7.21"]
+   [org.slf4j/log4j-over-slf4j "1.7.21"]
+   [ch.qos.logback/logback-classic "1.1.7"
     :exclusions [org.slf4j/slf4j-api]]])
 
 (require '[adzerk.boot-cljs :refer [cljs]]
@@ -97,7 +99,7 @@
    (cljs-repl :nrepl-opts {:client false
                            :port repl-port
                            :init-ns 'user}) ; this is also the server repl!
-   (cljs :ids #{"edge"} :optimizations :none)
+   (cljs :ids #{"edge" "devcards"} :optimizations :none :compiler-options {:devcards true})
    (dev-system)
    (target)))
 
