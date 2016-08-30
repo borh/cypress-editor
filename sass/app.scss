@@ -1,7 +1,29 @@
-@import "variables";
-@import "reset";
-@import "fonts";
-@import "body";
-@import "main";
-@import "table";
-@import "footer";
+// @import 'bootstrap/scss'
+//
+// @include bootstrap;
+
+//@import "material-kit";
+
+
+//div.row {background-color: #fff;}
+
+// .application {
+//     @extend .container-fluid;
+// }
+
+div.editor-interface {
+//    @extend .row;
+    height: 100%;
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.bar-width {
+    width: 25px;
+}
+
+.group {
+    border-radius: 5px;
+    border: 2px solid #d3d3d3;
+    padding: 5px;
+}
