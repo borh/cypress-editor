@@ -18,6 +18,7 @@
 
     <!-- CSS Files -->
     <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <!--<link href="css/Draft.css" rel="stylesheet" />-->
     <!--<link href="css/material-kit.css" rel="stylesheet"/>-->
 
     <link rel="stylesheet" href="{% url static %}app.css"/>
@@ -25,36 +26,29 @@
 
   <body>
     {% block body %}
-    <main>
     {% block main %}
     {% endblock %}
-
-    <hr/>
-    <p style="margin-top: 1em"><a href="{% url index %}">Home</a></p>
-    </main>
-
     {% endblock %}
-
-    <footer>
-      <p>Edge. Copyright &copy; 2016, <a href="https://juxt.pro">JUXT</a> LTD.</p>
-      <p>MIT License. Use however you like.</p>
-    </footer>
 
     <!--   Core JS Files   -->
     <script src="js/jquery.min.js" type="text/javascript"></script>
     <script src="js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="js/material.min.js"></script>
+    <!--<script src="js/material.min.js"></script>-->
 
     <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-    <script src="js/nouislider.min.js" type="text/javascript"></script>
-
-    <!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
-    <script src="js/bootstrap-datepicker.js" type="text/javascript"></script>
+    <!--<script src="js/nouislider.min.js" type="text/javascript"></script>-->
 
     <!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
-    <script src="js/material-kit.js" type="text/javascript"></script>
+    <!--<script src="js/material-kit.js" type="text/javascript"></script>-->
 
-    <script src="edge.js" type="text/javascript"></script>
+    <!--
+    <script src="js/react.min.js" type="text/javascript"></script>
+    <script src="js/immutable.min.js" type="text/javascript"></script>
+    <script src="js/react-dom.min.js" type="text/javascript"></script>
+    <script src="js/Draft.min.js" type="text/javascript"></script>
+    -->
+
+    <script src="cypress_editor.js" type="text/javascript"></script>
   </body>
 
 </html>

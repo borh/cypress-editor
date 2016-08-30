@@ -1,16 +1,16 @@
 ;; Copyright © 2016, JUXT LTD.
 
-(ns edge.web-server
+(ns cypress-editor.web-server
   (:require
    [bidi.bidi :refer [tag]]
    [bidi.vhosts :refer [make-handler vhosts-model]]
    [clojure.tools.logging :refer :all]
    [com.stuartsierra.component :refer [Lifecycle using]]
    [clojure.java.io :as io]
-   [edge.sources :refer [source-routes]]
-   [edge.phonebook :refer [phonebook-routes]]
-   [edge.phonebook-app :refer [phonebook-app-routes]]
-   [edge.hello :refer [hello-routes other-hello-routes]]
+   [cypress-editor.sources :refer [source-routes]]
+   ;;[cypress-editor.phonebook :refer [phonebook-routes]]
+   ;;[cypress-editor.phonebook-app :refer [phonebook-app-routes]]
+   [cypress-editor.hello :refer [hello-routes other-hello-routes]]
    [schema.core :as s]
    [selmer.parser :as selmer]
    [yada.resources.webjar-resource :refer [new-webjar-resource]]
@@ -21,7 +21,7 @@
    [
     ["index.html"
      (yada/resource
-      {:id :edge.resources/index
+      {:id :cypress-editor.resources/index
        :methods
        {:get
         {:produces #{"text/html"}
@@ -31,7 +31,7 @@
 
     ["devcards.html"
      (yada/resource
-      {:id :edge.resources/index
+      {:id :cypress-editor.resources/index
        :methods
        {:get
         {:produces #{"text/html"}
@@ -39,26 +39,26 @@
                      (selmer/render-file "devcards.html" {:title "Devcards"
                                                           :ctx ctx}))}}})]
 
-    ["" (assoc (yada/redirect :edge.resources/index) :id :edge.resources/content)]
+    ["" (assoc (yada/redirect :cypress-editor.resources/index) :id :cypress-editor.resources/content)]
 
     ;; Add some pairs (as vectors) here. First item is the path, second is the handler.
     ;; Here's an example
 
     [""
      (-> (yada/as-resource (io/file "target"))
-         (assoc :id :edge.resources/static))]]])
+         (assoc :id :cypress-editor.resources/static))]]])
 
 (defn routes
   "Create the URI route structure for our application."
-  [db config]
+  [config]
   [""
    [
     ;; Hello World!
     (hello-routes)
     (other-hello-routes)
 
-    (phonebook-routes db config)
-    (phonebook-app-routes db config)
+    ;;(phonebook-routes db config)
+    ;;(phonebook-app-routes db config)
 
     ["/api" (-> (hello-routes)
                 ;; Wrap this route structure in a Swagger
@@ -71,12 +71,12 @@
                          :description "An API on the classic example"}
                   :basePath "/api"})
                 ;; Tag it so we can create an href to this API
-                (tag :edge.resources/api))]
+                (tag :cypress-editor.resources/api))]
 
     ;; Swagger UI
     ["/swagger" (-> (new-webjar-resource "/swagger-ui" {:index-files ["index.html"]})
                     ;; Tag it so we can create an href to the Swagger UI
-                    (tag :edge.resources/swagger))]
+                    (tag :cypress-editor.resources/swagger))]
 
     ;; The Edge source code is served for convenience
     (source-routes)
@@ -91,7 +91,6 @@
 
 
 (s/defrecord WebServer [port :- s/Int
-                        db
                         listener]
   Lifecycle
   (start [component]
@@ -100,7 +99,7 @@
       (let [vhosts-model
             (vhosts-model
              [{:scheme :http :host (format "localhost:%d" port)}
-              (routes db {:port port})])
+              (routes {:port port})])
             listener (yada/listener vhosts-model {:port port})]
         (infof "Started web-server on port %s" (:port listener))
         (assoc component :listener listener))))
@@ -113,4 +112,4 @@
 (defn new-web-server []
   (using
    (map->WebServer {})
-   [:db]))
+   []))

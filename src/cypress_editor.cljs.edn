@@ -1,0 +1,2 @@
+{:require  [cypress-editor.app]
+ :init-fns [cypress-editor.app/main]}

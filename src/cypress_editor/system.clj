@@ -1,14 +1,13 @@
 ;; Copyright © 2016, JUXT LTD.
 
-(ns edge.system
+(ns cypress-editor.system
   "Components and their dependency relationships"
   (:require
    [aero.core :as aero]
    [clojure.java.io :as io]
    [com.stuartsierra.component :refer [system-map system-using]]
-   [edge.selmer :refer [new-selmer]]
-   [edge.web-server :refer [new-web-server]]
-   [edge.phonebook.db :as db]))
+   [cypress-editor.selmer :refer [new-selmer]]
+   [cypress-editor.web-server :refer [new-web-server]]))
 
 
 (defn config
@@ -29,8 +28,7 @@
   [config]
   (system-map
    :web-server (new-web-server)
-   :selmer (new-selmer)
-   :db (db/create-db (:phonebook config))))
+   :selmer (new-selmer)))
 
 (defn new-dependency-map
   "Declare the dependency relationships between components. See

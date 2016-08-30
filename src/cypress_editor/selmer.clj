@@ -1,6 +1,6 @@
 ;; Copyright © 2016, JUXT LTD.
 
-(ns edge.selmer
+(ns cypress-editor.selmer
   (:require
    [clojure.java.io :as io]
    [com.stuartsierra.component :refer [Lifecycle using]]
@@ -13,7 +13,7 @@
   (fn [args context-map]
     (when-let [ctx (:ctx context-map)]
       (get (yada/uri-for ctx
-                         (keyword "edge.resources" (first args))
+                         (keyword "cypress-editor.resources" (first args))
                          {:route-params
                           (reduce (fn [acc [k v]] (assoc acc (keyword k) v)) {} (partition 2 (rest args)))})
            k))))

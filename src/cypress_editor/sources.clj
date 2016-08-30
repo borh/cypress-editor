@@ -1,6 +1,6 @@
 ;; Copyright © 2016, JUXT LTD.
 
-(ns edge.sources
+(ns cypress-editor.sources
   (:require
    [clojure.java.io :as io]
    [yada.yada :as yada]))

@@ -1,6 +1,6 @@
 ;; Copyright © 2016, JUXT LTD.
 
-(ns edge.hello
+(ns cypress-editor.hello
   "Demonstrating a simple example of a yada web resource"
   (:require
    [yada.yada :as yada]))
