@@ -10,3 +10,5 @@ pom.xml.asc
 .hgignore
 .hg/
 /out
+/node_modules
+/bower_components
