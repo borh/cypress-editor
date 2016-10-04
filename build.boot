@@ -18,10 +18,10 @@
    [adzerk/boot-reload "0.4.12" :scope "test"]
    [weasel "0.7.0" :scope "test"] ;; Websocket Server
    [deraen/boot-sass "0.2.1" :scope "test"]
-   [reloaded.repl "0.2.2" :scope "test"]
+   [reloaded.repl "0.2.3" :scope "test"]
 
-   [org.clojure/clojure "1.9.0-alpha10"]
-   [org.clojure/clojurescript "1.9.227"]
+   [org.clojure/clojure "1.9.0-alpha13"]
+   [org.clojure/clojurescript "1.9.229"]
 
    [org.clojure/tools.nrepl "0.2.12"]
 
@@ -29,42 +29,45 @@
    [com.cemerick/piggieback "0.2.1" :scope "test"]
 
    ;; Server deps
-   [aero "1.0.0"]
-   [aleph "0.4.1"]
-   [bidi "2.0.9"]
+   [yada "1.1.37" :exclusions [aleph manifold ring-swagger prismatic/schema]]
+   [aero "1.0.1"]
+   [aleph "0.4.2-alpha8"]
+   [bidi "2.0.12"]
    [com.stuartsierra/component "0.3.1"]
    [hiccup "1.0.5"]
    [org.clojure/tools.namespace "0.3.0-alpha3"]
    [prismatic/schema "1.1.3"]
-   [selmer "1.0.7" :exclusions [json-html]]
-   [yada "1.1.31"]
+   [selmer "1.0.9" :exclusions [json-html]]
+   [metosin/ring-swagger "0.22.11"] ;; Override version in yada?
 
    ;; App deps
-   [reagent "0.6.0-rc"]
+   [reagent "0.6.0"]
    [re-frame "0.8.0"]
    [day8.re-frame/http-fx "0.0.4"]
    [day8.re-frame/async-flow-fx "0.0.6"]
+   [re-com "0.9.0"]
    [thi.ng/geom "0.0.1062"]
+   [re-frisk "0.2.1" :scope "test"]
 
    [org.webjars/bootstrap "4.0.0-alpha.3"]
-   [org.webjars/material-design-icons "2.2.0"]
+   [org.webjars/material-design-icons "3.0.1"]
    [org.webjars.bower/fontawesome "4.6.3"]
 
-   [devcards "0.2.1-7" :exclusions [cljsjs/react]]
+   [devcards "0.2.2" :exclusions [cljsjs/react]]
 
-   [binaryage/devtools      "0.8.1" :scope "test"]
-   [binaryage/dirac         "0.6.4" :scope "test"]
+   [binaryage/devtools      "0.8.2" :scope "test"]
+   [binaryage/dirac         "0.6.7" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.1.1"   :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.6.10"  :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
    [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
    [org.clojure/core.memoize        "0.5.9"   :scope "test"]
    [org.clojure/core.cache          "0.6.5"   :scope "test"]
-   [org.clojure/core.async          "0.2.385" :scope "test"]
+   [org.clojure/core.async          "0.2.391" :scope "test"]
    [com.google.code.findbugs/jsr305 "3.0.1" :scope "test"]
    [http-kit "2.2.0" :scope "test"]
 
-   [com.cognitect/transit-clj "0.8.288"]
+   [com.cognitect/transit-clj "0.8.290"]
    [com.cognitect/transit-cljs "0.8.239"]
    [com.google.javascript/closure-compiler "v20160822" :scope "test"] ;; FIXME (boot show -p)
 
@@ -109,7 +112,7 @@
 (deftask dev
   "This is the main development entry point."
   []
-  (set-env! :dependencies #(vec (concat % '[[reloaded.repl "0.2.2"]])))
+  (set-env! :dependencies #(vec (concat % '[[reloaded.repl "0.2.3"]])))
   (set-env! :source-paths #(conj % "dev"))
 
   ;; Needed by tools.namespace to know where the source files are
