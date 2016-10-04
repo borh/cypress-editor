@@ -96,7 +96,7 @@
                          (let [current-text (.. e -target -value)]
                            (dispatch [:set-input-text current-text])))
             :on-key-press (fn [e]
-                            (when (== (.-keyCode e) 13)
+                            (when (== (.-charCode e) 13)
                               (search @input-text)))}]
           [:button.btn.btn-primary.btn-sm
            {:type "button"
