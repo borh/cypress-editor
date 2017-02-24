@@ -2,7 +2,14 @@
   (:require
    [goog.string :as gstring]
    [goog.string.format]
-   [re-frame.core :refer [subscribe dispatch]]))
+   [cypress-editor.subs]
+   [re-frame.core :refer [subscribe dispatch]]
+   [clojure.string :as str]))
+
+(defn handle-loading-state [state]
+  (cond (nil? state) nil
+        (= state :loading) :loading
+        (= state :chsk/timeout) :error))
 
 ;; # Components
 
@@ -34,78 +41,83 @@
 
 (defn topic-model-box
   []
-  (let [text-topics (subscribe [:text-topics])
-        selected-topic (subscribe [:selected-topic])]
+  (let [text-topics (subscribe [:topics/infer])
+        selected-topic (subscribe [:user/selected-topic])]
     (fn []
       (if (seq @text-topics)
         [:div.card
          #_[:div.card-header
-          [:ul.nav.nav-tabs.card-header-tabs.pull-xs-left
-           (mapv
-            (fn [[topic-id {:keys [prob]}]] ;; TODO prob
-              (println @text-topics @selected-topic topic-id prob)
-              ^{:key (str "topic-header-" topic-id)}
-              [:li.nav-item
-               [:a
-                (if (= @selected-topic topic-id)
-                  {:class "nav-link active"}
-                  {:class "nav-link"
-                   :on-click (fn [e] (dispatch [:update-selected-topic topic-id]))})
-                (scaled-bar prob 1.0)
-                (str topic-id)]])
-            @text-topics)]]
+            [:ul.nav.nav-tabs.card-header-tabs.pull-xs-left
+             (mapv
+              (fn [[topic-id {:keys [prob]}]] ;; TODO prob
+                (println @text-topics @selected-topic topic-id prob)
+                ^{:key (str "topic-header-" topic-id)}
+                [:li.nav-item
+                 [:a
+                  (if (= @selected-topic topic-id)
+                    {:class "nav-link active"}
+                    {:class "nav-link"
+                     :on-click (fn [e] (dispatch [:set/user-selected-topic topic-id]))})
+                  (scaled-bar prob 1.0)
+                  (str topic-id)]])
+              @text-topics)]]
          [:div.card-block
           [text-bar-graph (get-in @text-topics [@selected-topic :token-probs]) 100]
-          [:a.btn.btn-primary {:on-click (fn [e] (dispatch [:infer-text-topics]))}
+          [:a.btn.btn-primary {:on-click (fn [e] (dispatch [:get/topics-infer]))}
            "Update"]]]
         [:div.card
          [:div.card-block
-          [:a.btn.btn-primary {:on-click (fn [e] (dispatch [:infer-text-topics]))}
+          [:a.btn.btn-primary {:on-click (fn [e] (dispatch [:get/topics-infer]))}
            "Infer topics"]]]))))
 
 ;; ## Basic input box
 
 (defn input-box []
-  (let [input-text (subscribe [:input-text])
-        input-text-state (subscribe [:input-text-state])
-        input-text-results (subscribe [:input-text-results])]
+  (let [limit (subscribe [:user/limit])
+        html (subscribe [:user/html])
+        norm (subscribe [:user/norm])
+        unit-type (subscribe [:user/unit-type])
+        features (subscribe [:user/features])
+        token (subscribe [:user/token])
+        token-results (subscribe [:tokens/tree])
+        tokens-nearest (subscribe [:tokens/nearest-tokens])]
     (fn []
       (letfn [(search [query]
-                (dispatch [:update-input-text-state :loading])
-                (dispatch [:search-input-text query]))]
+                (dispatch [:get/tokens-tree {:orth query :norm @norm}])
+                (dispatch [:get/tokens-nearest-tokens @unit-type @features query @limit]))]
         [:div.card
          [:div.card-header
           [:ul.nav.nav-tabs.card-header-tabs.pull-xs-left
            [:li.nav-item "Search"]]]
          [:div.card-block
           {:class (str "form-group label-floating "
-                       (case input-text-results
+                       (case token-results
                          :success "has-success"
                          :failure "has-error"
                          nil))}
           [:label.control-label
-           (case input-text-results
+           (case token-results
              :success "Search successful"
              :failure "Search failed"
              nil)]
           [:input.form-control
            {:type "text"
-            ;;:value @input-text
+            ;;:value @token
             :placeholder "Input..."
             :on-change (fn [e]
                          (let [current-text (.. e -target -value)]
-                           (dispatch [:set-input-text current-text])))
+                           (dispatch [:set/user-token current-text])))
             :on-key-press (fn [e]
                             (when (== (.-charCode e) 13)
-                              (search @input-text)))}]
+                              (search @token)))}]
           [:button.btn.btn-primary.btn-sm
            {:type "button"
             :id "search-button"
-            :on-click (fn [e] (search @input-text))}
+            :on-click (fn [e] (search @token))}
            "Search"]]
-         (if @input-text-results
+         (if @token-results
            [:div
-            [:p (pr-str @input-text-results)]])]))))
+            [:p (pr-str @token-results)]])]))))
 
 ;; ## Basic textarea box
 
@@ -113,37 +125,55 @@
   [:div.card
    [:div.card-header
     "作文欄"
-    [:button.btn.btn-primary.btn-sm.pull-xs-right
-     {:on-click
-      (fn [e]
-        (dispatch [:analyze-errors]))}
-     [:i.material-icons "spellcheck"] #_" Error check"]]
+    #_[:button.btn.btn-primary.btn-sm.pull-xs-right
+       {:on-click
+        (fn [e]
+          (dispatch [:get/errors-register @user-text]))}
+       [:i.material-icons "spellcheck"] #_" Error check"]]
    [:div.card-body
     [:textarea.form-control
      {:rows 5
       :placeholder "作文を入力してください..."
       :on-change (fn [e]
                    (let [text (.. e -target -value)]
-                     (dispatch [:update-user-text text])))}]]])
+                     (dispatch [:set/user-text text])))}]]])
+
+(defn results-box
+  [box-key]
+  ;; (println box-key)
+  (let [box-name (->>
+                  (-> box-key
+                      str
+                      (str/replace ":" "")
+                      (str/split #"/"))
+                  (map str/capitalize)
+                  (str/join " "))
+        results (subscribe [box-key])]
+    (fn []
+      [:div.card
+       [:div.card-header box-name]
+       [:div.card-body
+        [:p (pr-str @results)]]])))
 
 ;; ## Textual analysis
 
 (defn text-analysis-box
   []
-  (let [user-text (subscribe [:user-text])
-        error-data (subscribe [:error-data])]
+  (let [user-text (subscribe [:user/text])
+        error-data (subscribe [:errors/register])]
     (fn []
       (let [errors (:results @error-data)
-            tokens (:parsed_tokens @error-data)]
+            tokens (:parsed-tokens @error-data)]
         [:div.card
          [:div.card-header "分析結果"]
          [:div.card-body
           (into [:ruby]
                 (reduce
-                 (fn [a {:keys [orth pos_1]}]
-                   (conj a orth [:rt pos_1] " "))
+                 (fn [a {:keys [orth pos-1]}]
+                   (conj a orth [:rt pos-1] " "))
                  []
                  tokens))
+          [:br]
           (pr-str errors)]]))))
 
 ;; ## Draft.js editor integration
@@ -159,7 +189,7 @@
 ;; ## Collocation list w/ bar graph
 
 (defn navbar []
-  (let [connection-status (subscribe [:connection-status])]
+  (let [connection-status (atom :online) #_(subscribe [:sente/connection-status])]
     (fn []
       [:nav {:class (case @connection-status
                       :online  "navbar navbar-fixed-top navbar-light bg-faded navbar-default"
@@ -167,9 +197,9 @@
                       nil)
              :role "navigation"}
        #_[:button.navbar-toggle {:type "button" :data-toggle "collapse"
-                               :data-target "#navbar-collapse"}
-        [:span.sr-only "Toggle navigation"]
-        [:span.icon-bar] [:span.icon-bar] [:span.icon-bar]]
+                                 :data-target "#navbar-collapse"}
+          [:span.sr-only "Toggle navigation"]
+          [:span.icon-bar] [:span.icon-bar] [:span.icon-bar]]
        [:a.navbar-brand {:href "#"} "Cypress Editor"]
 
        [:ul.nav.navbar-nav
@@ -189,15 +219,15 @@
 
         #_[:li.active [:a {:href "#"} "Link"]]
         #_[:li.dropdown
-         [:a.dropdown-toggle {:href "#" :data-toggle "dropdown"} "Profile" [:b.caret]]
-         [:ul.dropdown-menu
-          [:li [:a {:href "#"} "Action"]]
-          [:li.divider]]]]
+           [:a.dropdown-toggle {:href "#" :data-toggle "dropdown"} "Profile" [:b.caret]]
+           [:ul.dropdown-menu
+            [:li [:a {:href "#"} "Action"]]
+            [:li.divider]]]]
        #_[:div.collapse.navbar-toggleable-xs {:id "navbar-collapse"}
-        ]])))
+          ]])))
 
 (defn footer []
-  (let [connection-status (subscribe [:connection-status])]
+  (let [connection-status (atom :online) #_(subscribe [:sente/connection-status])]
     (fn []
       [:nav {:class (case @connection-status
                       :online  "navbar bg-faded navbar-fixed-bottom navbar-default"
@@ -212,10 +242,21 @@
   [:div.container-fluid
    [navbar]
    [:div.row.editor-interface
-    [:div.col-xs-8.group
+    [:div.col-xs-6
      [textarea-box]
+     #_[results-box :topics/infer]
+     [results-box :errors/register]
      [text-analysis-box]]
-    [:div.col-xs-4
-     [topic-model-box]
-     [input-box]]]
+    [:div.col-xs-6
+     [input-box]
+     #_[topic-model-box]
+     [results-box :sentences/collocations]
+     [results-box :sentences/tokens]
+     [results-box :tokens/tree]
+     [results-box :tokens/similarity]
+     [results-box :tokens/nearest-tokens]
+     [results-box :tokens/similarity-with-accuracy]
+     [results-box :tokens/tsne]
+     [results-box :collocations/collocations]
+     [results-box :collocations/tree]]]
    [footer]])
