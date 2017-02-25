@@ -195,7 +195,9 @@
   []
   (comp
    ;; (sass :output-style :compressed)
-   (cljs :ids #{"cypress_editor"} :optimizations :advanced)
+   (cljs :ids #{"cypress_editor"}
+         :optimizations :advanced
+         :compiler-options {:closure-defines {"goog.DEBUG" false}})
    (target :dir #{"static"})))
 
 (defn- run-system [profile]
