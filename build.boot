@@ -123,7 +123,7 @@
          '[tolitius.boot-check :as check]
          '[cypress-editor.system :refer [new-system]])
 
-(def repl-port 5600)
+(def repl-port 5610)
 
 (task-options!
  repl {:client true
@@ -211,7 +211,7 @@
 (deftask run [p profile VAL kw "Profile"]
   (comp
    (repl :server true
-         :port (case profile :prod 5601 :beta 5602 5600)
+         :port (case profile :prod 5611 :beta 5612 5610)
          :init-ns 'user)
    (run-system (or profile :prod))
    (wait)))
