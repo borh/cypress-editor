@@ -107,9 +107,9 @@
    ;; Logging
    [clj-logging-config "1.9.12" :scope "test"] ;; dirac?
    [org.clojure/tools.logging "0.3.1"]
-   [org.slf4j/jcl-over-slf4j "1.7.23"]
-   [org.slf4j/jul-to-slf4j "1.7.23"]
-   [org.slf4j/log4j-over-slf4j "1.7.23"]
+   [org.slf4j/jcl-over-slf4j "1.7.24"]
+   [org.slf4j/jul-to-slf4j "1.7.24"]
+   [org.slf4j/log4j-over-slf4j "1.7.24"]
    [ch.qos.logback/logback-classic "1.2.1"
     :exclusions [org.slf4j/slf4j-api]]])
 
