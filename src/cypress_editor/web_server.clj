@@ -56,7 +56,9 @@
 
 
 
-(s/defrecord WebServer [port :- s/Int
+(s/defrecord WebServer [host :- s/Str
+                        port :- s/Int
+                        scheme :- (s/enum :http :https)
                         listener]
   Lifecycle
   (start [component]
@@ -64,10 +66,10 @@
       component                         ; idempotence
       (let [vhosts-model
             (vhosts-model
-             [{:scheme :http :host (format "localhost:%d" port)}
+             [{:scheme scheme :host host}
               (routes {:port port})])
             listener (yada/listener vhosts-model {:port port})]
-        (infof "Started web-server on port %s" (:port listener))
+        (infof "Started web-server on %s://%s:%s" (name scheme) host (:port listener))
         (assoc component :listener listener))))
 
   (stop [component]

@@ -4,9 +4,11 @@
 
 {:web-server
  #profile {:dev {:host "localhost:3010"
-                 :port #long #or [#env PORT 3010]}
-           :prod {:host [#env SERVER_ADDRESS "nlp.lang.osaka-u.ac.jp/natsume-search"]
-                  :port #long #or [#env PORT 3011]}}
+                 :port #long #or [#env PORT 3010]
+                 :scheme #keyword #or [#env SCHEME :http]}
+           :prod {:host #or [#env SERVER_ADDRESS "nlp.lang.osaka-u.ac.jp/natsume-search:3011"]
+                  :port #long #or [#env PORT 3011]
+                  :scheme #keyword #or [#env SCHEME :https]}}
 
  :selmer
  {:template-caching?
