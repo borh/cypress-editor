@@ -130,8 +130,8 @@
       [rc/input-text
        :model m
        :on-change (fn [query-text]
-                    (dispatch [:set/fulltext-query query-text])
-                    #_(dispatch [:get/sentences-fulltext {:query query-text :genre @genre}]))])))
+                    (dispatch [:set/fulltext-state nil])
+                    (dispatch [:set/fulltext-query query-text]))])))
 
 (defn genre-search-box []
   (let [m (subscribe [:user/genre])]
@@ -139,6 +139,7 @@
       [rc/input-text
        :model m
        :on-change (fn [genre-text]
+                    (dispatch [:set/fulltext-state nil])
                     (dispatch [:set/user-genre genre-text]))])))
 
 (defn search-button []
@@ -161,7 +162,7 @@
                    ;;:align-self :center
                    :on-click (fn [_]
                                (dispatch [:get/sentences-fulltext {:query @query :genre @genre}]))]
-                  (when (:see-throbber @state) [rc/throbber :size :small])]])))
+                  (when (= :loading @state) [rc/throbber :size :small])]])))
 
 (defn interface []
   [rc/v-box

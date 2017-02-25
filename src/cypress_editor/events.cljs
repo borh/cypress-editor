@@ -195,6 +195,11 @@
  middleware
  (fn [db [new-state]] (assoc db :fulltext/query new-state)))
 
+(reg-event-db
+ :set/fulltext-state
+ middleware
+ (fn [db [new-state]] (assoc db :fulltext/state new-state)))
+
 ;; Toggle columns
 (reg-event-db
  :toggle/fulltext-genre-column
