@@ -1,120 +1,106 @@
 (ns cypress-editor.re-com-views
   (:require
    [cypress-editor.subs :as subs]
+   [cypress-editor.utils :refer [regex-formatter]]
    [re-frame.core :refer [subscribe dispatch]]
    [re-com.core :as rc]
    [re-frame-datatable.core :as dt]
    [reagent.core :as reagent]))
 
-;; http://stackoverflow.com/questions/18735665/how-can-i-get-the-positions-of-regex-matches-in-clojurescript
-(defn regex-modifiers
-  "Returns the modifiers of a regex, concatenated as a string."
-  [re]
-  (str (if (.-multiline re) "m")
-       (if (.-ignoreCase re) "i")))
 
-(defn re-pos
-  "Returns a vector of vectors, each subvector containing in order:
-   the position of the match, the matched string, and any groups
-   extracted from the match."
-  [re s]
-  (let [re (js/RegExp. (.-source re) (str "g" (regex-modifiers re)))]
-    (loop [res []]
-      (if-let [m (.exec re s)]
-        (let [begin (.-index m)
-              end (.-lastIndex re)]
-          (recur (conj res [begin end])))
-        res))))
-
-(defn regex-formatter [text rx]
-  ;; (println text (re-pos rx text))
-  (loop [r []
-         last-end 0
-         m (re-pos rx text)]
-    (if (seq m)
-      (let [[begin end] (first m)
-            before-string (subs text last-end begin)
-            after-string (subs text end (inc (count text)))
-            hl-string (subs text begin end)]
-        (recur (into r [before-string [:strong hl-string]])
-               end
-               (next m)))
-      (if (empty? r) [text] (into r [(subs text last-end (inc (count text)))])))))
-
-(defn toggle-column [s column]
-  (if (column s)
-    (disj s column)
-    (conj s column)))
-
-(defn column-selection []
+(defn search-options-box []
   (let [genre-column  (subscribe [:fulltext/genre-column])
         title-column  (subscribe [:fulltext/title-column])
         author-column (subscribe [:fulltext/author-column])
-        year-column   (subscribe [:fulltext/year-column])]
+        year-column   (subscribe [:fulltext/year-column])
+
+        kwic-before (subscribe [:fulltext/kwic-before])
+        kwic-after  (subscribe [:fulltext/kwic-after])]
     (fn []
       [rc/h-box
        :gap "14px"
        ;;:align :center
        :align-self :end
        :children [[rc/checkbox
-                   :label     "Genre"
+                   :label     "ジャンル"
                    :model     genre-column
                    :on-change (fn [_]
                                 (dispatch [:toggle/fulltext-genre-column]))]
                   [rc/checkbox
-                   :label     "Title"
+                   :label     "タイトル"
                    :model     title-column
                    :on-change (fn [_]
                                 (dispatch [:toggle/fulltext-title-column]))]
                   [rc/checkbox
-                   :label     "Author"
+                   :label     "著者"
                    :model     author-column
                    :on-change (fn [_]
                                 (dispatch [:toggle/fulltext-author-column]))]
                   [rc/checkbox
-                   :label     "Year"
+                   :label     "出版年"
                    :model     year-column
                    :on-change (fn [_]
-                                (dispatch [:toggle/fulltext-year-column]))]]])))
+                                (dispatch [:toggle/fulltext-year-column]))]
+
+                  [rc/h-box
+                   :children [[:span "前文脈"]
+                              [rc/input-text
+                               :width "3em"
+                               :model kwic-before
+                               :validation-regex #"\d*"
+                               :on-change (fn [span]
+                                            (dispatch [:set/fulltext-kwic-before span]))]
+                              [:span "字"]]]
+
+                  [rc/h-box
+                   :children [[:span "後文脈"]
+                              [rc/input-text
+                               :width "3em"
+                               :model kwic-after
+                               :validation-regex #"\d*"
+                               :on-change (fn [span]
+                                            (dispatch [:set/fulltext-kwic-after span]))]
+                              [:span "字"]]]]])))
 
 (defn fulltext-results-table []
   (let [genre-column  (subscribe [:fulltext/genre-column])
         title-column  (subscribe [:fulltext/title-column])
         author-column (subscribe [:fulltext/author-column])
-        year-column   (subscribe [:fulltext/year-column])]
+        year-column   (subscribe [:fulltext/year-column])
+
+        regexp        (subscribe [:fulltext/query])]
     (fn []
       [dt/datatable
        :fulltext/datatable
        [:sentences/fulltext]
-       (cond->
-           [{::dt/column-key   [:text]
-             ::dt/sorting      {::dt/enabled? true}
-             ;;::dt/render-fn    regex-formatter
-             ::dt/column-label "Text"}]
+       (cond-> [{::dt/column-key   [:text]
+                 ::dt/sorting      {::dt/enabled? true}
+                 ;; ::dt/render-fn    (partial regex-formatter (re-pattern @regexp))
+                 ::dt/column-label "テキスト"}]
 
          @genre-column
          (conj
           {::dt/column-key   [:genre]
            ::dt/sorting      {::dt/enabled? true}
-           ::dt/column-label "Genre"})
+           ::dt/column-label "ジャンル"})
 
          @title-column
          (conj
           {::dt/column-key   [:title]
            ::dt/sorting      {::dt/enabled? true}
-           ::dt/column-label "Title"})
+           ::dt/column-label "タイトル"})
 
          @author-column
          (conj
           {::dt/column-key   [:author]
            ::dt/sorting      {::dt/enabled? true}
-           ::dt/column-label "Author"})
+           ::dt/column-label "著者"})
 
          @year-column
          (conj
           {::dt/column-key   [:year]
            ::dt/sorting      {::dt/enabled? true}
-           ::dt/column-label "Year"}))
+           ::dt/column-label "出版年"}))
        {;; ::dt/pagination    {::dt/enabled? true
         ;;                     ::dt/per-page 20}
         ::dt/table-classes ["ui" "table" "celled"]}])))
