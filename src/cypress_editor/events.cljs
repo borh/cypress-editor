@@ -7,6 +7,7 @@
    [day8.re-frame.async-flow-fx]
    [cypress-editor.communication :as comm]
    [cypress-editor.db :refer [api-url]]
+   [cypress-editor.utils :refer [regex-formatter-multiple]]
    [clojure.string :as str]
    [clojure.spec :as s])
   (:require-macros [cypress-editor.events :refer [sente-bridge]]))
@@ -294,5 +295,16 @@
  middleware
  (fn [db [data]]
    (assoc db
-          :sentences/fulltext data
+          :sentences/fulltext
+          #_data
+          (mapcat (fn [m]
+                    (let [matches
+                          (regex-formatter-multiple
+                           (re-pattern (:fulltext/query db))
+                           (:text m)
+                           (:fulltext/kwic-before db)
+                           (:fulltext/kwic-after db))]
+                      (for [match matches]
+                        (assoc m :text match))))
+                  data)
           :fulltext/state :loaded)))
