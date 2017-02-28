@@ -91,8 +91,8 @@
    ;; Development tools
    [devcards "0.2.2" :exclusions [cljsjs/react]]
 
-   [binaryage/devtools      "0.9.1" :scope "test"]
-   [binaryage/dirac         "1.1.5" :scope "test"]
+   [binaryage/devtools      "0.9.2" :scope "test"]
+   [binaryage/dirac         "1.1.6" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
    [org.clojure/tools.reader        "1.0.0-beta4" :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.0"   :scope "test"]
