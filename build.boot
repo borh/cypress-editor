@@ -33,7 +33,7 @@
 
 (set-env!
  :source-paths #{"src"}
- :resource-paths #{"resources" "assets" "assets/public"}
+ :resource-paths #{"resources" "assets"}
  ;;:asset-paths #{"assets"}
  :dependencies
  '[[adzerk/boot-cljs "1.7.228-2" :scope "test"]
