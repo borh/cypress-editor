@@ -135,17 +135,11 @@
         state (subscribe [:fulltext/state])]
     (fn []
       [rc/h-box
-       ;; :height   "50px"
-       ;; :gap      "50px"
-       ;; :align    :baseline
        :children [[rc/button
                    :label (case @state
-                            :loading "Searching"
-                            :loaded "Finished"
-                            "Search")
-                   ;; :tooltip          "I'm a tooltip on the left"
-                   ;; :tooltip-position :left-center
-                   ;;:align-self :center
+                            :loading "検索中"
+                            :loaded "検索完了"
+                            "検索")
                    :on-click (fn [_]
                                (dispatch [:get/sentences-fulltext {:query @query :genre @genre}]))]
                   (when (= :loading @state) [rc/throbber :size :small])]])))
@@ -156,28 +150,26 @@
    :gap "24px"
    :align :center
    :children [[rc/h-box
-               ;;:align :center
-               ;;:align-self :center
                :gap "28px"
                :children [[rc/box :align-self :center
-                           :child [rc/title :label "Natsume DB fulltext search"]]
+                           :child [rc/title :label "Natsume DB全文検索"]]
                           [rc/gap :size "1"]
-                          [column-selection]]]
+                          [search-options-box]]]
               [rc/h-box
                :gap "28px"
                :align :end
                :children [[rc/v-box
                            :children [[rc/h-box
                                        :gap      "4px"
-                                       :children [[:span.field-label "Regular expression search"]
+                                       :children [[:span.field-label "正規表現検索"]
                                                   [rc/info-button
-                                                   :info [:p [:a {:href "https://www.postgresql.org/docs/9.3/static/functions-matching.html"} "Documentation"]]]]]
+                                                   :info [:p [:a {:href "https://www.postgresql.jp/document/9.6/html/functions-matching.html" #_"https://www.postgresql.org/docs/9.3/static/functions-matching.html"} "説明"]]]]]
                                       [regex-search-box]]]
 
                           [rc/v-box
                            :children [[rc/h-box
                                        :gap      "4px"
-                                       :children [[:span.field-label "Genre filter"]
+                                       :children [[:span.field-label "ジャンルのフィルター"]
                                                   [rc/info-button
                                                    :info [:p "lquery"]]]]
                                       [genre-search-box]]]
