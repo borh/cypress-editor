@@ -91,7 +91,9 @@
    :fulltext/genre-column true
    :fulltext/title-column true
    :fulltext/author-column true
-   :fulltext/year-column true})
+   :fulltext/year-column true
+   :fulltext/kwic-before "10"
+   :fulltext/kwic-after "10"})
 
 (def input-api
   {:user/text "テキストサンプルです。"
@@ -221,6 +223,17 @@
  :toggle/fulltext-year-column
  middleware
  (fn [db [_]] (update db :fulltext/year-column not)))
+
+(reg-event-db
+ :set/fulltext-kwic-before
+ middleware
+ (fn [db [new-state]] (assoc db :fulltext/kiwc-before new-state)))
+
+(reg-event-db
+ :set/fulltext-kwic-after
+ middleware
+ (fn [db [new-state]] (assoc db :fulltext/kiwc-after new-state)))
+
 ;;
 
 (comment
