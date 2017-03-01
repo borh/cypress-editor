@@ -49,27 +49,28 @@
                    :on-change (fn [_]
                                 (dispatch [:toggle/fulltext-kwic]))]
 
-                  [rc/h-box
-                   :children [[:span "前文脈"]
-                              [rc/input-text
-                               :width "3em"
-                               :model kwic-before
-                               :validation-regex #"\d*"
-                               :disabled? (not @kwic-toggle)
-                               :on-change (fn [span]
-                                            (dispatch [:set/fulltext-kwic-before span]))]
-                              [:span "字"]]]
+                  ;; TODO These don't really make sense when using ellipsis in table...
+                  #_[rc/h-box
+                     :children [[:span "前文脈"]
+                                [rc/input-text
+                                 :width "3em"
+                                 :model kwic-before
+                                 :validation-regex #"\d*"
+                                 :disabled? (not @kwic-toggle)
+                                 :on-change (fn [span]
+                                              (dispatch [:set/fulltext-kwic-before span]))]
+                                [:span "字"]]]
 
-                  [rc/h-box
-                   :children [[:span "後文脈"]
-                              [rc/input-text
-                               :width "3em"
-                               :model kwic-after
-                               :validation-regex #"\d*"
-                               :disabled? (not @kwic-toggle)
-                               :on-change (fn [span]
-                                            (dispatch [:set/fulltext-kwic-after span]))]
-                              [:span "字"]]]]])))
+                  #_[rc/h-box
+                     :children [[:span "後文脈"]
+                                [rc/input-text
+                                 :width "3em"
+                                 :model kwic-after
+                                 :validation-regex #"\d*"
+                                 :disabled? (not @kwic-toggle)
+                                 :on-change (fn [span]
+                                              (dispatch [:set/fulltext-kwic-after span]))]
+                                [:span "字"]]]]])))
 
 (defn fulltext-results-table []
   (let [genre-column  (subscribe [:fulltext/genre-column])
