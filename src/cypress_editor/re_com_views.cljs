@@ -197,7 +197,7 @@
                           [rc/v-box
                            :children [[rc/h-box
                                        :gap      "4px"
-                                       :children [[:span.field-label "ジャンルのフィルター"]
+                                       :children [[:span.field-label "ジャンルで絞り込検索"]
                                                   [rc/info-button
                                                    :info [:p "lquery"]]]]
                                       [genre-search-box]]]
