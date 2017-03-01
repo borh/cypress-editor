@@ -40,8 +40,7 @@
 
 (defn regex-formatter-multiple
   "Returns a hiccup :span vector with matched regular expression
-  wrapped in :strong objects, one for each match.
-  FIXME should probably check is no matches are found."
+  wrapped in :strong objects, one for each match."
   [rx text before-span after-span]
   (let [matches (re-pos rx text)]
     (if-not (seq matches)
