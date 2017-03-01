@@ -170,6 +170,11 @@
    (:fulltext/year-column db)))
 
 (reg-sub
+ :fulltext/kwic
+ (fn [db _]
+   (:fulltext/kwic db)))
+
+(reg-sub
  :fulltext/kwic-before
  (fn [db _]
    (:fulltext/kwic-before db)))

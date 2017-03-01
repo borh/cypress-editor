@@ -53,3 +53,19 @@
              hl-string (subs text begin end)]
          [:span before-string [:strong hl-string] after-string]))
      matches)))
+
+(defn kwic-regex-formatter
+  "Returns a map of the matched search key and text before and, one for each match."
+  [rx text before-span after-span]
+  (let [matches (re-pos rx text)]
+    (if-not (seq matches)
+      (println "Server-client regular expression error: " rx text))
+    (map
+     (fn [[begin end]]
+       (let [before-string (subs text 0 begin)
+             after-string (subs text end (inc (count text)))
+             hl-string (subs text begin end)]
+         {:before before-string
+          :key hl-string
+          :after after-string}))
+     matches)))

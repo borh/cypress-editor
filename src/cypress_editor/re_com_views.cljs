@@ -14,6 +14,7 @@
         author-column (subscribe [:fulltext/author-column])
         year-column   (subscribe [:fulltext/year-column])
 
+        kwic-toggle (subscribe [:fulltext/kwic])
         kwic-before (subscribe [:fulltext/kwic-before])
         kwic-after  (subscribe [:fulltext/kwic-after])]
     (fn []
@@ -42,12 +43,19 @@
                    :on-change (fn [_]
                                 (dispatch [:toggle/fulltext-year-column]))]
 
+                  [rc/checkbox
+                   :model kwic-toggle
+                   :label "KWIC検索"
+                   :on-change (fn [_]
+                                (dispatch [:toggle/fulltext-kwic]))]
+
                   [rc/h-box
                    :children [[:span "前文脈"]
                               [rc/input-text
                                :width "3em"
                                :model kwic-before
                                :validation-regex #"\d*"
+                               :disabled? (not @kwic-toggle)
                                :on-change (fn [span]
                                             (dispatch [:set/fulltext-kwic-before span]))]
                               [:span "字"]]]
@@ -58,6 +66,7 @@
                                :width "3em"
                                :model kwic-after
                                :validation-regex #"\d*"
+                               :disabled? (not @kwic-toggle)
                                :on-change (fn [span]
                                             (dispatch [:set/fulltext-kwic-after span]))]
                               [:span "字"]]]]])))
@@ -68,15 +77,32 @@
         author-column (subscribe [:fulltext/author-column])
         year-column   (subscribe [:fulltext/year-column])
 
+        kwic-toggle   (subscribe [:fulltext/kwic])
+
         regexp        (subscribe [:fulltext/query])]
     (fn []
       [dt/datatable
        :fulltext/datatable
        [:sentences/fulltext]
-       (cond-> [{::dt/column-key   [:text]
+       (cond-> []
+
+         (not @kwic-toggle)
+         (conj
+          {::dt/column-key   [:text]
+           ::dt/sorting      {::dt/enabled? true}
+           ;; ::dt/render-fn    (partial regex-formatter (re-pattern @regexp))
+           ::dt/column-label "テキスト"})
+
+         @kwic-toggle
+         (into [{::dt/column-key   [:before]
                  ::dt/sorting      {::dt/enabled? true}
-                 ;; ::dt/render-fn    (partial regex-formatter (re-pattern @regexp))
-                 ::dt/column-label "テキスト"}]
+                 ::dt/column-label "前文"}
+                {::dt/column-key   [:key]
+                 ::dt/sorting      {::dt/enabled? true}
+                 ::dt/column-label "キー"}
+                {::dt/column-key   [:after]
+                 ::dt/sorting      {::dt/enabled? true}
+                 ::dt/column-label "後文"}])
 
          @genre-column
          (conj
@@ -103,7 +129,9 @@
            ::dt/column-label "出版年"}))
        {;; ::dt/pagination    {::dt/enabled? true
         ;;                     ::dt/per-page 20}
-        ::dt/table-classes ["ui" "table" "celled"]}])))
+        ::dt/table-classes (if @kwic-toggle
+                             ["ui" "table" "celled" "kwic"]
+                             ["ui" "table" "celled"])}])))
 
 (defn total-count-message []
   (let [total-count (subscribe [:sentences/fulltext])]

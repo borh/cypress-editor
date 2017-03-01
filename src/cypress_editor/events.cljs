@@ -7,7 +7,7 @@
    [day8.re-frame.async-flow-fx]
    [cypress-editor.communication :as comm]
    [cypress-editor.db :refer [api-url]]
-   [cypress-editor.utils :refer [regex-formatter-multiple]]
+   [cypress-editor.utils :refer [regex-formatter-multiple kwic-regex-formatter]]
    [clojure.string :as str]
    [clojure.spec :as s])
   (:require-macros [cypress-editor.events :refer [sente-bridge]]))
@@ -90,8 +90,9 @@
   {:fulltext/query "しかしながら"
    :fulltext/genre-column true
    :fulltext/title-column true
-   :fulltext/author-column true
-   :fulltext/year-column true
+   :fulltext/author-column false
+   :fulltext/year-column false
+   :fulltext/kwic true
    :fulltext/kwic-before "10"
    :fulltext/kwic-after "10"})
 
@@ -225,6 +226,11 @@
  (fn [db [_]] (update db :fulltext/year-column not)))
 
 (reg-event-db
+ :toggle/fulltext-kwic
+ middleware
+ (fn [db [_]] (update db :fulltext/kwic not)))
+
+(reg-event-db
  :set/fulltext-kwic-before
  middleware
  (fn [db [new-state]] (assoc db :fulltext/kiwc-before new-state)))
@@ -307,17 +313,26 @@
  :set/sentences-fulltext
  middleware
  (fn [db [data]]
-   (assoc db
-          :sentences/fulltext
-          #_data
-          (mapcat (fn [m]
-                    (let [matches
-                          (regex-formatter-multiple
-                           (re-pattern (:fulltext/query db))
-                           (:text m)
-                           (:fulltext/kwic-before db)
-                           (:fulltext/kwic-after db))]
-                      (for [match matches]
-                        (assoc m :text match))))
-                  data)
-          :fulltext/state :loaded)))
+   (let [transform-fn
+         (if (:fulltext/kwic db)
+
+           (fn [m]
+             (for [match
+                   (kwic-regex-formatter
+                    (re-pattern (:fulltext/query db))
+                    (:text m)
+                    (:fulltext/kwic-before db)
+                    (:fulltext/kwic-after db))]
+               (merge (dissoc m :text) match)))
+
+           (fn [m]
+             (for [match
+                   (regex-formatter-multiple
+                    (re-pattern (:fulltext/query db))
+                    (:text m)
+                    (:fulltext/kwic-before db)
+                    (:fulltext/kwic-after db))]
+               (assoc m :text match))))]
+     (assoc db
+            :sentences/fulltext (mapcat transform-fn data)
+            :fulltext/state :loaded))))
