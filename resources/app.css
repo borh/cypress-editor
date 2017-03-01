@@ -1,0 +1,33 @@
+table.kwic thead tr th:nth-child(1) {
+  text-align: right;
+  text-overflow: ellipsis;
+  padding-right: 2px; }
+
+table.kwic thead tr th:nth-child(2) {
+  text-align: center;
+  min-width: 6em;
+  padding-left: 2px;
+  padding-right: 2px; }
+
+table.kwic tbody tr td:nth-child(1) {
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 300px;
+  direction: rtl;
+  padding-right: 2px; }
+
+table.kwic tbody tr td:nth-child(2) {
+  text-align: center;
+  min-width: 6em;
+  background: #f3f3f3;
+  padding-left: 2px;
+  padding-right: 2px; }
+
+table.kwic tbody tr td:nth-child(3) {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 300px;
+  padding-left: 2px; }
