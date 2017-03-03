@@ -303,7 +303,6 @@
  :get/sentences-fulltext
  middleware
  (fn [{:keys [db]} [query]]
-   ;; (println "inside :get -----> " query)
    {:db (assoc db :sentences/fulltext nil :fulltext/state :loading)
     :sente {:query [:sentences/fulltext query]
             :timeout 600000

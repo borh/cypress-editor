@@ -115,6 +115,7 @@
          (conj
           {::dt/column-key   [:title]
            ::dt/sorting      {::dt/enabled? true}
+           ;; TODO click on title to show whole document
            ::dt/column-label "タイトル"})
 
          @author-column
@@ -128,16 +129,14 @@
           {::dt/column-key   [:year]
            ::dt/sorting      {::dt/enabled? true}
            ::dt/column-label "出版年"}))
-       {;; ::dt/pagination    {::dt/enabled? true
-        ;;                     ::dt/per-page 20}
-        ::dt/table-classes (if @kwic-toggle
+       {::dt/table-classes (if @kwic-toggle
                              ["ui" "table" "celled" "kwic"]
                              ["ui" "table" "celled"])}])))
 
 (defn total-count-message []
   (let [total-count (subscribe [:sentences/fulltext])]
     (when @total-count
-      [:p [:strong (str (count @total-count))] " matches"])))
+      [:p "約" [:strong (str (count @total-count))] "件"])))
 
 (defn regex-search-box []
   (let [m (subscribe [:fulltext/query])]
@@ -170,6 +169,7 @@
                             :loaded "検索完了"
                             "検索")
                    :on-click (fn [_]
+                               ;; FIXME make sure to reconnect if disconected before next query!
                                (dispatch [:get/sentences-fulltext {:query @query :genre @genre}]))]
                   (when (= :loading @state) [rc/throbber :size :small])]])))
 
