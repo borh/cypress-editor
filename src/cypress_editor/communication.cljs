@@ -1,5 +1,6 @@
 (ns cypress-editor.communication
   (:require [taoensso.sente :as sente]
+            [taoensso.sente.packers.transit :as sente-transit]
             [mount.core :refer [defstate]]
             [cypress-editor.db :refer [ws-url]]))
 
@@ -7,6 +8,7 @@
   :start (sente/make-channel-socket!
           "/chsk"
           {:type :auto
+           :packer (sente-transit/get-transit-packer)
            :chsk-url-fn #(str ws-url %)}))
 
 (defn send! [& params]
