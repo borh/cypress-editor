@@ -173,6 +173,11 @@
                                (dispatch [:get/sentences-fulltext {:query @query :genre @genre}]))]
                   (when (= :loading @state) [rc/throbber :size :small])]])))
 
+(defn connection-status-box []
+  (let [status (subscribe [:sente/connection-status])]
+    (fn []
+      [:span "Connection: " @status])))
+
 (defn interface []
   [rc/v-box
    :size "100px"
@@ -183,7 +188,10 @@
                :children [[rc/box :align-self :center
                            :child [rc/title :label "Natsume DB全文検索"]]
                           [rc/gap :size "1"]
-                          [search-options-box]]]
+                          [search-options-box]
+                          (when ^boolean js/goog.DEBUG
+                            [rc/gap :size "1"]
+                            [connection-status-box])]]
               [rc/h-box
                :gap "28px"
                :align :end
