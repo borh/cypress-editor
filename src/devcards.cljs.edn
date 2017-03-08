@@ -1,3 +1,0 @@
-{:require  [cypress-editor.devcards]
- :init-fns [cypress-editor.devcards/main]
- :compiler-options {:devcards true}}
