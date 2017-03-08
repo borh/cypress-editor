@@ -33,13 +33,11 @@
 
 (set-env!
  :source-paths #{"src"}
- :resource-paths #{"resources" "assets"}
- ;;:asset-paths #{"assets"}
+ :resource-paths #{"resources" "sass"}
  :dependencies
  '[[adzerk/boot-cljs "1.7.228-2" :scope "test"]
    [adzerk/boot-cljs-repl "0.3.3" :scope "test"]
    [adzerk/boot-reload "0.5.1" :scope "test"]
-   [weasel "0.7.0" :scope "test"] ;; Websocket Server
    [deraen/boot-sass "0.3.0"]
    [reloaded.repl "0.2.3" :scope "test"]
 
@@ -52,6 +50,7 @@
 
    ;; Needed for start-repl in cljs repl
    [com.cemerick/piggieback "0.2.1" :scope "test"]
+   [weasel "0.7.0" :scope "test"] ;; Websocket Server
 
    ;; Server deps
    [yada "1.2.1" :exclusions [aleph manifold ring-swagger prismatic/schema]]
@@ -115,7 +114,7 @@
 
 (require '[adzerk.boot-cljs :refer [cljs]]
          '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
-         '[powerlaces.boot-cljs-devtools :refer [cljs-devtools]]
+         '[powerlaces.boot-cljs-devtools :refer [cljs-devtools dirac]]
          '[adzerk.boot-reload :refer [reload]]
          '[deraen.boot-sass :refer [sass]]
          '[com.stuartsierra.component :as component]
@@ -144,14 +143,6 @@
    (check/with-eastwood)
    (check/with-kibit)
    (check/with-bikeshed)))
-
-(deftask webjar-sass
-  ""
-  []
-  (apply clojure.tools.namespace.repl/set-refresh-dirs (get-env :directories))
-  (comp
-   (sift :add-jar {'org.webjars.npm/bulma #".*"})
-   (sass :output-style :expanded)))
 
 (deftask dev-system
   "Develop the server backend. The system is automatically started in
@@ -194,7 +185,7 @@
   "This is used for creating optimized static resources under static"
   []
   (comp
-   ;; (sass :output-style :compressed)
+   (sass :output-style :compressed)
    (cljs :ids #{"cypress_editor"}
          :optimizations :advanced
          :compiler-options {:closure-defines {"goog.DEBUG" false}})
