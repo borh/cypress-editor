@@ -25,15 +25,15 @@
                      (selmer/render-file "index.html" {:title "Cypress"
                                                        :ctx ctx}))}}})]
 
-    ["devcards.html"
-     (yada/resource
-      {:id :cypress-editor.resources/devcards
-       :methods
-       {:get
-        {:produces #{"text/html"}
-         :response (fn [ctx]
-                     (selmer/render-file "devcards.html" {:title "Devcards"
-                                                          :ctx ctx}))}}})]
+    #_["devcards.html"
+       (yada/resource
+        {:id :cypress-editor.resources/devcards
+         :methods
+         {:get
+          {:produces #{"text/html"}
+           :response (fn [ctx]
+                       (selmer/render-file "devcards.html" {:title "Devcards"
+                                                            :ctx ctx}))}}})]
 
     ["" (assoc (yada/redirect :cypress-editor.resources/index) :id :cypress-editor.resources/content)]
 
