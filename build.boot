@@ -93,7 +93,7 @@
    [devcards "0.2.2" :exclusions [cljsjs/react]]
 
    [binaryage/devtools      "0.9.2" :scope "test"]
-   [binaryage/dirac         "1.1.6" :scope "test"]
+   [binaryage/dirac         "1.2.0" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
    [org.clojure/tools.reader        "1.0.0-beta4" :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.0"   :scope "test"]
@@ -172,14 +172,18 @@
   (comp
    (watch)
    (speak)
-   ;; (webjar-sass)
+   (sass)
    (reload :on-jsload 'cypress-editor.app/main)
-   ;; (cljs-devtools) ; wait for new version
-   (cljs-repl :nrepl-opts {:client false
-                           :port repl-port
-                           :init-ns 'user}) ; this is also the server repl!
-   (cljs :ids #{"cypress_editor"} :optimizations :none
-         :compiler-options {:preloads '[devtools.preload]})
+   ;; this is also the server repl!
+   #_(cljs-repl :nrepl-opts {:client false
+                             :port repl-port
+                             :init-ns 'user})
+   (cljs-devtools)
+   #_(dirac ;;:nrepl-opts {:client false})
+   (cljs :ids #{"cypress_editor"}
+         :optimizations :none
+         :compiler-options {:preloads '[devtools.preload] ;; needed? should be injected
+                            :closure-defines {"goog.DEBUG" true}})
    (dev-system)
    (target)))
 
