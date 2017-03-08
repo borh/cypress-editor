@@ -1,0 +1,55 @@
+// Mixins
+=kwic-before()
+  max-width: 300px
+  min-width: 200px
+  text-align: right
+  text-overflow: ellipsis
+  padding-right: 2px
+
+=kwic-after()
+  max-width: 300px
+  min-width: 200px
+  text-overflow: ellipsis
+  padding-left: 2px
+
+=kwic-key()
+  text-align: center
+  min-width: 6em
+  max-width: 12em
+  padding-left: 2px
+  padding-right: 2px
+
+// Styles
+table.kwic
+  thead tr
+    th:nth-child(1)
+      +kwic-before()
+    th:nth-child(2)
+      +kwic-key()
+    td:nth-child(3)
+      +kwic-after()
+
+  tbody tr
+    td:nth-child(1)
+      +kwic-before()
+      white-space: nowrap
+      overflow: hidden
+      direction: rtl
+    td:nth-child(1):hover
+      +kwic-before()
+      text-overflow: clip
+      white-space: normal
+      word-break: break-all
+      text-align: left
+    td:nth-child(2)
+      +kwic-key()
+      background: lighten(grey, 45%)
+    td:nth-child(3)
+      +kwic-after()
+      white-space: nowrap
+      overflow: hidden
+    td:nth-child(3):hover
+      +kwic-after()
+      text-overflow: clip
+      white-space: normal
+      word-break: break-all
