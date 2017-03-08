@@ -9,6 +9,7 @@
    [clojure.java.io :as io]
    [schema.core :as s]
    [selmer.parser :as selmer]
+   [yada.resources.webjar-resource :refer [new-webjar-resource]]
    [yada.yada :refer [handler resource] :as yada]))
 
 (defn content-routes []
@@ -38,6 +39,15 @@
 
     ;; Add some pairs (as vectors) here. First item is the path, second is the handler.
     ;; Here's an example
+
+    ["assets"
+     [["bootstrap"
+       (new-webjar-resource "bootstrap")]
+      ["material-design-iconic-font"
+       (new-webjar-resource "material-design-iconic-font")]
+      ["font-awesome"
+       (new-webjar-resource "font-awesome")]]]
+
 
     [""
      (-> (yada/as-resource (io/file "target"))
