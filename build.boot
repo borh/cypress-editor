@@ -179,7 +179,7 @@
                              :port repl-port
                              :init-ns 'user})
    (cljs-devtools)
-   #_(dirac ;;:nrepl-opts {:client false})
+   #_(dirac :nrepl-opts {:client false})
    (cljs :ids #{"cypress_editor"}
          :optimizations :none
          :compiler-options {:preloads '[devtools.preload] ;; needed? should be injected
