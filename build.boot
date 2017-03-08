@@ -80,7 +80,9 @@
    #_[org.webjars.npm/bulma "0.3.1"]
    #_[org.webjars/bootstrap "4.0.0-alpha.3"]
    #_[org.webjars/material-design-icons "3.0.1"]
-   #_[org.webjars.bower/fontawesome "4.6.3"]
+   [org.webjars/bootstrap "3.3.7-1"]
+   [org.webjars/font-awesome "4.7.0"]
+   [org.webjars.bower/material-design-iconic-font "2.2.0"]
 
    [com.cognitect/transit-clj "0.8.297"]
    [com.cognitect/transit-cljs "0.8.239"]
