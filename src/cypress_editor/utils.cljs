@@ -38,13 +38,16 @@
             (= last-end (count text)) r
             :else (into r [(subs text last-end (inc (count text)))])))))
 
+(def ^boolean debug-enabled? "@define {boolean}" ^boolean js/goog.DEBUG)
+
 (defn regex-formatter-multiple
   "Returns a hiccup :span vector with matched regular expression
   wrapped in :strong objects, one for each match."
   [rx text before-span after-span]
   (let [matches (re-pos rx text)]
-    (if-not (seq matches)
-      (println "Server-client regular expression error: " rx text))
+    (when debug-enabled?
+      (if-not (seq matches)
+        (println "Server-client regular expression error: " rx text)))
     (map
      (fn [[begin end]]
        (let [before-string (subs text 0 begin)
@@ -55,10 +58,11 @@
 
 (defn kwic-regex-formatter
   "Returns a map of the matched search key and text before and, one for each match."
-  [rx text before-span after-span]
+  [rx text]
   (let [matches (re-pos rx text)]
-    (if-not (seq matches)
-      (println "Server-client regular expression error: " rx text))
+    (when debug-enabled?
+      (if-not (seq matches)
+        (println "Server-client regular expression error: " rx text)))
     (map
      (fn [[begin end]]
        (let [before-string (subs text 0 begin)
