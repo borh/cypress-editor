@@ -8,14 +8,13 @@
    [day8.re-frame.async-flow-fx]
    [cypress-editor.communication :as comm]
    [cypress-editor.db :refer [api-url]]
-   [cypress-editor.utils :refer [regex-formatter-multiple kwic-regex-formatter]]
+   [cypress-editor.utils :refer [kwic-regex-formatter]]
    [clojure.string :as str]
    [clojure.spec :as s])
   (:require-macros [cypress-editor.events :refer [sente-bridge]]))
 
 (def middleware
-  [#_(when ^boolean js/goog.DEBUG debug)
-   trim-v])
+  [trim-v])
 
 (reg-fx
  :sente
@@ -122,14 +121,13 @@
    :topics/infer nil})
 
 (def fulltext-api
-  {:fulltext/query "しかしながら"
+  {:fulltext/query (if debug-enabled? "しかしながら" "")
    :fulltext/genre-column true
    :fulltext/title-column true
    :fulltext/author-column false
    :fulltext/year-column false
-   :fulltext/kwic true
-   :fulltext/kwic-before "10"
-   :fulltext/kwic-after "10"})
+   :fulltext/document-text nil
+   :fulltext/document-show false})
 
 (def input-api
   {:user/auth-token nil
@@ -142,9 +140,9 @@
    :user/text (if debug-enabled? "入力テキストを解析する。" nil)
    :user/unit-type :suw
    :user/features [:orth]
-   :user/token "花"
-   :user/extra-token "菊"
-   :user/genre "*"
+   :user/token (if debug-enabled? "花" nil)
+   :user/extra-token (if debug-enabled? "菊" nil)
+   :user/genre (if debug-enabled? "白書.*" "*")
    :user/limit 5
    :user/html true
    :user/norm :tokens
@@ -161,7 +159,7 @@
  :boot
  (fn [_ _]
    (let [db (merge
-             {:sente/connection-status :offline
+             {:sente/connection-status false
               #_{0 {"a" 0.90 "b" 0.05 "c" 0.04 "d" 0.01}
                  1 {"p" 1.0}
                  2 {"k" 9922 "l" 22}}}
@@ -170,9 +168,10 @@
              text-api
              fulltext-api
              input-api)]
-     ;; (println db)
      {:db db
       :async-flow (boot-flow)})))
+
+;; TODO parameterize state
 
 (reg-event-db
  :set/sente-connection-status
@@ -198,8 +197,6 @@
  :set/user-password
  middleware
  (fn [db [new-state]] (assoc db :user/password new-state)))
-
-;; TODO parameterize state
 
 (reg-event-db
  :set/user-text
@@ -292,21 +289,6 @@
  middleware
  (fn [db [_]] (update db :fulltext/year-column not)))
 
-(reg-event-db
- :toggle/fulltext-kwic
- middleware
- (fn [db [_]] (update db :fulltext/kwic not)))
-
-(reg-event-db
- :set/fulltext-kwic-before
- middleware
- (fn [db [new-state]] (assoc db :fulltext/kiwc-before new-state)))
-
-(reg-event-db
- :set/fulltext-kwic-after
- middleware
- (fn [db [new-state]] (assoc db :fulltext/kiwc-after new-state)))
-
 ;;
 
 (comment
@@ -331,7 +313,7 @@
            first-topic (-> results :results first :id)]
        (assoc db :text-topics topics :selected-topic first-topic)))))
 
-
+;;
 
 (sente-bridge [:sources/genre :sources])
 
@@ -363,15 +345,43 @@
 
 (sente-bridge [:topics/infer {:unit-type :suw :features [:orth] :text (:user/text input-api)}])
 
-#_(sente-bridge [:sentences/fulltext {:query (:fulltext/query fulltext-api)
-                                      :genre (:user/genre input-api)}])
+;;
+
+(reg-event-fx
+ :get/sources-by-sentence-id
+ middleware
+ (fn [_ [query]]
+   {:sente {:query [:sources/sentence-id query]
+            :timeout 5000
+            :update-fx :set/fulltext-document-text}
+    :dispatch [:toggle/fulltext-document-show]}))
+
+(reg-event-db
+ :toggle/fulltext-document-show
+ middleware
+ (fn [db [_]]
+   (update db :fulltext/document-show not)))
+
+(reg-event-db
+ :set/fulltext-document-text
+ middleware
+ (fn [db [text]]
+   (assoc db
+          :fulltext/document-text
+          (->> text
+               str/split-lines
+               (map (fn [s] ^{:key (gensym "p-")} [:p s]))))))
 
 (reg-event-fx
  :get/sentences-fulltext
  middleware
- (fn [{:keys [db]} [query]]
-   {:db (assoc db :sentences/fulltext nil :fulltext/state :loading)
-    :sente {:query [:sentences/fulltext query]
+ (fn [{:keys [db]} [_]]
+   {:db (assoc db
+               :sentences/fulltext nil
+               :fulltext/state :loading)
+    :sente {:query [:sentences/fulltext
+                    {:query (:fulltext/query db)
+                     :genre (:user/genre db)}]
             :timeout 600000
             :update-fx :set/sentences-fulltext}}))
 
@@ -380,25 +390,18 @@
  middleware
  (fn [db [data]]
    (let [transform-fn
-         (if (:fulltext/kwic db)
-
-           (fn [m]
-             (for [match
-                   (kwic-regex-formatter
-                    (re-pattern (:fulltext/query db))
-                    (:text m)
-                    (:fulltext/kwic-before db)
-                    (:fulltext/kwic-after db))]
-               (merge (dissoc m :text) match)))
-
-           (fn [m]
-             (for [match
-                   (regex-formatter-multiple
-                    (re-pattern (:fulltext/query db))
-                    (:text m)
-                    (:fulltext/kwic-before db)
-                    (:fulltext/kwic-after db))]
-               (assoc m :text match))))]
+         (fn [{:keys [id title author year genre before_text key_text after_text]}]
+           (for [match (kwic-regex-formatter
+                        (re-pattern (:fulltext/query db))
+                        key_text)]
+             {:id id
+              :title title
+              :author author
+              :year year
+              :genre genre
+              :before (str before_text (:before match))
+              :key (:key match)
+              :after (str (:after match) after_text)}))]
      (assoc db
             :sentences/fulltext (mapcat transform-fn data)
             :fulltext/state :loaded))))
