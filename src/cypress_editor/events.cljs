@@ -3,6 +3,7 @@
    [re-frame.core :refer [reg-event-db reg-event-fx reg-fx dispatch]]
    [re-frame.std-interceptors :refer [debug trim-v]]
    [ajax.core :as ajax]
+   [taoensso.sente :as sente]
    [day8.re-frame.http-fx]
    [day8.re-frame.async-flow-fx]
    [cypress-editor.communication :as comm]
@@ -25,10 +26,11 @@
 
 (defn boot-flow
   []
-  {:first-dispatch [:sente/connect] ;; TODO
+  {:first-dispatch [:sente/authenticate]
    :rules [{:when :seen?
-            :events [:sente/connected]
-            :dispatch-n [#_[:get/sources-genre]
+            :events [:sente/auth-success]
+            :dispatch-n [[:sente/connect]
+                         #_[:get/sources-genre]
                          #_[:get/sentences-collocations]
                          #_[:get/sentences-tokens]
                          #_[:get/tokens-tree]
@@ -47,17 +49,50 @@
  :sente/connect
  middleware
  (fn [{:keys [db]} [_]]
-   {:db (assoc db :sente/connection-status (:state @comm/socket))
-    :dispatch [:sente/connected]}))
+   {:db (assoc db :sente/connection-status (:open? @(:state @comm/!socket)))
+    :dispatch [:sente/started]}))
 
 (def ^boolean debug-enabled? "@define {boolean}" ^boolean js/goog.DEBUG)
 (reg-event-fx
- :sente/connected
+ :sente/started
  middleware
  (fn [_ _]
    (when debug-enabled?
      (println "Connected!"))
    {}))
+
+(reg-event-fx
+ :sente/authenticate
+ (fn [{:keys [db]} _]
+   {:http-xhrio {:method          :get
+                 :uri             (str api-url "/authenticate")
+                 :params {:username (:user/username db)
+                          :password (:user/password db)}
+                 :timeout         1000
+                 :format          (ajax/url-request-format)
+                 :response-format (ajax/json-response-format {:keywords? true})
+                 :on-success      [:sente/auth-success]
+                 :on-failure      [:sente/auth-failure]
+                 :with-credentials? false}}))
+
+(reg-event-db
+ :sente/auth-success
+ (fn [db [_ result]]
+   (let [token (:token result)]
+     (comm/create-socket! token)
+     (assoc db
+            :user/auth-token token
+            :user/account-valid true))))
+
+(reg-event-fx
+ :sente/auth-failure
+ (fn [{:keys [db]} [_ result]]
+   (when debug-enabled?
+     (println "auth-failure" result))
+   ;; Rolling timeout with reset?
+   {:db (assoc db
+               :user/auth-token nil
+               :user/account-valid false)}))
 
 ;; API
 
@@ -97,7 +132,14 @@
    :fulltext/kwic-after "10"})
 
 (def input-api
-  {:user/text "テキストサンプルです。"
+  {:user/auth-token nil
+   :user/csrf-token nil
+   :user/username (if debug-enabled? "bor" nil)
+   :user/password (if debug-enabled? "test" nil)
+   :user/account-valid nil
+   :user/id nil
+
+   :user/text (if debug-enabled? "入力テキストを解析する。" nil)
    :user/unit-type :suw
    :user/features [:orth]
    :user/token "花"
@@ -131,6 +173,31 @@
      ;; (println db)
      {:db db
       :async-flow (boot-flow)})))
+
+(reg-event-db
+ :set/sente-connection-status
+ middleware
+ (fn [db [new-state]] (assoc db :sente/connection-status new-state)))
+
+(reg-event-db
+ :set/user-account-valid
+ middleware
+ (fn [db [new-state]] (assoc db :user/account-valid new-state)))
+
+(reg-event-db
+ :set/user-auth-token
+ middleware
+ (fn [db [new-state]] (assoc db :user/auth-token new-state)))
+
+(reg-event-db
+ :set/user-username
+ middleware
+ (fn [db [new-state]] (assoc db :user/username new-state)))
+
+(reg-event-db
+ :set/user-password
+ middleware
+ (fn [db [new-state]] (assoc db :user/password new-state)))
 
 ;; TODO parameterize state
 
