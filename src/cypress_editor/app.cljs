@@ -14,8 +14,6 @@
 
 ;; # App entry point
 
-(enable-console-print!)
-
 (def ^boolean debug-enabled? "@define {boolean}" ^boolean js/goog.DEBUG)
 
 (defn ^:export main
