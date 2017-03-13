@@ -9,13 +9,17 @@
    [clojure.java.io :as io]
    [schema.core :as s]
    [selmer.parser :as selmer]
-   [yada.resources.webjar-resource :refer [new-webjar-resource]]
-   [yada.yada :refer [handler resource] :as yada]))
+   ;; [yada.resources.webjar-resource :refer [new-webjar-resource webjars-route-pair]]
+   [cypress-editor.debug-webjar :refer [new-webjar-resource webjars-route-pair]]
+   [yada.resources.classpath-resource :refer [new-classpath-resource]]
+   [yada.yada :refer [handler resource] :as yada]
+   [clojure.string :as str]))
+
+;; (clojure.pprint/pprint (second (webjars-route-pair)))
 
 (defn content-routes []
   ["/"
-   [
-    ["index.html"
+   [["index.html"
      (yada/resource
       {:id :cypress-editor.resources/index
        :methods
@@ -25,29 +29,29 @@
                      (selmer/render-file "index.html" {:title "Cypress"
                                                        :ctx ctx}))}}})]
 
-    #_["devcards.html"
-       (yada/resource
-        {:id :cypress-editor.resources/devcards
-         :methods
-         {:get
-          {:produces #{"text/html"}
-           :response (fn [ctx]
-                       (selmer/render-file "devcards.html" {:title "Devcards"
-                                                            :ctx ctx}))}}})]
+    ["" (assoc (yada/redirect :cypress-editor.resources/index)
+               :id :cypress-editor.resources/content)]
 
-    ["" (assoc (yada/redirect :cypress-editor.resources/index) :id :cypress-editor.resources/content)]
+    ["debug.html"
+     (yada/resource
+      {:id :cypress-editor.resources/debug
+       :methods
+       {:get
+        {:produces #{"text/plain"}
+         :response (fn [ctx]
+                     (str/join "\n"
+                               (for [path [:webjar/bootstrap
 
-    ;; Add some pairs (as vectors) here. First item is the path, second is the handler.
-    ;; Here's an example
+                                           :cypress-editor.resources/index]]
+                                 (yada/path-for ctx path))))}}})]
 
-    ["assets"
-     [["bootstrap"
-       (new-webjar-resource "bootstrap")]
-      ["material-design-iconic-font"
-       (new-webjar-resource "material-design-iconic-font")]
-      ["font-awesome"
-       (new-webjar-resource "font-awesome")]]]
-
+    ["assets" (->> (webjars-route-pair)
+                   second
+                   (map (fn [[wj-name wj-resource]]
+                          [wj-name
+                           (assoc wj-resource
+                                  :id (keyword "webjar" wj-name))]))
+                   (into []))]
 
     [""
      (-> (yada/as-resource (io/file "target"))
