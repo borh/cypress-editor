@@ -32,13 +32,13 @@
 (def version (deduce-version-from-git))
 
 (set-env!
- :source-paths #{"src"}
- :resource-paths #{"resources" "sass"}
+ :source-paths #{"src" "sass"}
+ :resource-paths #{"resources"}
  :dependencies
- '[[adzerk/boot-cljs "1.7.228-2" :scope "test"]
+ '[[adzerk/boot-cljs "2.0.0" :scope "test"]
    [adzerk/boot-cljs-repl "0.3.3" :scope "test"]
    [adzerk/boot-reload "0.5.1" :scope "test"]
-   [deraen/boot-sass "0.3.0"]
+   [deraen/boot-sass "0.3.1"]
    [reloaded.repl "0.2.3" :scope "test"]
 
    [tolitius/boot-check "0.1.4" :scope "test"]
@@ -55,7 +55,7 @@
    ;; Server deps
    [yada "1.2.1" :exclusions [aleph manifold ring-swagger prismatic/schema]]
    [aero "1.1.2"]
-   [aleph "0.4.2-alpha12"]
+   [aleph "0.4.3"]
    [bidi "2.0.16" :exclusions [ring/ring-core]]
    [com.stuartsierra/component "0.3.2"]
    [hiccup "2.0.0-alpha1"]
@@ -66,21 +66,21 @@
    [com.taoensso/sente "1.11.0"]
 
    ;; App deps
-   [reagent "0.6.0"]
+   [reagent "0.6.1"]
    [re-frame "0.9.2"]
    [re-frame-datatable "0.5.1"]
    [day8.re-frame/http-fx "0.1.3"]
    [day8.re-frame/async-flow-fx "0.0.6"]
+   [day8.re-frame/undo "0.3.2"]
    [re-com "2.0.0"]
    [thi.ng/geom "0.0.1062"]
-   [re-frisk "0.3.2" :scope "test"]
-   [mount "0.1.11"]
-   [funcool/hodgepodge "0.1.4"] ;; LocalStorage
+   [re-frisk "0.4.4" :scope "test"]
+   [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
-   #_[org.webjars.npm/bulma "0.3.1"]
-   #_[org.webjars/bootstrap "4.0.0-alpha.3"]
+   [org.webjars.npm/bulma "0.3.2"]
+   #_[org.webjars/bootstrap "4.0.0-alpha.6-1"]
    #_[org.webjars/material-design-icons "3.0.1"]
-   [org.webjars/bootstrap "3.3.7-1"]
+   [org.webjars/bootstrap "3.3.7-1"] ;; re-com is on v3
    [org.webjars/font-awesome "4.7.0"]
    [org.webjars.bower/material-design-iconic-font "2.2.0"]
 
@@ -90,10 +90,8 @@
    [com.andrewmcveigh/cljs-time "0.5.0-alpha2"] ;; for advanced compilation
 
    ;; Development tools
-   [devcards "0.2.2" :exclusions [cljsjs/react]]
-
    [binaryage/devtools      "0.9.2" :scope "test"]
-   [binaryage/dirac         "1.2.0" :scope "test"]
+   [binaryage/dirac         "1.2.1" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
    [org.clojure/tools.reader        "1.0.0-beta4" :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.0"   :scope "test"]
