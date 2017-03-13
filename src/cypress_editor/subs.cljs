@@ -207,21 +207,16 @@
    (:fulltext/year-column db)))
 
 (reg-sub
- :fulltext/kwic
- (fn [db _]
-   (:fulltext/kwic db)))
-
-(reg-sub
- :fulltext/kwic-before
- (fn [db _]
-   (:fulltext/kwic-before db)))
-
-(reg-sub
- :fulltext/kwic-after
- (fn [db _]
-   (:fulltext/kwic-after db)))
-
-(reg-sub
  :fulltext/state
  (fn [db _]
    (:fulltext/state db)))
+
+(reg-sub
+ :fulltext/document-text
+ (fn [db _]
+   (:fulltext/document-text db)))
+
+(reg-sub
+ :fulltext/document-show
+ (fn [db _]
+   (:fulltext/document-show db)))
