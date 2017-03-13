@@ -63,6 +63,43 @@
  (fn [db _]
    (:user/selected-topic db)))
 
+;; Authentication API
+
+(reg-sub
+ :user/account-valid
+ (fn [db _]
+   (:user/account-valid db)))
+
+(reg-sub
+ :user/auth-token
+ (fn [db _]
+   (:user/auth-token db)))
+
+(reg-sub
+ :user/csrf-token
+ (fn [db _]
+   (:user/csrf-token db)))
+
+(reg-sub
+ :user/username
+ (fn [db _]
+   (:user/username db)))
+
+(reg-sub
+ :user/password
+ (fn [db _]
+   (:user/password db)))
+
+(reg-sub
+ :user/id
+ (fn [db _]
+   (:user/id db)))
+
+(reg-sub
+ :user/session
+ (fn [db _]
+   (:user/session db)))
+
 ;; Server status API
 
 (reg-sub
