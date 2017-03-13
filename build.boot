@@ -133,7 +133,8 @@
       :license {"The MIT License (MIT)" "http://opensource.org/licenses/mit-license.php"}}
  aot {:namespace #{'cypress-editor.main}}
  jar {:main 'cypress-editor.main
-      :file (str project "-app.jar")})
+      :file (str project "-app.jar")}
+ target {:dir #{"target"}})
 
 
 (deftask check-sources []
@@ -168,6 +169,7 @@
   (apply clojure.tools.namespace.repl/set-refresh-dirs (get-env :directories))
 
   (comp
+   (repl :server true)
    (watch)
    (speak)
    (sass)
@@ -193,7 +195,7 @@
    (cljs :ids #{"cypress_editor"}
          :optimizations :advanced
          :compiler-options {:closure-defines {"goog.DEBUG" false}})
-   (target :dir #{"static"})))
+   #_(target :dir #{"static"})))
 
 (defn- run-system [profile]
   (println "Running system with profile" profile)
