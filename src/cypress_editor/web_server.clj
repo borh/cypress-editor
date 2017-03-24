@@ -8,7 +8,6 @@
    [com.stuartsierra.component :refer [Lifecycle using]]
    [clojure.java.io :as io]
    [schema.core :as s]
-   [selmer.parser :as selmer]
    ;; [yada.resources.webjar-resource :refer [new-webjar-resource webjars-route-pair]]
    [cypress-editor.debug-webjar :refer [new-webjar-resource webjars-route-pair]]
    [yada.resources.classpath-resource :refer [new-classpath-resource]]

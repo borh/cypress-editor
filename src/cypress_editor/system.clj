@@ -6,7 +6,6 @@
    [aero.core :as aero]
    [clojure.java.io :as io]
    [com.stuartsierra.component :refer [system-map system-using]]
-   [cypress-editor.selmer :refer [new-selmer]]
    [cypress-editor.web-server :refer [new-web-server]]))
 
 
@@ -27,8 +26,7 @@
   "Create the system. See https://github.com/stuartsierra/component"
   [config]
   (system-map
-   :web-server (new-web-server)
-   :selmer (new-selmer)))
+   :web-server (new-web-server)))
 
 (defn new-dependency-map
   "Declare the dependency relationships between components. See
