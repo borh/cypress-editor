@@ -102,7 +102,6 @@
                 #_[:p [:a {:href "https://www.postgresql.jp/document/9.6/html/functions-matching.html" #_"https://www.postgresql.org/docs/9.6/static/functions-matching.html"} "（マニュアル「9.7.3.1. 正規表現」の詳細をご参照ください）"]]
                 :placeholder "正規表現を入れてください"
                 :is-horizontal true
-                :has-addons true
                 :load-state state
                 :on-change (fn [e]
                              (let [query-text (-> e .-target .-value)]
