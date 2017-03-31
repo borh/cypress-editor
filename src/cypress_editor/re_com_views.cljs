@@ -140,7 +140,7 @@
           (ui/button
            {:label "検索"
             :load-state state
-            :connection-state connection-state
+            :disabled? (not @connection-state)
             :on-click #(dispatch [:get/sentences-fulltext])})]]]])))
 
 (defn search-box []
@@ -216,11 +216,11 @@
           [:div.field
            [:div.control
             (ui/button {:label (if @user-account-valid "ログアウト" "ログイン")
-                        :connection-state connection-status
-                        :tooltip (if (not @connection-status)
-                                   "サーバとの通信が途絶えています"
-                                   nil)
-                        :tooltip-pos "right"
+                        ;; :disabled? (not @connection-status)
+                        ;; :tooltip (if (not @connection-status)
+                        ;;            "サーバとの通信が途絶えています"
+                        ;;            nil)
+                        ;; :tooltip-pos "right"
                         :on-click #(dispatch [:sente/authenticate])})]]]]
         (when (false? @user-account-valid)
           (ui/notification

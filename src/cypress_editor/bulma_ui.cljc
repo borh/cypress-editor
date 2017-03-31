@@ -178,9 +178,9 @@
 (s/def ::attrs (s/map-of keyword? string?))
 
 (defn button [{:keys [label on-click
-                      attrs load-state connection-state tooltip tooltip-pos]
+                      attrs load-state disabled? tooltip tooltip-pos]
                :or {load-state (atom nil)
-                    connection-state (atom nil)
+                    disabled? false
                     attrs {}
                     tooltip-pos "down"}
                :as opts}]
@@ -197,7 +197,7 @@
                 (cond-> default-class
                   (= :loading @load-state) (str " is-primary is-active")
                   (= :loaded  @load-state) (str " is-success")
-                  (not @connection-state)  (str " is-disabled"))
+                  disabled? (str " is-disabled"))
                 :on-click on-click})
      label]))
 
