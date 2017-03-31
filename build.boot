@@ -43,7 +43,7 @@
 
    [tolitius/boot-check "0.1.4" :scope "test"]
 
-   [org.clojure/clojure "1.9.0-alpha14"]
+   [org.clojure/clojure "1.9.0-alpha15"]
    [org.clojure/clojurescript "1.9.473"]
 
    [org.clojure/tools.nrepl "0.2.12"]
@@ -52,7 +52,7 @@
    [com.cemerick/piggieback "0.2.1" :scope "test"]
    [weasel "0.7.0" :scope "test"] ;; Websocket Server
 
-   ;; Server deps
+   ;; Backend (server) deps
    [yada "1.2.1" :exclusions [aleph manifold ring-swagger prismatic/schema]]
    [aero "1.1.2"]
    [aleph "0.4.3"]
@@ -60,38 +60,40 @@
    [com.stuartsierra/component "0.3.2"]
    [hiccup "2.0.0-alpha1"]
    [org.clojure/tools.namespace "0.3.0-alpha3"]
-   [prismatic/schema "1.1.3"]
-   [selmer "1.10.6" :exclusions [json-html]]
+   [prismatic/schema "1.1.4"]
    [metosin/ring-swagger "0.23.0"] ;; Override version in yada?
    [com.taoensso/sente "1.11.0"]
+   [com.taoensso/tempura "1.1.2"]
 
-   ;; App deps
+   ;; Frontend deps
    [reagent "0.6.1"]
    [re-frame "0.9.2"]
    [re-frame-datatable "0.5.1"]
    [day8.re-frame/http-fx "0.1.3"]
    [day8.re-frame/async-flow-fx "0.0.6"]
    [day8.re-frame/undo "0.3.2"]
-   [re-com "2.0.0"]
+   #_[re-com "2.0.0"]
    [thi.ng/geom "0.0.1062"]
    [re-frisk "0.4.4" :scope "test"]
+   [secretary "1.2.3"]
    [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
-   [org.webjars.npm/bulma "0.3.2"]
+   [org.webjars.npm/bulma "0.4.0"]
    #_[org.webjars/bootstrap "4.0.0-alpha.6-1"]
    #_[org.webjars/material-design-icons "3.0.1"]
-   [org.webjars/bootstrap "3.3.7-1"] ;; re-com is on v3
+   #_[org.webjars/bootstrap "3.3.7-1"] ;; re-com is on v3
    [org.webjars/font-awesome "4.7.0"]
-   [org.webjars.bower/material-design-iconic-font "2.2.0"]
+   #_[org.webjars.bower/material-design-iconic-font "2.2.0"]
+   [org.webjars.npm/balloon-css "0.4.0"]
 
-   [com.cognitect/transit-clj "0.8.297"]
+   [com.cognitect/transit-clj "0.8.300"]
    [com.cognitect/transit-cljs "0.8.239"]
    ;; [com.google.javascript/closure-compiler "v20170218" :scope "test"] ;; FIXME (boot show -p)
    [com.andrewmcveigh/cljs-time "0.5.0-alpha2"] ;; for advanced compilation
 
    ;; Development tools
    [binaryage/devtools      "0.9.2" :scope "test"]
-   [binaryage/dirac         "1.2.1" :scope "test"]
+   [binaryage/dirac         "1.2.3" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
    [org.clojure/tools.reader        "1.0.0-beta4" :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.0"   :scope "test"]
@@ -99,7 +101,7 @@
    [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
    [org.clojure/core.memoize        "0.5.9"   :scope "test"]
    [org.clojure/core.cache          "0.6.5"   :scope "test"]
-   [org.clojure/core.async          "0.3.441" :scope "test"]
+   [org.clojure/core.async          "0.3.442" :scope "test"]
    [com.google.code.findbugs/jsr305 "3.0.1" :scope "test"]
    [http-kit "2.3.0-alpha1" :scope "test"]
 
