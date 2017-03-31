@@ -8,11 +8,4 @@
                  :scheme #keyword #or [#env SCHEME :http]}
            :prod {:host #or [#env SERVER_ADDRESS "nlp.lang.osaka-u.ac.jp/natsume-search:3011"]
                   :port #long #or [#env PORT 3011]
-                  :scheme #keyword #or [#env SCHEME :https]}}
-
- :selmer
- {:template-caching?
-  #profile {:dev false
-            :test false
-            :pre-prod true
-            :prod true}}}
+                  :scheme #keyword #or [#env SCHEME :https]}}}
