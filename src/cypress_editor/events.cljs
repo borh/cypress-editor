@@ -63,16 +63,18 @@
 (reg-event-fx
  :sente/authenticate
  (fn [{:keys [db]} _]
-   {:http-xhrio {:method          :get
-                 :uri             (str api-url "/authenticate")
-                 :params {:username (:user/username db)
-                          :password (:user/password db)}
-                 :timeout         1000
-                 :format          (ajax/url-request-format)
-                 :response-format (ajax/json-response-format {:keywords? true})
-                 :on-success      [:sente/auth-success]
-                 :on-failure      [:sente/auth-failure]
-                 :with-credentials? false}}))
+   (if (and (not-empty (:user/username db))
+            (not-empty (:user/password db)))
+     {:http-xhrio {:method          :get
+                   :uri             (str api-url "/authenticate")
+                   :params {:username (:user/username db)
+                            :password (:user/password db)}
+                   :timeout         1000
+                   :format          (ajax/url-request-format)
+                   :response-format (ajax/json-response-format {:keywords? true})
+                   :on-success      [:sente/auth-success]
+                   :on-failure      [:sente/auth-failure]
+                   :with-credentials? false}})))
 
 (reg-event-db
  :sente/auth-success
