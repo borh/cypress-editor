@@ -7,6 +7,7 @@
    [clojure.tools.logging :refer :all]
    [com.stuartsierra.component :refer [Lifecycle using]]
    [clojure.java.io :as io]
+   [cypress-editor.bulma-ui :as ui]
    [schema.core :as s]
    ;; [yada.resources.webjar-resource :refer [new-webjar-resource webjars-route-pair]]
    [cypress-editor.debug-webjar :refer [new-webjar-resource webjars-route-pair]]
@@ -23,10 +24,39 @@
       {:id :cypress-editor.resources/index
        :methods
        {:get
-        {:produces #{"text/html"}
-         :response (fn [ctx]
-                     (selmer/render-file "index.html" {:title "Cypress"
-                                                       :ctx ctx}))}}})]
+        {:produces {:media-type #{"text/html"}
+                    :language #{"en"
+                                "ja-jp;q=0.9"}}
+         :response
+         (fn [ctx]
+           ;; TODO tempura, session content from login page
+           (ui/page {:author "Bor Hodošček/Hinoki Project"
+                     :description "Cypress Fulltext Search"
+                     :title "Cypress Fulltext Search"
+                     :app-name "Cypress Fulltext Search"
+                     :lang (case (yada/language ctx)
+                             "en" "en"
+                             "ja-jp" "ja"
+                             "en")}))}}})]
+
+    #_["login"
+       (yada/resource
+        {:id :cypress-editor.resources/login
+         :methods
+         {:get
+          {:produces {:media-type #{"text/html"}
+                      :language #{"en"
+                                  "ja-jp;q=0.9"}}
+           :response
+           (fn [ctx]
+             (ui/login-page {:author "Bor Hodošček/Hinoki Project"
+                             :description "Cypress Fulltext Search"
+                             :title "Cypress Fulltext Search"
+                             :app-name "Cypress"
+                             :lang (case (yada/language ctx)
+                                     "en" "en"
+                                     "ja-jp" "ja"
+                                     "en")}))}}})]
 
     ["" (assoc (yada/redirect :cypress-editor.resources/index)
                :id :cypress-editor.resources/content)]
@@ -40,9 +70,10 @@
          :response (fn [ctx]
                      (str/join "\n"
                                (for [path [:webjar/bootstrap
-
-                                           :cypress-editor.resources/index]]
-                                 (yada/path-for ctx path))))}}})]
+                                           :webjar/bulma
+                                           :cypress-editor.resources/index
+                                           :cypress-editor.resources/content]]
+                                 (str path " => " (yada/path-for ctx path)))))}}})]
 
     ["assets" (->> (webjars-route-pair)
                    second
@@ -66,8 +97,6 @@
     ;; This is a backstop. Always produce a 404 if we get there. This
     ;; ensures we never pass nil back to Aleph.
     [true (handler nil)]]])
-
-
 
 (s/defrecord WebServer [host :- s/Str
                         port :- s/Int
