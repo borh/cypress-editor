@@ -7,7 +7,7 @@
    [day8.re-frame.http-fx]
    [day8.re-frame.async-flow-fx]
    [cypress-editor.communication :as comm]
-   [cypress-editor.db :refer [api-url]]
+   [cypress-editor.db :refer [debug-enabled? api-url]]
    [cypress-editor.utils :refer [kwic-regex-formatter]]
    [clojure.string :as str]
    [clojure.spec :as s])
@@ -51,7 +51,7 @@
    {:db (assoc db :sente/connection-status (:open? @(:state @comm/!socket)))
     :dispatch [:sente/started]}))
 
-(def ^boolean debug-enabled? "@define {boolean}" ^boolean js/goog.DEBUG)
+
 (reg-event-fx
  :sente/started
  middleware

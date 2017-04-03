@@ -8,6 +8,7 @@
    [cypress-editor.routes :as routes]
    [cypress-editor.views :refer [interface]]
    [cypress-editor.re-com-views :as rcv]
+   [cypress-editor.db :refer [debug-enabled?]]
 
    [clojure.spec :as s]
    [reagent.core :as r]
@@ -15,8 +16,6 @@
    [re-frisk.core :refer [enable-re-frisk!]]))
 
 ;; # App entry point
-
-(def ^boolean debug-enabled? "@define {boolean}" ^boolean js/goog.DEBUG)
 
 (defn ^:export main
   []

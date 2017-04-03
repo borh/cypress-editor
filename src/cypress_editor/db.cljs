@@ -1,5 +1,7 @@
 (ns cypress-editor.db)
 
+(def ^boolean debug-enabled? "@define {boolean}" ^boolean js/goog.DEBUG)
+
 (def sample-text
   ;; TODO add sample documents from Natane
   )

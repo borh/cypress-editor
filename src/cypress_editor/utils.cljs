@@ -1,4 +1,5 @@
-(ns cypress-editor.utils)
+(ns cypress-editor.utils
+  (:require [cypress-editor.db :refer [debug-enabled?]]))
 
 ;; http://stackoverflow.com/questions/18735665/how-can-i-get-the-positions-of-regex-matches-in-clojurescript
 (defn regex-modifiers
@@ -37,8 +38,6 @@
       (cond (empty? r) [text]
             (= last-end (count text)) r
             :else (into r [(subs text last-end (inc (count text)))])))))
-
-(def ^boolean debug-enabled? "@define {boolean}" ^boolean js/goog.DEBUG)
 
 (defn regex-formatter-multiple
   "Returns a hiccup :span vector with matched regular expression

@@ -2,6 +2,7 @@
   (:require
    [cypress-editor.utils :refer [regex-formatter]]
    [cypress-editor.bulma-ui :as ui]
+   [cypress-editor.db :refer [debug-enabled?]]
    [re-frame.core :refer [subscribe dispatch]]
    [re-frame-datatable.core :as dt]))
 
@@ -250,7 +251,7 @@
     (fn []
       (cond-> [:div.container.is-fluid]
 
-        ^boolean js/goog.DEBUG
+        debug-enabled?
         (conj [debug-box])
 
         (not @user-account-valid)
