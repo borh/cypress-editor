@@ -47,7 +47,7 @@
                           [:a.nav-item.is-brand.is-bold {:href app-url} app-name]]
                    (:left nav-items) (into (:left nav-items)))
         nav-center (if (:center nav-items)
-                     (into [:div.nav-center] (:center nav-items)))
+                     (into [:div.nav-center.flex-grow] (:center nav-items)))
         nav-right (cond-> [:div.nav-right
                            #_[:span.is-mobile.nav-toggle [:span] [:span] [:span]]]
                     (:right nav-items) (into (:right nav-items))
