@@ -148,7 +148,6 @@
                 :on-change (fn [e]
                              (when (not @composition-state)
                                (let [genre-text (-> e .-target .-value)]
-                                 (println "Not composing, updating to " genre-text)
                                  (dispatch [:set/fulltext-state nil])
                                  (dispatch [:set/user-genre genre-text]))))}))))
 
