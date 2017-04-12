@@ -121,10 +121,10 @@
                           (reset! composition-state false)
                           (dispatch [:set/fulltext-state nil])
                           (dispatch [:set/fulltext-query (-> e .-target .-value)]))
-                        :on-key-up (fn [e]
-                                     (when (and (not @composition-state)
-                                                (== (.-keyCode e) 13))
-                                       (dispatch [:get/sentences-fulltext])))}
+                        #_:on-key-up #_(fn [e]
+                                         (when (and (not @composition-state)
+                                                    (== (.-keyCode e) 13))
+                                           (dispatch [:get/sentences-fulltext])))}
                 #_:on-change #_(fn [e]
                                  (let [query-text (-> e .-target .-value)]
                                    (when (not @composition-state)
