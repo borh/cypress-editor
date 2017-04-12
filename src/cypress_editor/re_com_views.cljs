@@ -3,6 +3,7 @@
    [cypress-editor.utils :refer [regex-formatter]]
    [cypress-editor.bulma-ui :as ui]
    [cypress-editor.db :refer [debug-enabled?]]
+   [reagent.core :as reagent]
    [re-frame.core :refer [subscribe dispatch]]
    [re-frame-datatable.core :as dt]))
 
@@ -95,27 +96,45 @@
 
 (defn regex-search-box []
   (let [query (subscribe [:fulltext/query])
-        state (subscribe [:fulltext/state])]
+        state (subscribe [:fulltext/state])
+        composition-state (reagent/atom false)]
     (fn []
       (ui/form {:model query
                 :label "正規表現検索"
-                :label-tooltip "任意の正規表現を入れてください。"
+                :label-tooltip "任意の正規表現を入れてください。\n文頭の指定は「^」マークでできます。例えば「^それ(故|ゆえ)に?」で「それゆえに」などの表現が文頭で現れる文のみが検索されます。"
                 #_[:p [:a {:href "https://www.postgresql.jp/document/9.6/html/functions-matching.html" #_"https://www.postgresql.org/docs/9.6/static/functions-matching.html"} "（マニュアル「9.7.3.1. 正規表現」の詳細をご参照ください）"]]
                 :placeholder "正規表現を入れてください"
                 :is-horizontal true
                 :load-state state
-                :on-change (fn [e]
-                             (let [query-text (-> e .-target .-value)]
-                               (dispatch [:set/fulltext-state nil])
-                               (dispatch [:set/fulltext-query query-text])))})
-      ;; TODO IME integration
-      #_{:on-key-up (fn [e]
-                      (when (== (.-keyCode e) 13)
-                        (dispatch [:get/sentences-fulltext])))})))
+                :attrs {:on-blur
+                        (fn [e]
+                          (let [query-text (-> e .-target .-value)]
+                            (dispatch [:set/fulltext-state nil])
+                            (dispatch [:set/fulltext-query query-text])))
+                        ;; TODO IME integration in React
+                        :on-composition-start
+                        (fn [e] (reset! composition-state true))
+                        :on-composition-update
+                        (fn [e] (reset! composition-state false))
+                        :on-composition-end
+                        (fn [e]
+                          (reset! composition-state false)
+                          (dispatch [:set/fulltext-state nil])
+                          (dispatch [:set/fulltext-query (-> e .-target .-value)]))
+                        :on-key-up (fn [e]
+                                     (when (and (not @composition-state)
+                                                (== (.-keyCode e) 13))
+                                       (dispatch [:get/sentences-fulltext])))}
+                #_:on-change #_(fn [e]
+                                 (let [query-text (-> e .-target .-value)]
+                                   (when (not @composition-state)
+                                     (dispatch [:set/fulltext-state nil])
+                                     (dispatch [:set/fulltext-query query-text]))))}))))
 
 (defn genre-search-box []
   (let [genre (subscribe [:user/genre])
-        state (subscribe [:fulltext/state])]
+        state (subscribe [:fulltext/state])
+        composition-state (reagent/atom false)]
     (fn []
       (ui/form {:model genre
                 :label "ジャンル絞り込み検索"
@@ -123,10 +142,15 @@
                 :placeholder "ジャンルのクエリ"
                 :is-horizontal true
                 :load-state state
+                :on-composition-start #(reset! composition-state true)
+                :on-composition-update #(reset! composition-state false)
+                :on-composition-end #(reset! composition-state false)
                 :on-change (fn [e]
-                             (let [genre-text (-> e .-target .-value)]
-                               (dispatch [:set/fulltext-state nil])
-                               (dispatch [:set/user-genre genre-text])))}))))
+                             (when (not @composition-state)
+                               (let [genre-text (-> e .-target .-value)]
+                                 (println "Not composing, updating to " genre-text)
+                                 (dispatch [:set/fulltext-state nil])
+                                 (dispatch [:set/user-genre genre-text]))))}))))
 
 (defn search-button []
   (let [state (subscribe [:fulltext/state])
