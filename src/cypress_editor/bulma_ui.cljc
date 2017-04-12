@@ -139,7 +139,10 @@
                   attrs {}}
              :as opts}]
   (let [p-classes "control"
-        input-classes "input"]
+        input-classes "input"
+        attrs (if on-change
+                (assoc attrs :on-change on-change)
+                attrs)]
     [:div {:class (cond-> "field"
                     has-addons (str " has-addons")
                     is-horizontal (str " is-horizontal"))}
@@ -162,8 +165,7 @@
                                 :success (str input-classes " is-success")
                                 input-classes)
                        :placeholder placeholder
-                       :value @model
-                       :on-change on-change})]
+                       :default-value @model})]
        (if icon
          (fa-icon icon {:size :is-small}))]]]))
 
