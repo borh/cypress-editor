@@ -46,7 +46,7 @@
    [org.clojure/clojure "1.9.0-alpha15"]
    [org.clojure/clojurescript "1.9.473"]
 
-   [org.clojure/tools.nrepl "0.2.12"]
+   [org.clojure/tools.nrepl "0.2.13"]
 
    ;; Needed for start-repl in cljs repl
    [com.cemerick/piggieback "0.2.1" :scope "test"]
@@ -60,13 +60,15 @@
    [com.stuartsierra/component "0.3.2"]
    [hiccup "2.0.0-alpha1"]
    [org.clojure/tools.namespace "0.3.0-alpha3"]
-   [prismatic/schema "1.1.4"]
+   [prismatic/schema "1.1.5"]
    [metosin/ring-swagger "0.23.0"] ;; Override version in yada?
    [com.taoensso/sente "1.11.0"]
    [com.taoensso/tempura "1.1.2"]
 
    ;; Frontend deps
-   [reagent "0.6.1"]
+   [reagent "0.6.1" :exclusions [cljsjs/react cljsjs/react-dom]]
+   [cljsjs/react "15.5.0-0"]
+   [cljsjs/react-dom "15.5.0-0"]
    [re-frame "0.9.2"]
    [re-frame-datatable "0.5.1"]
    [day8.re-frame/http-fx "0.1.3"]
@@ -93,7 +95,7 @@
 
    ;; Development tools
    [binaryage/devtools      "0.9.2" :scope "test"]
-   [binaryage/dirac         "1.2.3" :scope "test"]
+   [binaryage/dirac         "1.2.4" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
    [org.clojure/tools.reader        "1.0.0-beta4" :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.0"   :scope "test"]
@@ -102,7 +104,7 @@
    [org.clojure/core.memoize        "0.5.9"   :scope "test"]
    [org.clojure/core.cache          "0.6.5"   :scope "test"]
    [org.clojure/core.async          "0.3.442" :scope "test"]
-   [com.google.code.findbugs/jsr305 "3.0.1" :scope "test"]
+   [com.google.code.findbugs/jsr305 "3.0.2" :scope "test"]
    [http-kit "2.3.0-alpha1" :scope "test"]
 
    ;; Logging
