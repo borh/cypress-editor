@@ -111,7 +111,7 @@
                           (let [query-text (-> e .-target .-value)]
                             (dispatch [:set/fulltext-state nil])
                             (dispatch [:set/fulltext-query query-text])))
-                        ;; TODO IME integration in React
+                        ;; TODO IME integration in React, https://w3c.github.io/input-events/
                         :on-composition-start
                         (fn [e] (reset! composition-state true))
                         :on-composition-update
@@ -142,14 +142,13 @@
                 :placeholder "ジャンルのクエリ"
                 :is-horizontal true
                 :load-state state
-                :on-composition-start #(reset! composition-state true)
-                :on-composition-update #(reset! composition-state false)
-                :on-composition-end #(reset! composition-state false)
-                :on-change (fn [e]
-                             (when (not @composition-state)
-                               (let [genre-text (-> e .-target .-value)]
-                                 (dispatch [:set/fulltext-state nil])
-                                 (dispatch [:set/user-genre genre-text]))))}))))
+                :attrs {:on-composition-start #(reset! composition-state true)
+                        :on-composition-update #(reset! composition-state false)
+                        :on-composition-end #(reset! composition-state false)
+                        :on-blur (fn [e]
+                                   (let [genre-text (-> e .-target .-value)]
+                                     (dispatch [:set/fulltext-state nil])
+                                     (dispatch [:set/user-genre genre-text])))}}))))
 
 (defn search-button []
   (let [state (subscribe [:fulltext/state])
@@ -163,7 +162,7 @@
           (ui/button
            {:label "検索"
             :load-state state
-            :disabled? (not @connection-state)
+            :disabled? (or (not @connection-state) (= :loading @state))
             :on-click #(dispatch [:get/sentences-fulltext])})]]]])))
 
 (defn search-box []
