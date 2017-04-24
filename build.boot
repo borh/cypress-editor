@@ -44,7 +44,7 @@
    [tolitius/boot-check "0.1.4" :scope "test"]
 
    [org.clojure/clojure "1.9.0-alpha15"]
-   [org.clojure/clojurescript "1.9.473"]
+   [org.clojure/clojurescript "1.9.521"]
 
    [org.clojure/tools.nrepl "0.2.13"]
 
@@ -53,10 +53,10 @@
    [weasel "0.7.0" :scope "test"] ;; Websocket Server
 
    ;; Backend (server) deps
-   [yada "1.2.1" :exclusions [aleph manifold ring-swagger prismatic/schema]]
+   [yada "1.2.2" :exclusions [aleph manifold ring-swagger prismatic/schema]]
    [aero "1.1.2"]
    [aleph "0.4.3"]
-   [bidi "2.0.16" :exclusions [ring/ring-core]]
+   [bidi "2.0.17" :exclusions [ring/ring-core]]
    [com.stuartsierra/component "0.3.2"]
    [hiccup "2.0.0-alpha1"]
    [org.clojure/tools.namespace "0.3.0-alpha3"]
@@ -94,8 +94,8 @@
    [com.andrewmcveigh/cljs-time "0.5.0-alpha2"] ;; for advanced compilation
 
    ;; Development tools
-   [binaryage/devtools      "0.9.2" :scope "test"]
-   [binaryage/dirac         "1.2.4" :scope "test"]
+   [binaryage/devtools      "0.9.4" :scope "test"]
+   [binaryage/dirac         "1.2.5" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
    [org.clojure/tools.reader        "1.0.0-beta4" :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.0"   :scope "test"]
@@ -183,10 +183,10 @@
                              :port repl-port
                              :init-ns 'user})
    (cljs-devtools)
-   #_(dirac :nrepl-opts {:client false})
+   (dirac :nrepl-opts {:client false})
    (cljs :ids #{"cypress_editor"}
          :optimizations :none
-         :compiler-options {:preloads '[devtools.preload] ;; needed? should be injected
+         :compiler-options {;;:preloads '[devtools.preload] ;; needed? should be injected
                             :closure-defines {"goog.DEBUG" true}})
    (dev-system)
    (target)))
