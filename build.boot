@@ -76,7 +76,7 @@
    [day8.re-frame/undo "0.3.2"]
    #_[re-com "2.0.0"]
    [thi.ng/geom "0.0.1062"]
-   [re-frisk "0.4.4" :scope "test"]
+   [re-frisk "0.4.5" :scope "test"]
    [secretary "1.2.3"]
    [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
@@ -105,7 +105,7 @@
    [org.clojure/core.cache          "0.6.5"   :scope "test"]
    [org.clojure/core.async          "0.3.442" :scope "test"]
    [com.google.code.findbugs/jsr305 "3.0.2" :scope "test"]
-   [http-kit "2.3.0-alpha1" :scope "test"]
+   [http-kit "2.3.0-alpha2" :scope "test"]
 
    ;; Logging
    [clj-logging-config "1.9.12" :scope "test"] ;; dirac?
