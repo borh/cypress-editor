@@ -278,7 +278,7 @@
 (defn interface []
   (let [user-account-valid (subscribe [:user/account-valid])
 
-        document-text  (subscribe [:fulltext/document-text])
+        document-data (subscribe [:fulltext/document-data])
         show-document? (subscribe [:fulltext/document-show])]
     (fn []
       (cond-> [:div.container.is-fluid]
@@ -304,7 +304,11 @@
              [:div.modal-background]
              [:div.modal-content
               [:div.card
-               [:div.card-header [:p.card-header-title "文章テキスト"]]
-               [:div.card-content @document-text]]]
+               [:div.card-header [:p.card-header-title
+                                  (:fulltext/document-title @document-data) "，"
+                                  (:fulltext/document-author @document-data) "，"
+                                  (:fulltext/document-year @document-data) "（"
+                                  (:fulltext/document-genre @document-data) "）"]]
+               [:div.card-content (:fulltext/document-text @document-data)]]]
              [:button.modal-close
               {:on-click #(dispatch [:toggle/fulltext-document-show])}]])])))))

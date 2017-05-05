@@ -222,9 +222,14 @@
    (:fulltext/state db)))
 
 (reg-sub
- :fulltext/document-text
+ :fulltext/document-data
  (fn [db _]
-   (:fulltext/document-text db)))
+   (select-keys db
+                [:fulltext/document-text
+                 :fulltext/document-author
+                 :fulltext/document-title
+                 :fulltext/document-year
+                 :fulltext/document-genre])))
 
 (reg-sub
  :fulltext/document-show

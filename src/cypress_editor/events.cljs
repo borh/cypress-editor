@@ -366,12 +366,16 @@
 (reg-event-db
  :set/fulltext-document-text
  middleware
- (fn [db [text]]
+ (fn [db [data]]
    (assoc db
           :fulltext/document-text
-          (->> text
+          (->> (:text data)
                str/split-lines
-               (map (fn [s] ^{:key (gensym "p-")} [:p s]))))))
+               (map (fn [s] ^{:key (gensym "p-")} [:p s])))
+          :fulltext/document-author (:author data)
+          :fulltext/document-title (:title data)
+          :fulltext/document-year (:year data)
+          :fulltext/document-genre (:genre data))))
 
 (reg-event-fx
  :get/fulltext-matches
