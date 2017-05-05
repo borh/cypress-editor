@@ -8,7 +8,6 @@
    [day8.re-frame.async-flow-fx]
    [cypress-editor.communication :as comm]
    [cypress-editor.db :refer [debug-enabled? api-url]]
-   [cypress-editor.utils :refer [kwic-regex-formatter]]
    [clojure.string :as str]
    [clojure.spec :as s])
   (:require-macros [cypress-editor.events :refer [sente-bridge]]))
@@ -122,6 +121,7 @@
 
 (def fulltext-api
   {:fulltext/query (if debug-enabled? "しかしながら" "")
+   :fulltext/matches nil
    :fulltext/genre-column true
    :fulltext/title-column true
    :fulltext/author-column false
@@ -374,35 +374,27 @@
                (map (fn [s] ^{:key (gensym "p-")} [:p s]))))))
 
 (reg-event-fx
- :get/sentences-fulltext
+ :get/fulltext-matches
  middleware
  (fn [{:keys [db]} [_]]
    {:db (assoc db
-               :sentences/fulltext nil
+               :fulltext/matches nil
+               :fulltext/total-count nil
+               :fulltext/patterns nil
                :fulltext/state :loading)
-    :sente {:query [:sentences/fulltext
+    :sente {:query [:fulltext/matches
                     {:query (:fulltext/query db)
                      :genre (:user/genre db)}]
             :timeout 600000
-            :update-fx :set/sentences-fulltext}}))
+            :update-fx :set/fulltext-matches}}))
 
 (reg-event-db
- :set/sentences-fulltext
+ :set/fulltext-matches
  middleware
  (fn [db [data]]
-   (let [transform-fn
-         (fn [{:keys [id title author year genre before_text key_text after_text]}]
-           (for [match (kwic-regex-formatter
-                        (re-pattern (:fulltext/query db))
-                        key_text)]
-             {:id id
-              :title title
-              :author author
-              :year year
-              :genre genre
-              :before (str before_text (:before match))
-              :key (:key match)
-              :after (str (:after match) after_text)}))]
-     (assoc db
-            :sentences/fulltext (mapcat transform-fn data)
-            :fulltext/state :loaded))))
+   (println data)
+   (assoc db
+          :fulltext/matches (:matches data)
+          :fulltext/total-count (:total-count data)
+          :fulltext/patterns (:patterns data)
+          :fulltext/state :loaded)))

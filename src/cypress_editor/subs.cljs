@@ -182,9 +182,19 @@
    (:fulltext/query db)))
 
 (reg-sub
- :sentences/fulltext
+ :fulltext/matches
  (fn [db _]
-   (:sentences/fulltext db)))
+   (:fulltext/matches db)))
+
+(reg-sub
+ :fulltext/total-count
+ (fn [db _]
+   (:fulltext/total-count db)))
+
+(reg-sub
+ :fulltext/patterns
+ (fn [db _]
+   (:fulltext/patterns db)))
 
 (reg-sub
  :fulltext/genre-column

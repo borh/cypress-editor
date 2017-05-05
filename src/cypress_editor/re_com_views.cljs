@@ -1,6 +1,5 @@
 (ns cypress-editor.re-com-views
   (:require
-   [cypress-editor.utils :refer [regex-formatter]]
    [cypress-editor.bulma-ui :as ui]
    [cypress-editor.db :refer [debug-enabled?]]
    [reagent.core :as reagent]
@@ -38,7 +37,7 @@
     (fn []
       [dt/datatable
        :fulltext/datatable
-       [:sentences/fulltext]
+       [:fulltext/matches]
        (cond-> [{::dt/column-key   [:id]
                  ::dt/sorting      {::dt/enabled? false}
                  ::dt/render-fn
@@ -86,13 +85,24 @@
        {::dt/table-classes ["ui" "table" "celled" "kwic" "is-narrow"]}])))
 
 (defn total-count-message []
-  (let [total-count (subscribe [:sentences/fulltext])]
+  (let [total-count (subscribe [:fulltext/total-count])]
     (when @total-count
-      [:nav.level
-       [:div.level-item.has-text-centered
-        [:div
-         [:p.heading "検索結果"]
-         [:p.title (count @total-count) "件"]]]])))
+      [:div.level-item.has-text-centered
+       [:div
+        [:p.heading "検索結果"]
+        [:p.title @total-count "件"]]])))
+
+(defn patterns-message []
+  (let [patterns (subscribe [:fulltext/patterns])]
+    (when @patterns
+      [:div.level-item.has-text-centered
+       [:div
+        [:p.heading "正規表現パターン"]
+        (into [:p.title]
+              (interleave
+               (for [[pattern pattern-freq] @patterns]
+                 [:span pattern " ⇒ " pattern-freq])
+               (repeat ", ")))]])))
 
 (defn regex-search-box []
   (let [query (subscribe [:fulltext/query])
@@ -124,7 +134,7 @@
                         #_:on-key-up #_(fn [e]
                                          (when (and (not @composition-state)
                                                     (== (.-keyCode e) 13))
-                                           (dispatch [:get/sentences-fulltext])))}
+                                           (dispatch [:get/fulltext-matches])))}
                 #_:on-change #_(fn [e]
                                  (let [query-text (-> e .-target .-value)]
                                    (when (not @composition-state)
@@ -163,7 +173,7 @@
            {:label "検索"
             :load-state state
             :disabled? (or (not @connection-state) (= :loading @state))
-            :on-click #(dispatch [:get/sentences-fulltext])})]]]])))
+            :on-click #(dispatch [:get/fulltext-matches])})]]]])))
 
 (defn search-box []
   [:div.columns.is-padded
@@ -285,7 +295,9 @@
         (into
          [[header-bar]
           [search-box]
-          [total-count-message]
+          [:nav.level
+           [patterns-message]
+           [total-count-message]]
           [fulltext-results-table]
           (when @show-document?
             [:div.modal.is-active
