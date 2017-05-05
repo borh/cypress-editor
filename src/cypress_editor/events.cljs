@@ -392,7 +392,6 @@
  :set/fulltext-matches
  middleware
  (fn [db [data]]
-   (println data)
    (assoc db
           :fulltext/matches (:matches data)
           :fulltext/total-count (:total-count data)
