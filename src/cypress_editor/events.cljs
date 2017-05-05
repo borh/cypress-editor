@@ -353,7 +353,7 @@
  middleware
  (fn [_ [query]]
    {:sente {:query [:sources/sentence-id query]
-            :timeout 5000
+            :timeout 15000
             :update-fx :set/fulltext-document-text}
     :dispatch [:toggle/fulltext-document-show]}))
 
