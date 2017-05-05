@@ -59,7 +59,7 @@
    [bidi "2.0.17" :exclusions [ring/ring-core]]
    [com.stuartsierra/component "0.3.2"]
    [hiccup "2.0.0-alpha1"]
-   [org.clojure/tools.namespace "0.3.0-alpha3"]
+   [org.clojure/tools.namespace "0.3.0-alpha4"]
    [prismatic/schema "1.1.5"]
    [metosin/ring-swagger "0.23.0"] ;; Override version in yada?
    [com.taoensso/sente "1.11.0"]
@@ -95,7 +95,7 @@
 
    ;; Development tools
    [binaryage/devtools      "0.9.4" :scope "test"]
-   [binaryage/dirac         "1.2.5" :scope "test"]
+   [binaryage/dirac         "1.2.6" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
    [org.clojure/tools.reader        "1.0.0-beta4" :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.0"   :scope "test"]
