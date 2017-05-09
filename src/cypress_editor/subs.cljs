@@ -4,6 +4,11 @@
 ;; User API
 
 (reg-sub
+ :page/active
+ (fn [db _]
+   (:page/active db)))
+
+(reg-sub
  :user/text
  (fn [db _]
    (:user/text db)))

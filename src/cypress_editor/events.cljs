@@ -2,12 +2,16 @@
   (:require
    [re-frame.core :refer [reg-event-db reg-event-fx reg-fx dispatch]]
    [re-frame.std-interceptors :refer [debug trim-v]]
+   [goog.dom :as dom]
+   [goog.net.cookies :as cookies]
    [ajax.core :as ajax]
    [taoensso.sente :as sente]
+   [secretary.core :as secretary]
    [day8.re-frame.http-fx]
    [day8.re-frame.async-flow-fx]
    [cypress-editor.communication :as comm]
-   [cypress-editor.db :refer [debug-enabled? api-url]]
+   [cypress-editor.config :refer [debug-enabled? api-url]]
+   [cypress-editor.utils :as utils]
    [clojure.string :as str]
    [clojure.spec :as s])
   (:require-macros [cypress-editor.events :refer [sente-bridge]]))
@@ -77,6 +81,10 @@
  :sente/auth-success
  (fn [db [_ result]]
    (let [token (:token result)]
+     (cookies/set "authtoken" token)
+     (when (= :login (:page/active db))
+       (secretary/dispatch! "/index.html")
+       (utils/redirect "index.html"))
      (comm/create-socket! token)
      (assoc db
             :user/auth-token token
@@ -88,9 +96,11 @@
    (when debug-enabled?
      (println "auth-failure" result))
    ;; Rolling timeout with reset?
-   {:db (assoc db
-               :user/auth-token nil
-               :user/account-valid false)}))
+   (let [cookie-token (cookies/get "authtoken")]
+     (comm/create-socket! cookie-token)
+     {:db (assoc db
+                 :user/auth-token cookie-token
+                 :user/account-valid false)})))
 
 ;; API
 
@@ -132,7 +142,8 @@
 
 (def input-api
   {:user/auth-token nil
-   :user/csrf-token nil
+   :user/csrf-token (cookies/get "csrftoken")
+   :user/session-token (cookies/get "sessionid")
    :user/username nil #_(if debug-enabled? "bor" nil)
    :user/password nil #_(if debug-enabled? "test" nil)
    :user/account-valid nil
@@ -161,6 +172,10 @@
  (fn [_ _]
    (let [db (merge
              {:sente/connection-status false
+
+              :page/active (if (dom/getElement "login")
+                             :login
+                             :app)
               #_{0 {"a" 0.90 "b" 0.05 "c" 0.04 "d" 0.01}
                  1 {"p" 1.0}
                  2 {"k" 9922 "l" 22}}}
@@ -173,6 +188,13 @@
       :async-flow (boot-flow)})))
 
 ;; TODO parameterize state
+
+(reg-event-db
+ :set/active-page
+ middleware
+ (fn [db [new-state]]
+   (secretary/dispatch! (str "/" (name new-state)))
+   (assoc db :page/active new-state)))
 
 (reg-event-db
  :set/sente-connection-status
