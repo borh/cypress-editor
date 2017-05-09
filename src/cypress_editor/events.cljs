@@ -421,5 +421,9 @@
    (assoc db
           :fulltext/matches (:matches data)
           :fulltext/total-count (:total-count data)
-          :fulltext/patterns (:patterns data)
+          :fulltext/patterns (sort-by :frequency >
+                                      (for [[[k v] i]
+                                            (zipmap (:patterns data)
+                                                    (range (count (:patterns data))))]
+                                        {:pattern k :frequency v :idx i}))
           :fulltext/state :loaded)))
