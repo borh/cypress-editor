@@ -5,10 +5,12 @@
    [cypress-editor.events]
    ;;
 
+   [goog.dom :as dom]
+
    [cypress-editor.routes :as routes]
    [cypress-editor.views :refer [interface]]
    [cypress-editor.re-com-views :as rcv]
-   [cypress-editor.db :refer [debug-enabled?]]
+   [cypress-editor.config :refer [debug-enabled?]]
 
    [clojure.spec :as s]
    [reagent.core :as r]
@@ -19,12 +21,15 @@
 
 (defn ^:export main
   []
-  #_(routes/app-routes) ;; TODO
+  (routes/app-routes)
   (dispatch-sync [:boot])
   (when debug-enabled?
     (enable-console-print!)
     (println "Debug mode enabled...")
     (s/check-asserts true)
     (enable-re-frisk! {:x 50 :y 120}))
-  (r/render [rcv/interface]
-            (. js/document (getElementById "app"))))
+  (if (dom/getElement "login")
+    (r/render [rcv/login-box]
+              (. js/document (getElementById "login")))
+    (r/render [rcv/interface]
+              (. js/document (getElementById "app")))))
