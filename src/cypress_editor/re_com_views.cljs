@@ -262,8 +262,9 @@
 
 (defn header-bar []
   (ui/navbar {:app-name "Cypress Fulltext Search"
-              :nav-items {:left [[connection-status-box]]
-                          :center [[search-options-box]]
+              :nav-items {;;:left []
+                          :center [[search-options-box]
+                                   [connection-status-box]]
                           :right [[user-box]
                                   [logout-box]]}}))
 
