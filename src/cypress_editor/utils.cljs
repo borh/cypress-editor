@@ -1,5 +1,8 @@
 (ns cypress-editor.utils
-  (:require [cypress-editor.db :refer [debug-enabled?]]))
+  (:require [cypress-editor.config :refer [debug-enabled?]]))
+
+(defn redirect [new-url]
+  (-> js/window .-location (.assign new-url)))
 
 (comment
   (defn regex-modifiers
