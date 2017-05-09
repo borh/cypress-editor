@@ -2,7 +2,7 @@
   (:require [taoensso.sente :as sente]
             [taoensso.sente.packers.transit :as sente-transit]
             [re-frame.core :refer [dispatch]]
-            [cypress-editor.db :refer [ws-url api-url]]))
+            [cypress-editor.config :refer [ws-url api-url]]))
 
 ;; https://github.com/ptaoussanis/sente/issues/118#issuecomment-87378277
 
