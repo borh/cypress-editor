@@ -130,7 +130,7 @@
    :topics/infer nil})
 
 (def fulltext-api
-  {:fulltext/query (if debug-enabled? "しかしながら" "")
+  {:fulltext/query (if debug-enabled? "しかしながら[、，][こそ]" "")
    :fulltext/matches nil
    :fulltext/genre-column true
    :fulltext/title-column true
