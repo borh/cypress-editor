@@ -190,8 +190,10 @@
 (defn logout-box []
   [:a.nav-item
    {:on-click (fn [_]
-                (dispatch [:set/user-account-valid nil])
-                (dispatch [:set/user-auth-token nil]))}
+                (utils/redirect "login")
+                #_(dispatch [:set/user-account-valid nil])
+                #_(dispatch [:set/user-auth-token nil])
+                #_(dispatch [:set/active-page :login]))}
    #_(ui/fa-icon :sign-in)
    (ui/fa-icon :sign-out)
    "ログアウト"])
@@ -220,7 +222,8 @@
          (ui/fa-icon :link))])))
 
 (defn login-box []
-  (let [user-name          (subscribe [:user/username])
+  (let [active-page        (subscribe [:page/active])
+        user-name          (subscribe [:user/username])
         user-password      (subscribe [:user/password])
         user-account-valid (subscribe [:user/account-valid])
         connection-status  (subscribe [:sente/connection-status])]
@@ -258,7 +261,9 @@
                         ;;            "サーバとの通信が途絶えています"
                         ;;            nil)
                         ;; :tooltip-pos "right"
-                        :on-click #(dispatch [:sente/authenticate])})]]]]
+                        :on-click (fn [_]
+                                    #_(if (= :login @active-page))
+                                    (dispatch [:sente/authenticate]))})]]]]
         (when (false? @user-account-valid)
           (ui/notification
            {:state-level "is-danger"
@@ -282,7 +287,11 @@
        [:p "csrf-token: " @csrf-token]])))
 
 (defn interface []
-  (let [user-account-valid (subscribe [:user/account-valid])
+  (let [active-page (subscribe [:page/active])
+
+        sente-connection-status (subscribe [:sente/connection-status])
+
+        user-account-valid (subscribe [:user/account-valid])
 
         document-data (subscribe [:fulltext/document-data])
         show-document? (subscribe [:fulltext/document-show])]
@@ -292,18 +301,20 @@
         debug-enabled?
         (conj [debug-box])
 
-        (not @user-account-valid)
+        (or (not @sente-connection-status)
+            (= :login @active-page))
         (into [(ui/navbar {:app-name "Cypress Fulltext Search"
                            :nav-items {:center [[connection-status-box]]}})
                [login-box]])
 
-        @user-account-valid
+        (and @sente-connection-status ;;@user-account-valid
+             (= :app @active-page))
         (into
          [[header-bar]
           [search-box]
           [:nav.level
-           [patterns-message]
-           [total-count-message]]
+           [total-count-message]
+           [patterns-message]]
           [fulltext-results-table]
           (when @show-document?
             [:div.modal.is-active
