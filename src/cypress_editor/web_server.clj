@@ -36,24 +36,25 @@
                              "ja-jp" "ja"
                              "en")}))}}})]
 
-    #_["login"
-       (yada/resource
-        {:id :cypress-editor.resources/login
-         :methods
-         {:get
-          {:produces {:media-type #{"text/html"}
-                      :language #{"en"
-                                  "ja-jp;q=0.9"}}
-           :response
-           (fn [ctx]
-             (ui/login-page {:author "Bor Hodošček/Hinoki Project"
-                             :description "Cypress Fulltext Search"
-                             :title "Cypress Fulltext Search"
-                             :app-name "Cypress"
-                             :lang (case (yada/language ctx)
-                                     "en" "en"
-                                     "ja-jp" "ja"
-                                     "en")}))}}})]
+    ["login"
+     (yada/resource
+      {:id :cypress-editor.resources/login
+       :methods
+       {:get
+        {:produces {:media-type #{"text/html"}
+                    :language #{"en"
+                                "ja-jp;q=0.9"}}
+         :response
+         (fn [ctx]
+           (ui/page {:author "Bor Hodošček/Hinoki Project"
+                     :description "Cypress Fulltext Search"
+                     :title "Cypress Fulltext Search Login"
+                     :app-name "Cypress Fulltext Search"
+                     :lang (case (yada/language ctx)
+                             "en" "en"
+                             "ja-jp" "ja"
+                             "en")
+                     :body [:div#login]}))}}})]
 
     ["" (assoc (yada/redirect :cypress-editor.resources/index)
                :id :cypress-editor.resources/content)]
