@@ -1,7 +1,9 @@
 (ns cypress-editor.re-com-views
   (:require
    [cypress-editor.bulma-ui :as ui]
-   [cypress-editor.db :refer [debug-enabled?]]
+   [cypress-editor.viz :as viz]
+   [cypress-editor.config :refer [debug-enabled?]]
+   [cypress-editor.utils :as utils]
    [reagent.core :as reagent]
    [re-frame.core :refer [subscribe dispatch]]
    [re-frame-datatable.core :as dt]))
@@ -96,13 +98,16 @@
   (let [patterns (subscribe [:fulltext/patterns])]
     (when @patterns
       [:div.level-item.has-text-centered
-       [:div
-        [:p.heading "正規表現パターン"]
-        (into [:p.title]
-              (interleave
-               (for [[pattern pattern-freq] @patterns]
-                 [:span pattern " ⇒ " pattern-freq])
-               (repeat ", ")))]])))
+
+       [viz/barchart patterns]
+
+       #_[:div
+          [:p.heading "正規表現パターン"]
+          (into [:p.title]
+                (interleave
+                 (for [[pattern pattern-freq] @patterns]
+                   [:span pattern " ⇒ " pattern-freq])
+                 (repeat ", ")))]])))
 
 (defn regex-search-box []
   (let [query (subscribe [:fulltext/query])
