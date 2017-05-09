@@ -75,27 +75,25 @@
    [day8.re-frame/async-flow-fx "0.0.6"]
    [day8.re-frame/undo "0.3.2"]
    #_[re-com "2.0.0"]
+   [rid3 "0.1.0-SNAPSHOT"]
    [thi.ng/geom "0.0.1062"]
    [re-frisk "0.4.5" :scope "test"]
    [secretary "1.2.3"]
    [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
-   [org.webjars.npm/bulma "0.4.0"]
-   #_[org.webjars/bootstrap "4.0.0-alpha.6-1"]
+   [org.webjars.npm/bulma "0.4.1"]
    #_[org.webjars/material-design-icons "3.0.1"]
-   #_[org.webjars/bootstrap "3.3.7-1"] ;; re-com is on v3
    [org.webjars/font-awesome "4.7.0"]
    #_[org.webjars.bower/material-design-iconic-font "2.2.0"]
    [org.webjars.npm/balloon-css "0.4.0"]
 
    [com.cognitect/transit-clj "0.8.300"]
    [com.cognitect/transit-cljs "0.8.239"]
-   ;; [com.google.javascript/closure-compiler "v20170218" :scope "test"] ;; FIXME (boot show -p)
    [com.andrewmcveigh/cljs-time "0.5.0-alpha2"] ;; for advanced compilation
 
    ;; Development tools
    [binaryage/devtools      "0.9.4" :scope "test"]
-   [binaryage/dirac         "1.2.6" :scope "test"]
+   [binaryage/dirac         "1.2.7" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
    [org.clojure/tools.reader        "1.0.0-beta4" :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.0"   :scope "test"]
@@ -186,8 +184,7 @@
    (dirac :nrepl-opts {:client false})
    (cljs :ids #{"cypress_editor"}
          :optimizations :none
-         :compiler-options {;;:preloads '[devtools.preload] ;; needed? should be injected
-                            :closure-defines {"goog.DEBUG" true}})
+         :compiler-options {:closure-defines {"goog.DEBUG" true}})
    (dev-system)
    (target)))
 
