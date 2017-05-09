@@ -43,12 +43,12 @@
   [{:keys [app-name app-url
            nav-items] ;; TODO lang
     :or {app-url "#"}}]
-  (let [nav-left (cond-> [:div.nav-left
+  (let [nav-left (cond-> [:div.nav-left.no-overflow
                           [:a.nav-item.is-brand.is-bold {:href app-url} app-name]]
                    (:left nav-items) (into (:left nav-items)))
         nav-center (if (:center nav-items)
                      (into [:div.nav-center.flex-grow] (:center nav-items)))
-        nav-right (cond-> [:div.nav-right
+        nav-right (cond-> [:div.nav-right.no-overflow
                            #_[:span.is-mobile.nav-toggle [:span] [:span] [:span]]]
                     (:right nav-items) (into (:right nav-items))
                     :true (conj [:a.nav-item
