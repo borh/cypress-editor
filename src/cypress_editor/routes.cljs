@@ -2,7 +2,7 @@
   (:require [secretary.core :as secretary]
             [goog.events :as events]
             [goog.history.EventType :as EventType]
-            [re-frame.core :as re-frame])
+            [re-frame.core :refer [dispatch]])
   (:import goog.History))
 
 (defn hook-browser-navigation! []
@@ -17,12 +17,14 @@
   (secretary/set-config! :prefix "#")
   ;; --------------------
   ;; define routes here
-  (secretary/defroute "/" []
-    (re-frame/dispatch [:set-active-panel :home-panel]))
+  (secretary/defroute "/index.html" []
+    (dispatch [:set/active-page :app]))
 
-  (secretary/defroute "/about" []
-    (re-frame/dispatch [:set-active-panel :about-panel]))
+  (secretary/defroute "/login" []
+    (dispatch [:set/active-page :login]))
 
+  (secretary/defroute "/query/:query-text/:genre-text" [query-text genre-text]
+    (println query-text genre-text))
 
   ;; --------------------
   (hook-browser-navigation!))
