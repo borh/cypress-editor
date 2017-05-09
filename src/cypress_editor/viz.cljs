@@ -92,7 +92,6 @@
         (.attr "height" (- rect-height 1))
         (.attr "x" (x-scale ratom 0))
         (.attr "width" (fn [d]
-                         (println d (x-scale ratom (aget d "frequency")))
                          (x-scale ratom (aget d "frequency")))))))
 
 (defn bar-label-common [node ratom text-key text-color text-size]
