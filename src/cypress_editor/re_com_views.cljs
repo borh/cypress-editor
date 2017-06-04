@@ -1,5 +1,6 @@
 (ns cypress-editor.re-com-views
   (:require
+   [clojure.string :as string]
    [cypress-editor.bulma-ui :as ui]
    [cypress-editor.viz :as viz]
    [cypress-editor.config :refer [debug-enabled?]]
@@ -40,8 +41,8 @@
       [dt/datatable
        :fulltext/datatable
        [:fulltext/matches]
-       (cond-> [{::dt/column-key   [:id]
-                 ::dt/sorting      {::dt/enabled? false}
+       (cond-> [{::dt/column-key [:id]
+                 ::dt/sorting {::dt/enabled? false}
                  ::dt/render-fn
                  (fn [id]
                    (ui/fa-icon
@@ -51,14 +52,18 @@
                                  (dispatch [:get/sources-by-sentence-id id]))}))
                  ::dt/column-label ""}
 
-                {::dt/column-key   [:before]
-                 ;; ::dt/sorting      {::dt/enabled? true} ;; FIXME need custom sort fn
+                {::dt/column-key [:before]
+                 ::dt/sorting {::dt/enabled? true}
+                 ;; TODO Not ideal, but this reverse transformation works...
+                 ::dt/render-fn (fn [s] [:span (string/reverse s)])
                  ::dt/column-label "前文"}
-                {::dt/column-key   [:key]
-                 ::dt/sorting      {::dt/enabled? true}
+
+                {::dt/column-key [:key]
+                 ::dt/sorting {::dt/enabled? true}
                  ::dt/column-label "キー"}
-                {::dt/column-key   [:after]
-                 ::dt/sorting      {::dt/enabled? true}
+
+                {::dt/column-key [:after]
+                 ::dt/sorting {::dt/enabled? true}
                  ::dt/column-label "後文"}]
 
          @genre-column
