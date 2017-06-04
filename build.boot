@@ -32,7 +32,7 @@
 (def version (deduce-version-from-git))
 
 (set-env!
- :source-paths #{"src" "sass"}
+ :source-paths #{"src" "sass" "test"}
  :resource-paths #{"resources"}
  :dependencies
  '[[adzerk/boot-cljs "2.0.0" :scope "test"]
@@ -41,10 +41,11 @@
    [deraen/boot-sass "0.3.1"]
    [reloaded.repl "0.2.3" :scope "test"]
 
+   [adzerk/boot-test "1.2.0"]
    [tolitius/boot-check "0.1.4" :scope "test"]
 
-   [org.clojure/clojure "1.9.0-alpha15"]
-   [org.clojure/clojurescript "1.9.521"]
+   [org.clojure/clojure "1.9.0-alpha17"]
+   [org.clojure/clojurescript "1.9.562"]
 
    [org.clojure/tools.nrepl "0.2.13"]
 
@@ -53,35 +54,35 @@
    [weasel "0.7.0" :scope "test"] ;; Websocket Server
 
    ;; Backend (server) deps
-   [yada "1.2.2" :exclusions [aleph manifold ring-swagger prismatic/schema]]
+   [yada "1.2.4" :exclusions [aleph manifold ring-swagger prismatic/schema]]
    [aero "1.1.2"]
    [aleph "0.4.3"]
-   [bidi "2.0.17" :exclusions [ring/ring-core]]
+   [bidi "2.1.1" :exclusions [ring/ring-core]]
    [com.stuartsierra/component "0.3.2"]
    [hiccup "2.0.0-alpha1"]
    [org.clojure/tools.namespace "0.3.0-alpha4"]
-   [prismatic/schema "1.1.5"]
-   [metosin/ring-swagger "0.23.0"] ;; Override version in yada?
+   [prismatic/schema "1.1.6"]
+   [metosin/ring-swagger "0.24.0"] ;; Override version in yada?
    [com.taoensso/sente "1.11.0"]
    [com.taoensso/tempura "1.1.2"]
 
    ;; Frontend deps
-   [reagent "0.6.1" :exclusions [cljsjs/react cljsjs/react-dom]]
-   [cljsjs/react "15.5.0-0"]
-   [cljsjs/react-dom "15.5.0-0"]
-   [re-frame "0.9.2"]
-   [re-frame-datatable "0.5.1"]
+   [reagent "0.6.2" :exclusions [cljsjs/react cljsjs/react-dom]]
+   [cljsjs/react "15.5.4-0"]
+   [cljsjs/react-dom "15.5.4-0"]
+   [re-frame "0.9.4"]
+   [re-frame-datatable "0.5.2"]
    [day8.re-frame/http-fx "0.1.3"]
    [day8.re-frame/async-flow-fx "0.0.6"]
    [day8.re-frame/undo "0.3.2"]
    #_[re-com "2.0.0"]
-   [rid3 "0.1.0-SNAPSHOT"]
+   [rid3 "0.1.0-alpha-2"]
    [thi.ng/geom "0.0.1062"]
    [re-frisk "0.4.5" :scope "test"]
    [secretary "1.2.3"]
    [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
-   [org.webjars.npm/bulma "0.4.1"]
+   [org.webjars.npm/bulma "0.4.2"]
    #_[org.webjars/material-design-icons "3.0.1"]
    [org.webjars/font-awesome "4.7.0"]
    #_[org.webjars.bower/material-design-iconic-font "2.2.0"]
@@ -89,32 +90,33 @@
 
    [com.cognitect/transit-clj "0.8.300"]
    [com.cognitect/transit-cljs "0.8.239"]
-   [com.andrewmcveigh/cljs-time "0.5.0-alpha2"] ;; for advanced compilation
+   [com.andrewmcveigh/cljs-time "0.5.0"] ;; for advanced compilation
 
    ;; Development tools
    [binaryage/devtools      "0.9.4" :scope "test"]
-   [binaryage/dirac         "1.2.7" :scope "test"]
+   [binaryage/dirac         "1.2.9" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
-   [org.clojure/tools.reader        "1.0.0-beta4" :scope "test"]
+   [org.clojure/tools.reader        "1.0.0-RC1" :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.0"   :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
    [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
    [org.clojure/core.memoize        "0.5.9"   :scope "test"]
    [org.clojure/core.cache          "0.6.5"   :scope "test"]
-   [org.clojure/core.async          "0.3.442" :scope "test"]
+   [org.clojure/core.async          "0.3.443" :scope "test"]
    [com.google.code.findbugs/jsr305 "3.0.2" :scope "test"]
    [http-kit "2.3.0-alpha2" :scope "test"]
 
    ;; Logging
    [clj-logging-config "1.9.12" :scope "test"] ;; dirac?
    [org.clojure/tools.logging "0.3.1"]
-   [org.slf4j/jcl-over-slf4j "1.7.24"]
-   [org.slf4j/jul-to-slf4j "1.7.24"]
-   [org.slf4j/log4j-over-slf4j "1.7.24"]
-   [ch.qos.logback/logback-classic "1.2.1"
+   [org.slf4j/jcl-over-slf4j "1.8.0-alpha2"]
+   [org.slf4j/jul-to-slf4j "1.8.0-alpha2"]
+   [org.slf4j/log4j-over-slf4j "1.8.0-alpha2"]
+   [ch.qos.logback/logback-classic "1.2.3"
     :exclusions [org.slf4j/slf4j-api]]])
 
-(require '[adzerk.boot-cljs :refer [cljs]]
+(require '[adzerk.boot-test :refer :all]
+         '[adzerk.boot-cljs :refer [cljs]]
          '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
          '[powerlaces.boot-cljs-devtools :refer [cljs-devtools dirac]]
          '[adzerk.boot-reload :refer [reload]]
