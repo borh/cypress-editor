@@ -1,6 +1,6 @@
 (ns cypress-editor.bulma-ui
-  #?(:cljs (:require [clojure.spec :as s]))
-  #?(:clj (:require [clojure.spec :as s]
+  #?(:cljs (:require [clojure.spec.alpha :as s]))
+  #?(:clj (:require [clojure.spec.alpha :as s]
                     [hiccup.page :refer [html5]]
                     [clj-time.format :as f]
                     [clj-time.local :as l])))

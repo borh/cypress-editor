@@ -12,8 +12,8 @@
    [cypress-editor.communication :as comm]
    [cypress-editor.config :refer [debug-enabled? api-url]]
    [cypress-editor.utils :as utils]
-   [clojure.string :as str]
-   [clojure.spec :as s])
+   [clojure.string :as string]
+   [clojure.spec.alpha :as s])
   (:require-macros [cypress-editor.events :refer [sente-bridge]]))
 
 (def middleware
@@ -392,7 +392,7 @@
    (assoc db
           :fulltext/document-text
           (->> (:text data)
-               str/split-lines
+               string/split-lines
                (map (fn [s] ^{:key (gensym "p-")} [:p s])))
           :fulltext/document-author (:author data)
           :fulltext/document-title (:title data)
@@ -419,7 +419,10 @@
  middleware
  (fn [db [data]]
    (assoc db
-          :fulltext/matches (:matches data)
+          ;; TODO Not ideal, but this reverse transformation works...
+          :fulltext/matches (map (fn [m]
+                                   (update m :before string/reverse))
+                                 (:matches data))
           :fulltext/total-count (:total-count data)
           :fulltext/patterns (sort-by :frequency >
                                       (for [[[k v] i]

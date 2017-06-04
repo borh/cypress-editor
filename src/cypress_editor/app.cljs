@@ -12,7 +12,7 @@
    [cypress-editor.re-com-views :as rcv]
    [cypress-editor.config :refer [debug-enabled?]]
 
-   [clojure.spec :as s]
+   [clojure.spec.alpha :as s]
    [reagent.core :as r]
    [re-frame.core :refer [dispatch-sync]]
    [re-frisk.core :refer [enable-re-frisk!]]))
