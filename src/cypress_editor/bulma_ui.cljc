@@ -199,7 +199,7 @@
                 (cond-> default-class
                   (= :loading @load-state) (str " is-primary is-active")
                   (= :loaded  @load-state) (str " is-success")
-                  disabled? (str " is-disabled"))
+                  disabled? (str " disabled"))
                 :on-click on-click})
      label]))
 
