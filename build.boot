@@ -43,6 +43,7 @@
 
    [adzerk/boot-test "1.2.0"]
    [tolitius/boot-check "0.1.4" :scope "test"]
+   [org.clojure/test.check "0.10.0-alpha1" :scope "test"]
 
    [org.clojure/clojure "1.9.0-alpha17"]
    [org.clojure/clojurescript "1.9.562"]
@@ -50,33 +51,37 @@
    [org.clojure/tools.nrepl "0.2.13"]
 
    ;; Needed for start-repl in cljs repl
-   [com.cemerick/piggieback "0.2.1" :scope "test"]
+   [com.cemerick/piggieback "0.2.2" :scope "test"]
    [weasel "0.7.0" :scope "test"] ;; Websocket Server
 
    ;; Backend (server) deps
    [yada "1.2.4" :exclusions [aleph manifold ring-swagger prismatic/schema]]
    [aero "1.1.2"]
-   [aleph "0.4.3"]
+   [aleph "0.4.4-alpha4"]
+   [manifold "0.1.7-alpha5"]
+   [metosin/ring-swagger "0.24.0"] ;; Override version in yada?
+   [prismatic/schema "1.1.6"]
    [bidi "2.1.1" :exclusions [ring/ring-core]]
    [com.stuartsierra/component "0.3.2"]
    [hiccup "2.0.0-alpha1"]
    [org.clojure/tools.namespace "0.3.0-alpha4"]
-   [prismatic/schema "1.1.6"]
-   [metosin/ring-swagger "0.24.0"] ;; Override version in yada?
+
    [com.taoensso/sente "1.11.0"]
    [com.taoensso/tempura "1.1.2"]
 
+   [orchestra "0.3.0"]
+
    ;; Frontend deps
    [reagent "0.6.2" :exclusions [cljsjs/react cljsjs/react-dom]]
-   [cljsjs/react "15.5.4-0"]
-   [cljsjs/react-dom "15.5.4-0"]
+   [cljsjs/react "15.6.1-0"]
+   [cljsjs/react-dom "15.6.1-0"]
    [re-frame "0.9.4"]
    [re-frame-datatable "0.5.2"]
    [day8.re-frame/http-fx "0.1.3"]
-   [day8.re-frame/async-flow-fx "0.0.6"]
+   [day8.re-frame/async-flow-fx "0.0.7"]
    [day8.re-frame/undo "0.3.2"]
    #_[re-com "2.0.0"]
-   [rid3 "0.1.0-alpha-2"]
+   [rid3 "0.1.0-alpha-3"]
    [thi.ng/geom "0.0.1062"]
    [re-frisk "0.4.5" :scope "test"]
    [secretary "1.2.3"]
@@ -94,9 +99,9 @@
 
    ;; Development tools
    [binaryage/devtools      "0.9.4" :scope "test"]
-   [binaryage/dirac         "1.2.9" :scope "test"]
+   [binaryage/dirac         "1.2.10" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
-   [org.clojure/tools.reader        "1.0.0-RC1" :scope "test"]
+   [org.clojure/tools.reader        "1.0.0"   :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.0"   :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
    [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
