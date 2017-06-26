@@ -102,7 +102,7 @@
    [binaryage/dirac         "1.2.10" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
    [org.clojure/tools.reader        "1.0.0"   :scope "test"]
-   [org.clojure/tools.analyzer.jvm  "0.7.0"   :scope "test"]
+   [org.clojure/tools.analyzer.jvm  "0.7.1"   :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
    [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
    [org.clojure/core.memoize        "0.5.9"   :scope "test"]
