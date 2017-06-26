@@ -113,7 +113,7 @@
 
    ;; Logging
    [clj-logging-config "1.9.12" :scope "test"] ;; dirac?
-   [org.clojure/tools.logging "0.3.1"]
+   [org.clojure/tools.logging "0.4.0"]
    [org.slf4j/jcl-over-slf4j "1.8.0-alpha2"]
    [org.slf4j/jul-to-slf4j "1.8.0-alpha2"]
    [org.slf4j/log4j-over-slf4j "1.8.0-alpha2"]
