@@ -222,6 +222,16 @@
    (:fulltext/year-column db)))
 
 (reg-sub
+ :fulltext/speech-tag
+ (fn [db _]
+   (:fulltext/speech-tag db)))
+
+(reg-sub
+ :fulltext/quotation-tag
+ (fn [db _]
+   (:fulltext/quotation-tag db)))
+
+(reg-sub
  :fulltext/state
  (fn [db _]
    (:fulltext/state db)))

@@ -13,10 +13,19 @@
   (let [genre-column  (subscribe [:fulltext/genre-column])
         title-column  (subscribe [:fulltext/title-column])
         author-column (subscribe [:fulltext/author-column])
-        year-column   (subscribe [:fulltext/year-column])]
+        year-column   (subscribe [:fulltext/year-column])
+
+        speech-tag    (subscribe [:fulltext/speech-tag])
+        quotation-tag     (subscribe [:fulltext/quotation-tag])]
     (fn []
       [:div.nav-center ;; FIXME this element is duplicated in navbar code
        [:span.nav-item [:label "結果表示のオプション："]]
+       [:span.nav-item (ui/checkbox {:label "会話文"
+                                     :model speech-tag
+                                     :on-change #(dispatch [:toggle/fulltext-speech-tag])})]
+       [:span.nav-item (ui/checkbox {:label "引用文"
+                                     :model quotation-tag
+                                     :on-change #(dispatch [:toggle/fulltext-quotation-tag])})]
        [:span.nav-item (ui/checkbox {:label "ジャンル"
                                      :model genre-column
                                      :on-change #(dispatch [:toggle/fulltext-genre-column])})]
@@ -52,9 +61,21 @@
                                  (dispatch [:get/sources-by-sentence-id id]))}))
                  ::dt/column-label ""}
 
+                {::dt/column-key [:tags]
+                 ::dt/sorting {::dt/enabled? true}
+                 ::dt/render-fn
+                 (fn [tags]
+                   [:div
+                    (if (:speech tags)
+                      [:span.tag.is-danger "話"])
+                    (if (:quotation tags)
+                      [:span.tag.is-warning "引"])])
+                 ::dt/column-label "タグ"}
+
                 {::dt/column-key [:before]
                  ::dt/sorting {::dt/enabled? true}
                  ;; TODO Not ideal, but this reverse transformation works...
+                 ;; FIXME render-fn should really be a reagent/create-class?
                  ::dt/render-fn (fn [s] [:span (string/reverse s)])
                  ::dt/column-label "前文"}
 

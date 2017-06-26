@@ -136,6 +136,8 @@
    :fulltext/title-column true
    :fulltext/author-column false
    :fulltext/year-column false
+   :fulltext/speech-tag true
+   :fulltext/quotation-tag true
    :fulltext/document-selected nil
    :fulltext/document-text nil
    :fulltext/document-show false})
@@ -312,6 +314,16 @@
  middleware
  (fn [db [_]] (update db :fulltext/year-column not)))
 
+(reg-event-db
+ :toggle/fulltext-speech-tag
+ middleware
+ (fn [db [_]] (update db :fulltext/speech-tag not)))
+
+(reg-event-db
+ :toggle/fulltext-quotation-tag
+ middleware
+ (fn [db [_]] (update db :fulltext/quotation-tag not)))
+
 ;;
 
 (comment
@@ -410,7 +422,10 @@
                :fulltext/state :loading)
     :sente {:query [:fulltext/matches
                     {:query (:fulltext/query db)
-                     :genre (:user/genre db)}]
+                     :genre (:user/genre db)
+                     :remove-tags (cond-> #{}
+                                    (not (:fulltext/speech-tag db)) (conj :speech)
+                                    (not (:fulltext/quotation-tag db)) (conj :quotation))}]
             :timeout 600000
             :update-fx :set/fulltext-matches}}))
 
