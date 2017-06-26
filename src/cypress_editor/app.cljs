@@ -1,6 +1,6 @@
 (ns cypress-editor.app
   (:require
-   ;; Do not remove the following requires:
+   ;; Do not remove the following requires needed by re-frame:
    [cypress-editor.subs]
    [cypress-editor.events]
    ;;
