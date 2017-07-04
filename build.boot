@@ -43,10 +43,10 @@
 
    [adzerk/boot-test "1.2.0"]
    [tolitius/boot-check "0.1.4" :scope "test"]
-   [org.clojure/test.check "0.10.0-alpha1" :scope "test"]
+   [org.clojure/test.check "0.10.0-alpha2" :scope "test"]
 
    [org.clojure/clojure "1.9.0-alpha17"]
-   [org.clojure/clojurescript "1.9.562"]
+   [org.clojure/clojurescript "1.9.671"]
 
    [org.clojure/tools.nrepl "0.2.13"]
 
@@ -191,7 +191,8 @@
    (dirac :nrepl-opts {:client false})
    (cljs :ids #{"cypress_editor"}
          :optimizations :none
-         :compiler-options {:closure-defines {"goog.DEBUG" true}})
+         :compiler-options {:closure-defines {"goog.DEBUG" true}
+                            :parallel-build true})
    (dev-system)
    (target)))
 
@@ -202,7 +203,8 @@
    (sass :output-style :compressed)
    (cljs :ids #{"cypress_editor"}
          :optimizations :advanced
-         :compiler-options {:closure-defines {"goog.DEBUG" false}})
+         :compiler-options {:closure-defines {"goog.DEBUG" false}
+                            :parallel-build true})
    #_(target :dir #{"static"})))
 
 (defn- run-system [profile]
