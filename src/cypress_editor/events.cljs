@@ -68,8 +68,8 @@
  (fn [{:keys [db]} _]
    {:http-xhrio {:method          :get
                  :uri             (str api-url "/authenticate")
-                 :params {:username (:user/username db)
-                          :password (:user/password db)}
+                 :params          {:username (:user/username db)
+                                   :password (:user/password db)}
                  :timeout         1000
                  :format          (ajax/url-request-format)
                  :response-format (ajax/json-response-format {:keywords? true})
