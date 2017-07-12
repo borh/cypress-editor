@@ -1,9 +1,6 @@
-# Edge
+# Cypress Editor
 
-From "Datum edge". Also represents the 'edge' of our current thinking
-on the baseline architecture of Clojure projects. It contains
-architectural patterns for the rapid construction of robust and
-flexible systems.
+
 
 ## Features
 
