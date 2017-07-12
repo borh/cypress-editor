@@ -69,17 +69,20 @@
    [com.taoensso/sente "1.11.0"]
    [com.taoensso/tempura "1.1.2"]
 
-   [orchestra "0.3.0"]
+   [orchestra "2017.07.04-1"]
 
    ;; Frontend deps
-   [reagent "0.6.2" :exclusions [cljsjs/react cljsjs/react-dom]]
+   [reagent "0.7.0" :exclusions [cljsjs/react cljsjs/react-dom]]
    [cljsjs/react "15.6.1-0"]
    [cljsjs/react-dom "15.6.1-0"]
    [re-frame "0.9.4"]
+   [day8.re-frame/test "0.1.5" :scope "test"]
    [re-frame-datatable "0.5.2"]
-   [day8.re-frame/http-fx "0.1.3"]
-   [day8.re-frame/async-flow-fx "0.0.7"]
-   [day8.re-frame/undo "0.3.2"]
+   [day8.re-frame/http-fx "0.1.4"]
+   [day8.re-frame/async-flow-fx "0.0.8"]
+   [day8.re-frame/undo "0.3.2"] ; TODO
+   [com.smxemail/re-frame-cookie-fx "0.0.2"] ; TODO
+   [re-learn "0.1.1"] ; TODO
    #_[re-com "2.0.0"]
    [rid3 "0.1.0-alpha-3"]
    [thi.ng/geom "0.0.1062"]
@@ -87,7 +90,7 @@
    [secretary "1.2.3"]
    [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
-   [org.webjars.npm/bulma "0.4.2"]
+   [org.webjars.npm/bulma "0.4.3"]
    #_[org.webjars/material-design-icons "3.0.1"]
    [org.webjars/font-awesome "4.7.0"]
    #_[org.webjars.bower/material-design-iconic-font "2.2.0"]
@@ -99,9 +102,9 @@
 
    ;; Development tools
    [binaryage/devtools      "0.9.4" :scope "test"]
-   [binaryage/dirac         "1.2.10" :scope "test"]
+   [binaryage/dirac         "1.2.13" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
-   [org.clojure/tools.reader        "1.0.0"   :scope "test"]
+   [org.clojure/tools.reader        "1.0.2"   :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.1"   :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
    [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
