@@ -113,6 +113,8 @@
 
         body
 
+        [:div#learn]
+
         (footer {:author author :app-name app-name})
 
         [:script {:src "cypress_editor.js" :type "text/javascript"}]]])))

@@ -15,7 +15,9 @@
    [clojure.spec.alpha :as s]
    [reagent.core :as r]
    [re-frame.core :refer [dispatch-sync]]
-   [re-frisk.core :refer [enable-re-frisk!]]))
+   [re-frisk.core :refer [enable-re-frisk!]]
+   [re-learn.core :as re-learn]
+   [re-learn.views :as re-learn-views]))
 
 ;; # App entry point
 
@@ -31,5 +33,8 @@
   (if (dom/getElement "login")
     (r/render [rcv/login-box]
               (. js/document (getElementById "login")))
-    (r/render [rcv/interface]
-              (. js/document (getElementById "app")))))
+    (do
+      (r/render [rcv/interface]
+                (. js/document (getElementById "app")))
+      (r/render [re-learn-views/tutorial-view {:context? true}]
+                (. js/document (getElementById "learn"))))))

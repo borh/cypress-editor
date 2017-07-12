@@ -7,37 +7,44 @@
    [cypress-editor.utils :as utils]
    [reagent.core :as reagent]
    [re-frame.core :refer [subscribe dispatch]]
-   [re-frame-datatable.core :as dt]))
+   [re-frame-datatable.core :as dt]
+   [re-learn.core :as re-learn]))
 
 (defn search-options-box []
-  (let [genre-column  (subscribe [:fulltext/genre-column])
-        title-column  (subscribe [:fulltext/title-column])
-        author-column (subscribe [:fulltext/author-column])
-        year-column   (subscribe [:fulltext/year-column])
+  (re-learn/with-lesson
+    {:id          :first-lesson
+     :description "検索結果でどの列を表示するかをこちらで選択できます。"
+     :position    :bottom                  ;; optional, defaults to :right. values are :left, :right, :bottom, :top, :unattached, :bottom-left etc
+     :version     1                        ;; optional, defaults to 1
+     :attach      [:div.nav-center]}
+    (let [genre-column  (subscribe [:fulltext/genre-column])
+          title-column  (subscribe [:fulltext/title-column])
+          author-column (subscribe [:fulltext/author-column])
+          year-column   (subscribe [:fulltext/year-column])
 
-        speech-tag    (subscribe [:fulltext/speech-tag])
-        quotation-tag     (subscribe [:fulltext/quotation-tag])]
-    (fn []
-      [:div.nav-center ;; FIXME this element is duplicated in navbar code
-       [:span.nav-item [:label "結果表示のオプション："]]
-       [:span.nav-item (ui/checkbox {:label "会話文"
-                                     :model speech-tag
-                                     :on-change #(dispatch [:toggle/fulltext-speech-tag])})]
-       [:span.nav-item (ui/checkbox {:label "引用文"
-                                     :model quotation-tag
-                                     :on-change #(dispatch [:toggle/fulltext-quotation-tag])})]
-       [:span.nav-item (ui/checkbox {:label "ジャンル"
-                                     :model genre-column
-                                     :on-change #(dispatch [:toggle/fulltext-genre-column])})]
-       [:span.nav-item (ui/checkbox {:label "タイトル"
-                                     :model title-column
-                                     :on-change #(dispatch [:toggle/fulltext-title-column])})]
-       [:span.nav-item (ui/checkbox {:label "著者"
-                                     :model author-column
-                                     :on-change #(dispatch [:toggle/fulltext-author-column])})]
-       [:span.nav-item (ui/checkbox {:label "出版年"
-                                     :model year-column
-                                     :on-change #(dispatch [:toggle/fulltext-year-column])})]])))
+          speech-tag    (subscribe [:fulltext/speech-tag])
+          quotation-tag     (subscribe [:fulltext/quotation-tag])]
+      (fn []
+        [:div.nav-center ;; FIXME this element is duplicated in navbar code
+         [:span.nav-item [:label "結果表示のオプション："]]
+         [:span.nav-item (ui/checkbox {:label "会話文"
+                                       :model speech-tag
+                                       :on-change #(dispatch [:toggle/fulltext-speech-tag])})]
+         [:span.nav-item (ui/checkbox {:label "引用文"
+                                       :model quotation-tag
+                                       :on-change #(dispatch [:toggle/fulltext-quotation-tag])})]
+         [:span.nav-item (ui/checkbox {:label "ジャンル"
+                                       :model genre-column
+                                       :on-change #(dispatch [:toggle/fulltext-genre-column])})]
+         [:span.nav-item (ui/checkbox {:label "タイトル"
+                                       :model title-column
+                                       :on-change #(dispatch [:toggle/fulltext-title-column])})]
+         [:span.nav-item (ui/checkbox {:label "著者"
+                                       :model author-column
+                                       :on-change #(dispatch [:toggle/fulltext-author-column])})]
+         [:span.nav-item (ui/checkbox {:label "出版年"
+                                       :model year-column
+                                       :on-change #(dispatch [:toggle/fulltext-year-column])})]]))))
 
 (defn fulltext-results-table []
   (let [genre-column  (subscribe [:fulltext/genre-column])
