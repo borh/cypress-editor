@@ -206,6 +206,7 @@
    (sass :output-style :compressed)
    (cljs :ids #{"cypress_editor"}
          :optimizations :advanced
+         :source-map true
          :compiler-options {:closure-defines {"goog.DEBUG" false}
                             :parallel-build true})
    #_(target :dir #{"static"})))
