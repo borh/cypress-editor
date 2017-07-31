@@ -11,40 +11,95 @@
    [re-learn.core :as re-learn]))
 
 (defn search-options-box []
-  (re-learn/with-lesson
-    {:id          :first-lesson
-     :description "検索結果でどの列を表示するかをこちらで選択できます。"
-     :position    :bottom                  ;; optional, defaults to :right. values are :left, :right, :bottom, :top, :unattached, :bottom-left etc
-     :version     1                        ;; optional, defaults to 1
-     :attach      [:div.nav-center]}
-    (let [genre-column  (subscribe [:fulltext/genre-column])
-          title-column  (subscribe [:fulltext/title-column])
-          author-column (subscribe [:fulltext/author-column])
-          year-column   (subscribe [:fulltext/year-column])
+  #_(re-learn/with-lesson
+      {:id          :first-lesson
+       :description "検索結果でどの列を表示するかをこちらで選択できます。"
+       :position    :bottom                  ;; optional, defaults to :right. values are :left, :right, :bottom, :top, :unattached, :bottom-left etc
+       :version     1                        ;; optional, defaults to 1
+       :attach      [:div]})
+  (let [genre-column  (subscribe [:fulltext/genre-column])
+        title-column  (subscribe [:fulltext/title-column])
+        author-column (subscribe [:fulltext/author-column])
+        year-column   (subscribe [:fulltext/year-column])
 
-          speech-tag    (subscribe [:fulltext/speech-tag])
-          quotation-tag     (subscribe [:fulltext/quotation-tag])]
-      (fn []
-        [:div.nav-center ;; FIXME this element is duplicated in navbar code
-         [:span.nav-item [:label "結果表示のオプション："]]
-         [:span.nav-item (ui/checkbox {:label "会話文"
-                                       :model speech-tag
-                                       :on-change #(dispatch [:toggle/fulltext-speech-tag])})]
-         [:span.nav-item (ui/checkbox {:label "引用文"
-                                       :model quotation-tag
-                                       :on-change #(dispatch [:toggle/fulltext-quotation-tag])})]
-         [:span.nav-item (ui/checkbox {:label "ジャンル"
-                                       :model genre-column
-                                       :on-change #(dispatch [:toggle/fulltext-genre-column])})]
-         [:span.nav-item (ui/checkbox {:label "タイトル"
-                                       :model title-column
-                                       :on-change #(dispatch [:toggle/fulltext-title-column])})]
-         [:span.nav-item (ui/checkbox {:label "著者"
-                                       :model author-column
-                                       :on-change #(dispatch [:toggle/fulltext-author-column])})]
-         [:span.nav-item (ui/checkbox {:label "出版年"
-                                       :model year-column
-                                       :on-change #(dispatch [:toggle/fulltext-year-column])})]]))))
+        speech-tag    (subscribe [:fulltext/speech-tag])
+        quotation-tag (subscribe [:fulltext/quotation-tag])]
+    (fn []
+      [:nav.panel
+       [:p.panel-heading "検索及び結果表示のオプション"]
+       [:div.panel-block
+        [:div [:label.label "会話文・引用文の有無　"]]
+        [:div.field.is-grouped.is-grouped-multiline ;; FIXME this element is duplicated in navbar code
+         [:div.field.control (ui/checkbox {:label "会話文"
+                                           :model speech-tag
+                                           :on-change #(dispatch [:toggle/fulltext-speech-tag])})]
+         [:div.field.control (ui/checkbox {:label "引用文"
+                                           :model quotation-tag
+                                           :on-change #(dispatch [:toggle/fulltext-quotation-tag])})]]]
+       [:div.panel-block
+        [:div [:label.label "列の表示　"]]
+        [:div.field.is-grouped.is-grouped-multiline
+         [:div.field.control (ui/checkbox {:label "ジャンル"
+                                           :model genre-column
+                                           :on-change #(dispatch [:toggle/fulltext-genre-column])})]
+         [:div.field.control (ui/checkbox {:label "タイトル"
+                                           :model title-column
+                                           :on-change #(dispatch [:toggle/fulltext-title-column])})]
+         [:div.field.control (ui/checkbox {:label "著者"
+                                           :model author-column
+                                           :on-change #(dispatch [:toggle/fulltext-author-column])})]
+         [:div.field.control (ui/checkbox {:label "出版年"
+                                           :model year-column
+                                           :on-change #(dispatch [:toggle/fulltext-year-column])})]]]])))
+
+(defn pagination-box []
+  (let [limit (subscribe [:fulltext/limit])
+        page (subscribe [:fulltext/page])
+        total-count (subscribe [:fulltext/total-count])
+        delta 4]
+    (fn []
+      (let [last-page (int (Math/ceil (/ @total-count @limit)))
+
+            pages-with-ellision
+            (reduce
+             (fn [a p]
+               (cond
+                 (not (seq a)) (conj a p)
+                 (string? (peek a)) (conj a p)
+                 (not= (inc (peek a)) p) (conj a "...")
+                 :else (conj a p)))
+             []
+             (if (<= last-page 10)
+               (vec (range last-page))
+               (vec (sort (set/union (set (range (dec delta)))
+                                     (set (range (max 0               (- @page delta))
+                                                 (min (+ @page delta) last-page)))
+                                     (set (range (- last-page delta) last-page)))))))
+            pagination-links
+            (mapv
+             (fn [p]
+               ^{:key (gensym p)}
+               [:li [:a
+                     (cond
+                       (string? p) {:class "pagination-ellipsis"}
+                       (= p @page) {:class "pagination-link is-current"}
+                       :else {:class "pagination-link"
+                              :on-click (fn [e]
+                                          (dispatch [:set/fulltext-page p]))})
+                     (if (string? p)
+                       p
+                       (str (inc p)))]])
+             pages-with-ellision)]
+        [:nav.pagination
+         [:a.pagination-previous {:disabled (if (= 0 @page) true false)
+                                  :on-click (when (pos? @page)
+                                              #(dispatch [:set/fulltext-page (dec @page)]))}
+          "Previous"]
+         [:a.pagination-next {:disabled (if (= (dec last-page) @page) true false)
+                              :on-click (when-not (= (dec last-page) @page)
+                                          #(dispatch [:set/fulltext-page (inc @page)]))}
+          "Next"]
+         (into [:ul.pagination-list] pagination-links)]))))
 
 (defn fulltext-results-table []
   (let [genre-column  (subscribe [:fulltext/genre-column])
