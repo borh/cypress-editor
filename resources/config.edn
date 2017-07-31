@@ -6,6 +6,6 @@
  #profile {:dev {:host "localhost:3010"
                  :port #long #or [#env PORT 3010]
                  :scheme #keyword #or [#env SCHEME :http]}
-           :prod {:host #or [#env SERVER_ADDRESS "nlp.lang.osaka-u.ac.jp/natsume-search:3011"]
+           :prod {:host #or [#env SERVER_ADDRESS "nlp.lang.osaka-u.ac.jp/natsume-search"]
                   :port #long #or [#env PORT 3011]
                   :scheme #keyword #or [#env SCHEME :https]}}}
