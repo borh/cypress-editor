@@ -35,7 +35,7 @@
  :source-paths #{"src" "sass" "test"}
  :resource-paths #{"resources"}
  :dependencies
- '[[adzerk/boot-cljs "2.0.0" :scope "test"]
+ '[[adzerk/boot-cljs "2.1.1" :scope "test"]
    [adzerk/boot-cljs-repl "0.3.3" :scope "test"]
    [adzerk/boot-reload "0.5.1" :scope "test"]
    [deraen/boot-sass "0.3.1"]
@@ -46,7 +46,7 @@
    [org.clojure/test.check "0.10.0-alpha2" :scope "test"]
 
    [org.clojure/clojure "1.9.0-alpha17"]
-   [org.clojure/clojurescript "1.9.671"]
+   [org.clojure/clojurescript "1.9.854"]
 
    [org.clojure/tools.nrepl "0.2.13"]
 
@@ -59,7 +59,7 @@
    [aero "1.1.2"]
    [aleph "0.4.4-alpha4"]
    [manifold "0.1.7-alpha5"]
-   [metosin/ring-swagger "0.24.0"] ;; Override version in yada?
+   [metosin/ring-swagger "0.24.1"] ;; Override version in yada?
    [prismatic/schema "1.1.6"]
    [bidi "2.1.2" :exclusions [ring/ring-core]]
    [com.stuartsierra/component "0.3.2"]
@@ -73,8 +73,8 @@
 
    ;; Frontend deps
    [reagent "0.7.0" :exclusions [cljsjs/react cljsjs/react-dom]]
-   [cljsjs/react "15.6.1-0"]
-   [cljsjs/react-dom "15.6.1-0"]
+   [cljsjs/react "15.6.1-1"]
+   [cljsjs/react-dom "15.6.1-1"]
    [re-frame "0.9.4"]
    [day8.re-frame/test "0.1.5" :scope "test"]
    [re-frame-datatable "0.5.2"]
@@ -90,7 +90,7 @@
    [secretary "1.2.3"]
    [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
-   [org.webjars.npm/bulma "0.4.3"]
+   [org.webjars.npm/bulma "0.5.0"]
    #_[org.webjars/material-design-icons "3.0.1"]
    [org.webjars/font-awesome "4.7.0"]
    #_[org.webjars.bower/material-design-iconic-font "2.2.0"]
@@ -98,13 +98,13 @@
 
    [com.cognitect/transit-clj "0.8.300"]
    [com.cognitect/transit-cljs "0.8.239"]
-   [com.andrewmcveigh/cljs-time "0.5.0"] ;; for advanced compilation
+   [com.andrewmcveigh/cljs-time "0.5.1"] ;; for advanced compilation
 
    ;; Development tools
    [binaryage/devtools      "0.9.4" :scope "test"]
    [binaryage/dirac         "1.2.14" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
-   [org.clojure/tools.reader        "1.0.2"   :scope "test"]
+   [org.clojure/tools.reader        "1.0.3"   :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.1"   :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
    [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
