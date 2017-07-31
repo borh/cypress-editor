@@ -128,7 +128,7 @@
                  ::dt/sorting {::dt/enabled? true}
                  ::dt/render-fn
                  (fn [tags]
-                   [:div
+                   [:div.tags
                     (if (:speech tags)
                       [:span.tag.is-danger "話"])
                     (if (:quotation tags)
@@ -176,12 +176,20 @@
        {::dt/table-classes ["ui" "table" "celled" "kwic" "is-narrow"]}])))
 
 (defn total-count-message []
-  (let [total-count (subscribe [:fulltext/total-count])]
-    (when @total-count
-      [:div.level-item.has-text-centered
-       [:div
-        [:p.heading "検索結果"]
-        [:p.title @total-count "件"]]])))
+  (let [total-count (subscribe [:fulltext/total-count])
+        downloadable-file (subscribe [:fulltext/file])]
+    (fn []
+      (when @total-count
+        [:div.level-item.has-text-centered
+         [:div
+          [:p.heading "検索結果"]
+          [:p.title @total-count "件"]
+          (when @downloadable-file
+            (ui/button
+             {:label "　結果をダウンロード"
+              :icon (ui/fa-icon :download)
+              :default-class "button is-medium is-primary"
+              :attrs {:href @downloadable-file}}))]]))))
 
 (defn patterns-message []
   (let [patterns (subscribe [:fulltext/patterns])]
