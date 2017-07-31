@@ -176,17 +176,18 @@
 (s/def ::label string?)
 (s/def ::connection-state boolean?)
 (s/def ::tooltip string? #_(s/or :string string? :hiccup ::hiccup))
+(s/def ::default-class string?)
 (s/def ::attrs (s/map-of keyword? string?))
 
 (defn button [{:keys [label on-click
-                      attrs load-state disabled? tooltip tooltip-pos]
+                      default-class attrs load-state disabled? tooltip tooltip-pos icon]
                :or {load-state (atom nil)
                     disabled? false
+                    default-class "button"
                     attrs {}
                     tooltip-pos "down"}
                :as opts}]
-  (let [default-class "button"
-        tooltip-attrs (if tooltip
+  (let [tooltip-attrs (if tooltip
                         {:data-balloon-length "medium"
                          :data-balloon tooltip
                          :data-balloon-pos tooltip-pos
@@ -200,10 +201,11 @@
                   (= :loaded  @load-state) (str " is-success")
                   disabled? (str " disabled"))
                 :on-click on-click})
+     (when icon icon)
      label]))
 
 (s/fdef button :args (s/keys :req [::label ::on-click]
-                             :opt [::attr ::load-state ::connection-state ::tooltip]))
+                             :opt [::default-class ::attr ::load-state ::connection-state ::tooltip]))
 
 (s/def ::state-level (s/or :primary "is-primary"
                            :info    "is-info"
