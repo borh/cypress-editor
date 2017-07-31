@@ -177,7 +177,8 @@
 
 (defn total-count-message []
   (let [total-count (subscribe [:fulltext/total-count])
-        downloadable-file (subscribe [:fulltext/file])]
+        downloadable-file (subscribe [:fulltext/file])
+        auth-token (subscribe [:user/auth-token])]
     (fn []
       (when @total-count
         [:div.level-item.has-text-centered
@@ -189,7 +190,7 @@
              {:label "　結果をダウンロード"
               :icon (ui/fa-icon :download)
               :default-class "button is-medium is-primary"
-              :attrs {:href @downloadable-file}}))]]))))
+              :attrs {:href (str @downloadable-file "?client-id=" @auth-token)}}))]]))))
 
 (defn patterns-message []
   (let [patterns (subscribe [:fulltext/patterns])]
