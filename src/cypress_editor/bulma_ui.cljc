@@ -43,21 +43,18 @@
   [{:keys [app-name app-url
            nav-items] ;; TODO lang
     :or {app-url "#"}}]
-  (let [nav-left (cond-> [:div.nav-left.no-overflow
-                          [:a.nav-item.is-brand.is-bold {:href app-url} app-name]]
-                   (:left nav-items) (into (:left nav-items)))
-        nav-center (if (:center nav-items)
-                     (into [:div.nav-center.flex-grow] (:center nav-items)))
-        nav-right (cond-> [:div.nav-right.no-overflow
-                           #_[:span.is-mobile.nav-toggle [:span] [:span] [:span]]]
-                    (:right nav-items) (into (:right nav-items))
-                    :true (conj [:a.nav-item
-                                 (fa-icon :language) " EN"]))]
-    [:nav.nav.has-shadow
+  (let [navbar-brand (cond-> [:div.navbar-brand
+                              [:a.navbar-item.is-bold {:href app-url} app-name]]
+                       (:left nav-items) (into (:left nav-items))
+                       true (conj [:div.navbar-burger.burger {:data-target "navMenu"} [:span] [:span] [:span]]))
+        navbar-menu (cond-> [:div.navbar-menu {:id "navMenu"}]
+                      (:center nav-items) (conj (into [:div.navbar-start] (:center nav-items)))
+                      (:right nav-items)  (conj (conj (into [:div.navbar-end] (:right nav-items))
+                                                      [:a.navbar-item (fa-icon :language) " EN"])))]
+    [:nav.navbar.has-shadow
      [:div.container
-      nav-left
-      nav-center
-      nav-right]]))
+      navbar-brand
+      navbar-menu]]))
 
 #?(:clj
    (defn footer [{:keys [author app-name]}]
