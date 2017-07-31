@@ -66,12 +66,12 @@
 (reg-event-fx
  :sente/authenticate
  (fn [{:keys [db]} _]
-   {:http-xhrio {:method          :get
+   {:http-xhrio {:method          :post
                  :uri             (str api-url "/authenticate")
                  :params          {:username (:user/username db)
                                    :password (:user/password db)}
                  :timeout         1000
-                 :format          (ajax/url-request-format)
+                 :format          (ajax/json-request-format)
                  :response-format (ajax/json-response-format {:keywords? true})
                  :on-success      [:sente/auth-success]
                  :on-failure      [:sente/auth-failure]
