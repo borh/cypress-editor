@@ -304,12 +304,12 @@
     (fn []
       [:a
        (if (not @status)
-         {:class "nav-item is-active is-tab is-danger"
+         {:class "navbar-item is-active is-tab is-danger"
           :data-balloon "サーバとの通信が途絶えています"
           :data-balloon-length "large"
           :data-balloon-pos "down"
           :on-click #(dispatch [:sente/connect])}
-         {:class "nav-item"
+         {:class "navbar-item"
           :data-balloon "サーバとの通信状態は通常です"
           :data-balloon-length "large"
           :data-balloon-pos "down"})
@@ -369,10 +369,8 @@
 (defn header-bar []
   (ui/navbar {:app-name "Cypress Fulltext Search"
               :nav-items {;;:left []
-                          :center [[search-options-box]
-                                   [connection-status-box]]
-                          :right [[user-box]
-                                  [logout-box]]}}))
+                          :center [[connection-status-box]]
+                          :right [[user-box]]}}))
 
 (defn debug-box []
   (let [auth-token (subscribe [:user/auth-token])
