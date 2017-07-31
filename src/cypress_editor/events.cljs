@@ -132,6 +132,9 @@
 (def fulltext-api
   {:fulltext/query (if debug-enabled? "しかしながら[、，][こそ]" "")
    :fulltext/matches nil
+   :fulltext/file nil
+   :fulltext/limit 100
+   :fulltext/page 0 ;; offset is page*limit
    :fulltext/genre-column true
    :fulltext/title-column true
    :fulltext/author-column false
@@ -293,6 +296,18 @@
  middleware
  (fn [db [new-state]] (assoc db :fulltext/state new-state)))
 
+(reg-event-db
+ :set/fulltext-limit
+ middleware
+ (fn [db [new-state]] (assoc db :fulltext/limit new-state)))
+
+(reg-event-fx
+ :set/fulltext-page
+ middleware
+ (fn [{:keys [db]} [new-state]]
+   {:db (assoc db :fulltext/page new-state)
+    :dispatch [:get/fulltext-matches]}))
+
 ;; Toggle columns
 (reg-event-db
  :toggle/fulltext-genre-column
@@ -416,13 +431,16 @@
  middleware
  (fn [{:keys [db]} [_]]
    {:db (assoc db
-               :fulltext/matches nil
-               :fulltext/total-count nil
-               :fulltext/patterns nil
+               ;; FIXME do we need to nil these?!:
+               ;; :fulltext/matches nil
+               ;; :fulltext/total-count nil
+               ;; :fulltext/patterns nil
                :fulltext/state :loading)
     :sente {:query [:fulltext/matches
                     {:query (:fulltext/query db)
                      :genre (:user/genre db)
+                     :limit (:fulltext/limit db)
+                     :offset (* (:fulltext/page db) (:fulltext/limit db))
                      :remove-tags (cond-> #{}
                                     (not (:fulltext/speech-tag db)) (conj :speech)
                                     (not (:fulltext/quotation-tag db)) (conj :quotation))}]
@@ -444,4 +462,5 @@
                                             (zipmap (:patterns data)
                                                     (range (count (:patterns data))))]
                                         {:pattern k :frequency v :idx i}))
+          :fulltext/file (str api-url (:file data))
           :fulltext/state :loaded)))

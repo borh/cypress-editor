@@ -187,6 +187,16 @@
    (:fulltext/query db)))
 
 (reg-sub
+ :fulltext/limit
+ (fn [db _]
+   (:fulltext/limit db)))
+
+(reg-sub
+ :fulltext/page
+ (fn [db _]
+   (:fulltext/page db)))
+
+(reg-sub
  :fulltext/matches
  (fn [db _]
    (:fulltext/matches db)))
@@ -200,6 +210,11 @@
  :fulltext/patterns
  (fn [db _]
    (:fulltext/patterns db)))
+
+(reg-sub
+ :fulltext/file
+ (fn [db _]
+   (:fulltext/file db)))
 
 (reg-sub
  :fulltext/genre-column
