@@ -285,23 +285,19 @@
    [:div.column
     [regex-search-box]
     [genre-search-box]
-    [search-button]]])
-
-(defn logout-box []
-  [:a.nav-item
-   {:on-click (fn [_]
-                (utils/redirect "login")
-                #_(dispatch [:set/user-account-valid nil])
-                #_(dispatch [:set/user-auth-token nil])
-                #_(dispatch [:set/active-page :login]))}
-   #_(ui/fa-icon :sign-in)
-   (ui/fa-icon :sign-out)
-   "ログアウト"])
+    [search-button]]
+   [:div.column
+    [search-options-box]]])
 
 (defn user-box []
   (let [username (subscribe [:user/username])]
     (fn []
-      [:span.nav-item @username])))
+      [:div.navbar-item.has-dropdown.is-hoverable
+       [:a.navbar-link @username]
+       [:div.navbar-dropdown
+        [:a.navbar-item {:on-click #(utils/redirect "login")}
+         (ui/fa-icon :sign-out)
+         "ログアウト"]]])))
 
 (defn connection-status-box []
   (let [status (subscribe [:sente/connection-status])]
