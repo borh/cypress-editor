@@ -9,7 +9,7 @@
    [reagent.core :as reagent]
    [re-frame.core :refer [subscribe dispatch]]
    [re-frame-datatable.core :as dt]
-   [re-learn.core :as re-learn]))
+   #_[re-learn.core :as re-learn]))
 
 (defn search-options-box []
   #_(re-learn/with-lesson
