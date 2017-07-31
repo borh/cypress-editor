@@ -409,6 +409,7 @@
           [:nav.level
            [total-count-message]
            [patterns-message]]
+          [pagination-box]
           [fulltext-results-table]
           (when @show-document?
             [:div.modal.is-active
