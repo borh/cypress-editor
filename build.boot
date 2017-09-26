@@ -35,9 +35,9 @@
  :source-paths #{"src" "sass" "test"}
  :resource-paths #{"resources"}
  :dependencies
- '[[adzerk/boot-cljs "2.1.1" :scope "test"]
+ '[[adzerk/boot-cljs "2.1.4" :scope "test"]
    [adzerk/boot-cljs-repl "0.3.3" :scope "test"]
-   [adzerk/boot-reload "0.5.1" :scope "test"]
+   [adzerk/boot-reload "0.5.2" :scope "test"]
    [deraen/boot-sass "0.3.1"]
    [reloaded.repl "0.2.3" :scope "test"]
 
@@ -45,8 +45,8 @@
    [tolitius/boot-check "0.1.4" :scope "test"]
    [org.clojure/test.check "0.10.0-alpha2" :scope "test"]
 
-   [org.clojure/clojure "1.9.0-alpha17"]
-   [org.clojure/clojurescript "1.9.854"]
+   [org.clojure/clojure "1.9.0-beta1"]
+   [org.clojure/clojurescript "1.9.908"]
 
    [org.clojure/tools.nrepl "0.2.13"]
 
@@ -59,7 +59,8 @@
    [aero "1.1.2"]
    [aleph "0.4.4-alpha4"]
    [manifold "0.1.7-alpha5"]
-   [metosin/ring-swagger "0.24.1"] ;; Override version in yada?
+   #_[metosin/ring-swagger "0.24.1"] ;; Override version in yada?
+   [crypto-random "1.2.0" :exclusions [commons-codec]]
    [prismatic/schema "1.1.6"]
    [bidi "2.1.2" :exclusions [ring/ring-core]]
    [com.stuartsierra/component "0.3.2"]
@@ -69,28 +70,29 @@
    [com.taoensso/sente "1.11.0"]
    [com.taoensso/tempura "1.1.2"]
 
-   [orchestra "2017.07.04-1"]
+   [orchestra "2017.08.13"]
 
    ;; Frontend deps
-   [reagent "0.7.0" :exclusions [cljsjs/react cljsjs/react-dom]]
-   [cljsjs/react "15.6.1-1"]
-   [cljsjs/react-dom "15.6.1-1"]
-   [re-frame "0.9.4"]
+   [reagent "0.8.0-alpha1" :exclusions [cljsjs/react cljsjs/react-dom]]
+   [cljsjs/react "16.0.0-beta.5-0"]
+   [cljsjs/react-dom "16.0.0-beta.5-0"]
+   [re-frame "0.10.1"]
    [day8.re-frame/test "0.1.5" :scope "test"]
-   [re-frame-datatable "0.5.2"]
+   [re-frame-datatable "0.6.0"]
    [day8.re-frame/http-fx "0.1.4"]
    [day8.re-frame/async-flow-fx "0.0.8"]
-   [day8.re-frame/undo "0.3.2"] ; TODO
-   [com.smxemail/re-frame-cookie-fx "0.0.2"] ; TODO
+   #_[day8.re-frame/undo "0.3.2"] ; TODO
+   #_[com.smxemail/re-frame-cookie-fx "0.0.2"] ; TODO
+   [akiroz.re-frame/storage "0.1.2"]
    [re-learn "0.1.1"] ; TODO
    #_[re-com "2.0.0"]
    [rid3 "0.1.0-alpha-3"]
-   [thi.ng/geom "0.0.1062"]
-   [re-frisk "0.4.5" :scope "test"]
+   #_[thi.ng/geom "0.0.1062"]
+   [re-frisk "0.5.0" :scope "test"]
    [secretary "1.2.3"]
-   [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
+   ;; [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
-   [org.webjars.npm/bulma "0.5.0"]
+   [org.webjars.npm/bulma "0.5.2"]
    #_[org.webjars/material-design-icons "3.0.1"]
    [org.webjars/font-awesome "4.7.0"]
    #_[org.webjars.bower/material-design-iconic-font "2.2.0"]
@@ -102,9 +104,9 @@
 
    ;; Development tools
    [binaryage/devtools      "0.9.4" :scope "test"]
-   [binaryage/dirac         "1.2.14" :scope "test"]
+   [binaryage/dirac         "1.2.16" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
-   [org.clojure/tools.reader        "1.0.3"   :scope "test"]
+   [org.clojure/tools.reader        "1.1.0"   :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.1"   :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
    [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
@@ -112,7 +114,7 @@
    [org.clojure/core.cache          "0.6.5"   :scope "test"]
    [org.clojure/core.async          "0.3.443" :scope "test"]
    [com.google.code.findbugs/jsr305 "3.0.2" :scope "test"]
-   [http-kit "2.3.0-alpha2" :scope "test"]
+   [http-kit "2.3.0-alpha4" :scope "test"]
 
    ;; Logging
    [clj-logging-config "1.9.12" :scope "test"] ;; dirac?
