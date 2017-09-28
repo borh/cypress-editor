@@ -76,7 +76,7 @@
    [reagent "0.8.0-alpha1" :exclusions [cljsjs/react cljsjs/react-dom]]
    [cljsjs/react "16.0.0-beta.5-0"]
    [cljsjs/react-dom "16.0.0-beta.5-0"]
-   [re-frame "0.10.1"]
+   [re-frame "0.10.2-beta1"]
    [day8.re-frame/test "0.1.5" :scope "test"]
    [re-frame-datatable "0.6.0"]
    [day8.re-frame/http-fx "0.1.4"]
@@ -89,6 +89,7 @@
    [rid3 "0.1.0-alpha-3"]
    #_[thi.ng/geom "0.0.1062"]
    [re-frisk "0.5.0" :scope "test"]
+   [day8.re-frame/trace "0.1.7" :scope "test"]
    [secretary "1.2.3"]
    ;; [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
@@ -196,7 +197,9 @@
    (dirac :nrepl-opts {:client false})
    (cljs :ids #{"cypress_editor"}
          :optimizations :none
-         :compiler-options {:closure-defines {"goog.DEBUG" true}
+         :compiler-options {:closure-defines {"goog.DEBUG" true
+                                              "re_frame.trace.trace_enabled_QMARK_" true}
+                            ;;:preloads [day8.re-frame.trace.preload] ;; FIXME
                             :parallel-build true})
    (dev-system)
    (target)))
