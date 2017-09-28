@@ -6,7 +6,7 @@
 
 ;; https://github.com/ptaoussanis/sente/issues/118#issuecomment-87378277
 
-(def !socket (atom nil))
+(def !socket (atom false))
 
 (defn send! [& params]
   (apply (:send-fn @!socket) params))
