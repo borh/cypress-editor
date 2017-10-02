@@ -69,13 +69,12 @@
 
    [com.taoensso/sente "1.11.0"]
    [com.taoensso/tempura "1.1.2"]
+   [com.taoensso/encore "2.92.0"]
 
    [orchestra "2017.08.13"]
 
    ;; Frontend deps
-   [reagent "0.8.0-alpha1" :exclusions [cljsjs/react cljsjs/react-dom]]
-   [cljsjs/react "16.0.0-beta.5-0"]
-   [cljsjs/react-dom "16.0.0-beta.5-0"]
+   [reagent "0.8.0-alpha1"]
    [re-frame "0.10.2-beta1"]
    [day8.re-frame/test "0.1.5" :scope "test"]
    [re-frame-datatable "0.6.0"]
@@ -85,8 +84,7 @@
    #_[com.smxemail/re-frame-cookie-fx "0.0.2"] ; TODO
    [akiroz.re-frame/storage "0.1.2"]
    [re-learn "0.1.1"] ; TODO
-   #_[re-com "2.0.0"]
-   [rid3 "0.1.0-alpha-3"]
+   [rid3 "0.2.0"]
    #_[thi.ng/geom "0.0.1062"]
    [re-frisk "0.5.0" :scope "test"]
    [day8.re-frame/trace "0.1.7" :scope "test"]
@@ -197,9 +195,9 @@
    (dirac :nrepl-opts {:client false})
    (cljs :ids #{"cypress_editor"}
          :optimizations :none
+         :source-map true
          :compiler-options {:closure-defines {"goog.DEBUG" true
                                               "re_frame.trace.trace_enabled_QMARK_" true}
-                            ;;:preloads [day8.re-frame.trace.preload] ;; FIXME
                             :parallel-build true})
    (dev-system)
    (target)))
