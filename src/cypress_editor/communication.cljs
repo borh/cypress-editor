@@ -2,7 +2,7 @@
   (:require [taoensso.sente :as sente]
             [taoensso.sente.packers.transit :as sente-transit]
             [re-frame.core :refer [dispatch]]
-            [cypress-editor.config :refer [ws-url api-url]]))
+            [cypress-editor.config :refer [debug-enabled? ws-url api-url]]))
 
 ;; https://github.com/ptaoussanis/sente/issues/118#issuecomment-87378277
 
@@ -18,7 +18,11 @@
 (defmethod handle-event :chsk/state [{:keys [state]}]
   (dispatch [:set/sente-connection-status (:open? @state)]))
 
-(defmethod handle-event :chsk/handshake [_])
+(defmethod handle-event :chsk/handshake
+  [{:as ev-msg :keys [?data]}]
+  (let [[?uid ?csrf-token ?handshake-data] ?data]
+    (when debug-enabled?
+      (println "Handshake: %s" ?data))))
 
 (defmethod handle-event :chsk/recv [{:keys [?data ?csrf-token]}]
   (handle-message ?data))
