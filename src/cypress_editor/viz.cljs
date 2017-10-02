@@ -1,5 +1,5 @@
 (ns cypress-editor.viz
-  (:require [rid3.core :as d3]))
+  (:require [rid3.core :as rid3]))
 
 ;;
 
@@ -148,10 +148,9 @@
         (.attr "x" (fn [d] (- (* 14 (count (aget d "pattern")))))))))
 
 (defn barchart [ratom]
-  [d3/viz
+  [rid3/viz
    {:id             "barchart"
     :ratom          ratom
-    :prepare-dataset (fn [a] (clj->js @a))
     :svg            {:did-mount  svg-did-mount
                      :did-update svg-did-update}
     :main-container {:did-mount main-container-did-mount}
@@ -160,18 +159,21 @@
       :class "bars"
       :children
       [{:kind       :elem-with-data
+        :prepare-dataset (fn [a] (clj->js @a))
         :class      "bar"
         :tag        "rect"
         :did-mount  bar-did-mount
         :did-update bar-did-update}
 
        {:kind       :elem-with-data
+        :prepare-dataset (fn [a] (clj->js @a))
         :class      "bar-freq-label"
         :tag        "text"
         :did-mount  bar-freq-label-did-mount
         :did-update bar-freq-label-did-update}
 
        {:kind       :elem-with-data
+        :prepare-dataset (fn [a] (clj->js @a))
         :class      "bar-label"
         :tag        "text"
         :did-mount  bar-label-did-mount
