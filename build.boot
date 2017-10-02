@@ -45,7 +45,7 @@
    [tolitius/boot-check "0.1.4" :scope "test"]
    [org.clojure/test.check "0.10.0-alpha2" :scope "test"]
 
-   [org.clojure/clojure "1.9.0-beta1"]
+   [org.clojure/clojure "1.9.0-alpha19"]
    [org.clojure/clojurescript "1.9.908"]
 
    [org.clojure/tools.nrepl "0.2.13"]
