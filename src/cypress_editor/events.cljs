@@ -28,24 +28,32 @@
 
 (defn boot-flow
   []
-  {:first-dispatch [:sente/authenticate]
-   :rules [{:when :seen?
-            :events [:sente/auth-success]
-            :dispatch-n [[:sente/connect]
-                         #_[:get/sources-genre]
-                         #_[:get/sentences-collocations]
-                         #_[:get/sentences-tokens]
-                         #_[:get/tokens-tree]
-                         #_[:get/tokens-similarity]
-                         #_[:get/tokens-nearest-tokens]
-                         #_[:get/tokens-similarity-with-accuracy]
-                         #_[:get/tokens-tsne]
-                         #_[:get/collocations-collocations]
-                         #_[:get/collocations-tree]
-                         #_[:get/suggestions-tokens]
-                         #_[:get/errors-register]
-                         #_[:get/topics-infer]]
-            :halt? false}]})
+  {:first-dispatch [:user/set-cookies]
+   #_:rules #_[{:when :seen?
+                :events [:sente/auth-success]
+                :dispatch-n [[:sente/connect]
+                             #_[:get/sources-genre]
+                             #_[:get/sentences-collocations]
+                             #_[:get/sentences-tokens]
+                             #_[:get/tokens-tree]
+                             #_[:get/tokens-similarity]
+                             #_[:get/tokens-nearest-tokens]
+                             #_[:get/tokens-similarity-with-accuracy]
+                             #_[:get/tokens-tsne]
+                             #_[:get/collocations-collocations]
+                             #_[:get/collocations-tree]
+                             #_[:get/suggestions-tokens]
+                             #_[:get/errors-register]
+                             #_[:get/topics-infer]]
+                :halt? false}]})
+
+(reg-event-fx
+ :user/set-cookies
+ middleware
+ (fn [{:keys [db]} [_]]
+   (if-let [auth-token (cookies/get "auth-token")]
+     {:db (assoc db :user/auth-token auth-token)
+      :dispatch [:sente/authenticate]})))
 
 (reg-event-fx
  :sente/connect
@@ -53,7 +61,6 @@
  (fn [{:keys [db]} [_]]
    {:db (assoc db :sente/connection-status (:open? @(:state @comm/!socket)))
     :dispatch [:sente/started]}))
-
 
 (reg-event-fx
  :sente/started
@@ -63,44 +70,64 @@
      (println "Connected!"))
    {}))
 
+(def ring-response-format
+  (-> (ajax/json-response-format {:keywords? true})
+      (update :read (fn [original-handler]
+                      (fn [response-obj]
+                        {:headers (js->clj (.getResponseHeaders response-obj))
+                         :body    (original-handler response-obj)
+                         :status  (.getStatus response-obj)})))))
+
 (reg-event-fx
  :sente/authenticate
  (fn [{:keys [db]} _]
-   {:http-xhrio {:method          :post
-                 :uri             (str api-url "/authenticate")
-                 :params          {:username (:user/username db)
-                                   :password (:user/password db)}
-                 :timeout         1000
-                 :format          (ajax/json-request-format)
-                 :response-format (ajax/json-response-format {:keywords? true})
-                 :on-success      [:sente/auth-success]
-                 :on-failure      [:sente/auth-failure]
-                 :with-credentials? false}}))
+   (when (:user/auth-token db)
+     (comm/create-socket! (:user/auth-token db))
+     {:db (assoc db :user/account-valid true)})
+   (when (and (not (:user/auth-token db))
+              (:user/username db) (:user/password db))
+     {:http-xhrio {:method          :post
+                   :uri             (str api-url "/authenticate")
+                   :params          {:username (:user/username db)
+                                     :password (:user/password db)}
+                   :timeout         1000
+                   :format          (ajax/json-request-format)
+                   :response-format ring-response-format
+                   :on-success      [:sente/auth-success]
+                   :on-failure      [:sente/auth-failure]
+                   :with-credentials? false}})))
+
+#_(reg-event-fx
+   :sente/init
+   (fn [_ _]
+     (comm/create-socket!)))
 
 (reg-event-db
  :sente/auth-success
- (fn [db [_ result]]
-   (let [token (:token result)]
-     (cookies/set "authtoken" token)
+ (fn [db [_ {:keys [headers body]}]]
+   (let [auth-token (:token body)]
+     (cookies/set "auth-token" auth-token)
      (when (= :login (:page/active db))
        (secretary/dispatch! "/index.html")
        (utils/redirect "index.html"))
-     (comm/create-socket! token)
+     (comm/create-socket! auth-token)
      (assoc db
-            :user/auth-token token
+            :user/auth-token auth-token
             :user/account-valid true))))
 
 (reg-event-fx
  :sente/auth-failure
- (fn [{:keys [db]} [_ result]]
+ (fn [{:keys [db]} [_ {:keys [headers body]}]]
    (when debug-enabled?
-     (println "auth-failure" result))
+     (println "auth-failure" headers body))
+   (cookies/remove "auth-token")
+   {:db (assoc db :user/account-valid false)}
    ;; Rolling timeout with reset?
-   (let [cookie-token (cookies/get "authtoken")]
-     (comm/create-socket! cookie-token)
-     {:db (assoc db
-                 :user/auth-token cookie-token
-                 :user/account-valid false)})))
+   #_(let [cookie-token (cookies/get "authtoken")]
+       (comm/create-socket! cookie-token)
+       {:db (assoc db
+                   :user/auth-token cookie-token
+                   :user/account-valid false)})))
 
 ;; API
 
@@ -147,10 +174,8 @@
 
 (def input-api
   {:user/auth-token nil
-   :user/csrf-token (cookies/get "csrftoken")
-   :user/session-token (cookies/get "sessionid")
-   :user/username nil #_(if debug-enabled? "bor" nil)
-   :user/password nil #_(if debug-enabled? "test" nil)
+   :user/username nil
+   :user/password nil
    :user/account-valid nil
    :user/id nil
 
@@ -429,13 +454,8 @@
 (reg-event-fx
  :get/fulltext-matches
  middleware
- (fn [{:keys [db]} [_]]
-   {:db (assoc db
-               ;; FIXME do we need to nil these?!:
-               ;; :fulltext/matches nil
-               ;; :fulltext/total-count nil
-               ;; :fulltext/patterns nil
-               :fulltext/state :loading)
+ (fn [{:keys [db]} _]
+   {:db (assoc db :fulltext/state :loading)
     :sente {:query [:fulltext/matches
                     {:query (:fulltext/query db)
                      :genre (:user/genre db)
