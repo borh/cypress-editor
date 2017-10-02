@@ -2,6 +2,7 @@
   (:require
    [clojure.string :as string]
    [clojure.set :as set]
+   [goog.net.cookies :as cookies]
    [cypress-editor.bulma-ui :as ui]
    [cypress-editor.viz :as viz]
    [cypress-editor.config :refer [debug-enabled?]]
@@ -296,7 +297,9 @@
       [:div.navbar-item.has-dropdown.is-hoverable
        [:a.navbar-link @username]
        [:div.navbar-dropdown
-        [:a.navbar-item {:on-click #(utils/redirect "login")}
+        [:a.navbar-item {:on-click (fn []
+                                     (cookies/remove "auth-token")
+                                     (utils/redirect "login"))}
          (ui/fa-icon :sign-out)
          "ログアウト"]]])))
 
