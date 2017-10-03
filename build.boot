@@ -42,11 +42,11 @@
    [reloaded.repl "0.2.3" :scope "test"]
 
    [adzerk/boot-test "1.2.0"]
-   [tolitius/boot-check "0.1.4" :scope "test"]
+   [tolitius/boot-check "0.1.5" :scope "test"]
    [org.clojure/test.check "0.10.0-alpha2" :scope "test"]
 
-   [org.clojure/clojure "1.9.0-alpha19"]
-   [org.clojure/clojurescript "1.9.908"]
+   [org.clojure/clojure "1.9.0-beta1"]
+   [org.clojure/clojurescript "1.9.946"]
 
    [org.clojure/tools.nrepl "0.2.13"]
 
@@ -55,11 +55,9 @@
    [weasel "0.7.0" :scope "test"] ;; Websocket Server
 
    ;; Backend (server) deps
-   [yada "1.2.4" :exclusions [aleph manifold ring-swagger prismatic/schema]]
+   [yada "1.2.4"]
    [aero "1.1.2"]
-   [aleph "0.4.4-alpha4"]
-   [manifold "0.1.7-alpha5"]
-   #_[metosin/ring-swagger "0.24.1"] ;; Override version in yada?
+   [aleph "0.4.3"]
    [crypto-random "1.2.0" :exclusions [commons-codec]]
    [prismatic/schema "1.1.6"]
    [bidi "2.1.2" :exclusions [ring/ring-core]]
