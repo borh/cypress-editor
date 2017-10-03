@@ -9,8 +9,7 @@
    [clojure.java.io :as io]
    [cypress-editor.bulma-ui :as ui]
    [schema.core :as s]
-   [yada.resources.webjar-resource :refer [new-webjar-resource webjars-route-pair]]
-   [yada.resources.classpath-resource :refer [new-classpath-resource]]
+   [yada.resources.webjar-resource :refer [webjars-route-pair]]
    [yada.yada :refer [handler resource] :as yada]
    [clojure.string :as str]))
 
