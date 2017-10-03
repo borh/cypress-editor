@@ -3,7 +3,8 @@
   #?(:clj (:require [clojure.spec.alpha :as s]
                     [hiccup.page :refer [html5]]
                     [clj-time.format :as f]
-                    [clj-time.local :as l])))
+                    [clj-time.local :as l]
+                    [crypto.random :as random])))
 
 ;; Page layout and header
 
@@ -96,10 +97,10 @@
    (defn page
      [{:keys [body
               lang author description title
-              app-name app-url nav-items
-              body]
+              app-name app-url nav-items csrf-token]
        :or {lang "ja"
-            body [:div#app]}}]
+            body [:div#app]
+            csrf-token (random/base64 60)}}]
      (html5
       {:lang lang :encoding "UTF-8"}
       (header {:author author :description description :title title})
@@ -114,6 +115,8 @@
 
         (footer {:author author :app-name app-name})
 
+        [:script {:type "text/javascript"}
+         (format "var csrfToken = '%s';" csrf-token)]
         [:script {:src "cypress_editor.js" :type "text/javascript"}]]])))
 
 ;; Components
