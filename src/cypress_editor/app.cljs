@@ -1,4 +1,4 @@
-(ns cypress-editor.app
+(ns ^:figwheel-no-load cypress-editor.app
   (:require
    ;; Do not remove the following requires needed by re-frame:
    [cypress-editor.subs]
