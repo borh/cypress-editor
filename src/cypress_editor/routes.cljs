@@ -1,4 +1,4 @@
-(ns cypress-editor.routes
+(ns ^:figwheel-always cypress-editor.routes
   (:require [secretary.core :as secretary]
             [goog.events :as events]
             [goog.history.EventType :as EventType]
