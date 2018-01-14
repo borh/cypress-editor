@@ -35,45 +35,47 @@
  :source-paths #{"src" "sass" "test"}
  :resource-paths #{"resources"}
  :dependencies
- '[[adzerk/boot-cljs "2.1.4" :scope "test"]
-   [adzerk/boot-cljs-repl "0.3.3" :scope "test"]
-   [adzerk/boot-reload "0.5.2" :scope "test"]
-   [deraen/boot-sass "0.3.1"]
-   [reloaded.repl "0.2.3" :scope "test"]
-
-   [adzerk/boot-test "1.2.0"]
-   [tolitius/boot-check "0.1.5" :scope "test"]
-   [org.clojure/test.check "0.10.0-alpha2" :scope "test"]
-
-   [org.clojure/clojure "1.9.0-beta1"]
-   [org.clojure/clojurescript "1.9.946"]
-
-   [org.clojure/tools.nrepl "0.2.13"]
-
+ '[[adzerk/boot-cljs "LATEST" :scope "test"]
+   [powerlaces/boot-figreload "LATEST" :scope "test"]
+   [pandeiro/boot-http "0.8.3" :scope "test"]
    ;; Needed for start-repl in cljs repl
    [com.cemerick/piggieback "0.2.2" :scope "test"]
    [weasel "0.7.0" :scope "test"] ;; Websocket Server
+
+   [adzerk/boot-cljs-repl "0.3.3" :scope "test"]
+   [adzerk/boot-reload "0.5.2" :scope "test"]
+   [deraen/boot-sass "0.3.1"]
+   [reloaded.repl "0.2.4" :scope "test"]
+
+   [adzerk/boot-test "1.2.0" :scope "test"]
+   [tolitius/boot-check "0.1.6" :scope "test"]
+   [org.clojure/test.check "0.10.0-alpha2" :scope "test"]
+
+   [org.clojure/clojure "1.9.0"]
+   [org.clojure/clojurescript "1.9.946"]
+
+   [org.clojure/tools.nrepl "0.2.13"]
 
    ;; Backend (server) deps
    [yada "1.2.4"]
    [aero "1.1.2"]
    [aleph "0.4.3"]
    [crypto-random "1.2.0" :exclusions [commons-codec]]
-   [prismatic/schema "1.1.6"]
-   [bidi "2.1.2" :exclusions [ring/ring-core]]
+   [prismatic/schema "1.1.7"]
+   [bidi "2.1.3" :exclusions [ring/ring-core]]
    [com.stuartsierra/component "0.3.2"]
    [hiccup "2.0.0-alpha1"]
    [org.clojure/tools.namespace "0.3.0-alpha4"]
 
-   [com.taoensso/sente "1.11.0"]
+   [com.taoensso/sente "1.12.0"]
    [com.taoensso/tempura "1.1.2"]
-   [com.taoensso/encore "2.92.0"]
+   [com.taoensso/encore "2.93.0"]
 
-   [orchestra "2017.08.13"]
+   [orchestra "2017.11.12-1"]
 
    ;; Frontend deps
-   [reagent "0.8.0-alpha1"]
-   [re-frame "0.10.2-beta1"]
+   [reagent "LATEST"]
+   [re-frame "0.10.3-beta1"]
    [day8.re-frame/test "0.1.5" :scope "test"]
    [re-frame-datatable "0.6.0"]
    [day8.re-frame/http-fx "0.1.4"]
@@ -84,49 +86,51 @@
    [re-learn "0.1.1"] ; TODO
    [rid3 "0.2.0"]
    #_[thi.ng/geom "0.0.1062"]
-   [re-frisk "0.5.0" :scope "test"]
-   [day8.re-frame/trace "0.1.7" :scope "test"]
+   [re-frisk "0.5.3" :scope "test"]
+   [day8.re-frame/trace "0.1.14" :scope "test"]
    [secretary "1.2.3"]
    ;; [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
-   [org.webjars.npm/bulma "0.5.2"]
+   [org.webjars.npm/bulma "0.6.0"]
    #_[org.webjars/material-design-icons "3.0.1"]
    [org.webjars/font-awesome "4.7.0"]
    #_[org.webjars.bower/material-design-iconic-font "2.2.0"]
-   [org.webjars.npm/balloon-css "0.4.0"]
+   [org.webjars.npm/balloon-css "0.5.0"]
 
    [com.cognitect/transit-clj "0.8.300"]
-   [com.cognitect/transit-cljs "0.8.239"]
-   [com.andrewmcveigh/cljs-time "0.5.1"] ;; for advanced compilation
+   [com.cognitect/transit-cljs "0.8.243"]
+   [com.andrewmcveigh/cljs-time "0.5.2"] ;; for advanced compilation
 
    ;; Development tools
-   [binaryage/devtools      "0.9.4" :scope "test"]
-   [binaryage/dirac         "1.2.16" :scope "test"]
+   [binaryage/devtools      "0.9.8" :scope "test"]
+   [binaryage/dirac         "1.2.25" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
-   [org.clojure/tools.reader        "1.1.0"   :scope "test"]
+   [org.clojure/tools.reader        "1.1.1"   :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.1"   :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
    [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
    [org.clojure/core.memoize        "0.5.9"   :scope "test"]
    [org.clojure/core.cache          "0.6.5"   :scope "test"]
-   [org.clojure/core.async          "0.3.443" :scope "test"]
+   [org.clojure/core.async          "0.4.474" :scope "test"]
    [com.google.code.findbugs/jsr305 "3.0.2" :scope "test"]
    [http-kit "2.3.0-alpha4" :scope "test"]
 
    ;; Logging
    [clj-logging-config "1.9.12" :scope "test"] ;; dirac?
    [org.clojure/tools.logging "0.4.0"]
-   [org.slf4j/jcl-over-slf4j "1.8.0-alpha2"]
-   [org.slf4j/jul-to-slf4j "1.8.0-alpha2"]
-   [org.slf4j/log4j-over-slf4j "1.8.0-alpha2"]
+   [org.slf4j/jcl-over-slf4j "1.8.0-beta0"]
+   [org.slf4j/jul-to-slf4j "1.8.0-beta0"]
+   [org.slf4j/log4j-over-slf4j "1.8.0-beta0"]
    [ch.qos.logback/logback-classic "1.2.3"
     :exclusions [org.slf4j/slf4j-api]]])
 
 (require '[adzerk.boot-test :refer :all]
          '[adzerk.boot-cljs :refer [cljs]]
+         '[powerlaces.boot-figreload :refer [reload]]
          '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
          '[powerlaces.boot-cljs-devtools :refer [cljs-devtools dirac]]
-         '[adzerk.boot-reload :refer [reload]]
+         ;;'[adzerk.boot-reload :as b]
+         ;;'[pandeiro.boot-http            :refer [serve]]
          '[deraen.boot-sass :refer [sass]]
          '[com.stuartsierra.component :as component]
          'clojure.tools.namespace.repl
@@ -173,7 +177,6 @@
 (deftask dev
   "This is the main development entry point."
   []
-  (set-env! :dependencies #(vec (concat % '[[reloaded.repl "0.2.3"]])))
   (set-env! :source-paths #(conj % "dev"))
 
   ;; Needed by tools.namespace to know where the source files are
@@ -181,21 +184,23 @@
 
   (comp
    (repl :server true)
+   #_(serve)
    (watch)
    (speak)
    (sass)
-   (reload :on-jsload 'cypress-editor.app/main)
-   ;; this is also the server repl!
-   #_(cljs-repl :nrepl-opts {:client false
-                             :port repl-port
-                             :init-ns 'user})
    (cljs-devtools)
+   (reload #_:on-jsload #_'cypress-editor.app/main)
    (dirac :nrepl-opts {:client false})
    (cljs :ids #{"cypress_editor"}
          :optimizations :none
          :source-map true
-         :compiler-options {:closure-defines {"goog.DEBUG" true
+         :compiler-options {:external-config
+                            {:devtools/config {:features-to-install [:formatters :hints]
+                                               :fn-symbol "λ"
+                                               :print-config-overrides true}}
+                            :closure-defines {"goog.DEBUG" true
                                               "re_frame.trace.trace_enabled_QMARK_" true}
+                            :preloads ['day8.re-frame.trace.preload]
                             :parallel-build true})
    (dev-system)
    (target)))
