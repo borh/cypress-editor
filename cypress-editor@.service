@@ -9,15 +9,20 @@
 
 [Unit]
 Description=cypress-editor
+After=network-online.target natsumer-server.service
 
 [Service]
 Type=simple
-Environment="BOOT_JVM_OPTIONS='-Djava.awt.headless=true -Xms256m -Xmx512m'"
 Environment="DISPLAY=:0"
-ExecStart=/home/bor/local/bin/boot run -p %i
+Environment="SCHEME=http"
+Environment="SERVER_ADDRESS=localhost:3010"
+Environment="PORT=%i"
+ExecStart=/usr/bin/java -jar /home/bor/Projects/cypress-editor/target/cypress-editor-app.jar
 Restart=always
 User=bor
 WorkingDirectory=/home/bor/Projects/cypress-editor
+PrivateTmp=true
+NoNewPrivileges=true
 
 [Install]
 WantedBy=multi-user.target
