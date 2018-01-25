@@ -48,7 +48,7 @@
    [reloaded.repl "0.2.4" :scope "test"]
 
    [adzerk/boot-test "1.2.0" :scope "test"]
-   [tolitius/boot-check "0.1.6" :scope "test"]
+   [tolitius/boot-check "0.1.7" :scope "test"]
    [org.clojure/test.check "0.10.0-alpha2" :scope "test"]
 
    [org.clojure/clojure "1.9.0"]
@@ -71,11 +71,11 @@
    [com.taoensso/tempura "1.1.2"]
    [com.taoensso/encore "2.93.0"]
 
-   [orchestra "2017.11.12-1"]
+   [orchestra "2017.11.12-1" :scope "test"]
 
    ;; Frontend deps
    [reagent "LATEST"]
-   [re-frame "0.10.3-beta1"]
+   [re-frame "0.10.3"]
    [day8.re-frame/test "0.1.5" :scope "test"]
    [re-frame-datatable "0.6.0"]
    [day8.re-frame/http-fx "0.1.4"]
@@ -87,7 +87,7 @@
    [rid3 "0.2.0"]
    #_[thi.ng/geom "0.0.1062"]
    [re-frisk "0.5.3" :scope "test"]
-   [day8.re-frame/trace "0.1.14" :scope "test"]
+   [day8.re-frame/trace "0.1.15" :scope "test"]
    [secretary "1.2.3"]
    ;; [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
@@ -102,11 +102,11 @@
    [com.andrewmcveigh/cljs-time "0.5.2"] ;; for advanced compilation
 
    ;; Development tools
-   [binaryage/devtools      "0.9.8" :scope "test"]
+   [binaryage/devtools      "0.9.9" :scope "test"]
    [binaryage/dirac         "1.2.25" :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
-   [org.clojure/tools.reader        "1.1.1"   :scope "test"]
-   [org.clojure/tools.analyzer.jvm  "0.7.1"   :scope "test"]
+   [org.clojure/tools.reader        "1.1.3.1" :scope "test"]
+   [org.clojure/tools.analyzer.jvm  "0.7.2"   :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
    [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
    [org.clojure/core.memoize        "0.5.9"   :scope "test"]
