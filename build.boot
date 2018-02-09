@@ -69,16 +69,16 @@
 
    [com.taoensso/sente "1.12.0"]
    [com.taoensso/tempura "1.1.2"]
-   [com.taoensso/encore "2.93.0"]
+   [com.taoensso/encore "2.94.0"]
 
    [orchestra "2017.11.12-1" :scope "test"]
 
    ;; Frontend deps
    [reagent "LATEST"]
-   [re-frame "0.10.3"]
+   [re-frame "0.10.4"]
    [day8.re-frame/test "0.1.5" :scope "test"]
    [re-frame-datatable "0.6.0"]
-   [day8.re-frame/http-fx "0.1.4"]
+   [day8.re-frame/http-fx "0.1.5"]
    [day8.re-frame/async-flow-fx "0.0.8"]
    #_[day8.re-frame/undo "0.3.2"] ; TODO
    #_[com.smxemail/re-frame-cookie-fx "0.0.2"] ; TODO
@@ -87,7 +87,7 @@
    [rid3 "0.2.0"]
    #_[thi.ng/geom "0.0.1062"]
    [re-frisk "0.5.3" :scope "test"]
-   [day8.re-frame/trace "0.1.15" :scope "test"]
+   [day8.re-frame/trace "0.1.18-react16" :scope "test"]
    [secretary "1.2.3"]
    ;; [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
@@ -102,10 +102,10 @@
    [com.andrewmcveigh/cljs-time "0.5.2"] ;; for advanced compilation
 
    ;; Development tools
-   [binaryage/devtools      "0.9.9" :scope "test"]
-   [binaryage/dirac         "1.2.25" :scope "test"]
+   [binaryage/devtools              "0.9.9"   :scope "test"]
+   [binaryage/dirac                 "1.2.29"  :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
-   [org.clojure/tools.reader        "1.1.3.1" :scope "test"]
+   [org.clojure/tools.reader        "1.2.1"   :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.2"   :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
    [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
@@ -113,7 +113,7 @@
    [org.clojure/core.cache          "0.6.5"   :scope "test"]
    [org.clojure/core.async          "0.4.474" :scope "test"]
    [com.google.code.findbugs/jsr305 "3.0.2" :scope "test"]
-   [http-kit "2.3.0-alpha4" :scope "test"]
+   [http-kit "2.3.0-alpha5" :scope "test"]
 
    ;; Logging
    [clj-logging-config "1.9.12" :scope "test"] ;; dirac?
