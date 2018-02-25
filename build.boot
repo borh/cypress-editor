@@ -48,7 +48,7 @@
    [reloaded.repl "0.2.4" :scope "test"]
 
    [adzerk/boot-test "1.2.0" :scope "test"]
-   [tolitius/boot-check "0.1.7" :scope "test"]
+   [tolitius/boot-check "0.1.9" :scope "test"]
    [org.clojure/test.check "0.10.0-alpha2" :scope "test"]
 
    [org.clojure/clojure "1.9.0"]
@@ -58,7 +58,7 @@
 
    ;; Backend (server) deps
    [yada "1.2.4"]
-   [aero "1.1.2"]
+   [aero "1.1.3"]
    [aleph "0.4.3"]
    [crypto-random "1.2.0" :exclusions [commons-codec]]
    [prismatic/schema "1.1.7"]
@@ -75,7 +75,7 @@
 
    ;; Frontend deps
    [reagent "LATEST"]
-   [re-frame "0.10.4"]
+   [re-frame "0.10.5"]
    [day8.re-frame/test "0.1.5" :scope "test"]
    [re-frame-datatable "0.6.0"]
    [day8.re-frame/http-fx "0.1.5"]
@@ -87,11 +87,11 @@
    [rid3 "0.2.0"]
    #_[thi.ng/geom "0.0.1062"]
    [re-frisk "0.5.3" :scope "test"]
-   [day8.re-frame/trace "0.1.18-react16" :scope "test"]
+   [day8.re-frame/trace "0.1.22-react16" :scope "test"]
    [secretary "1.2.3"]
    ;; [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
-   [org.webjars.npm/bulma "0.6.0"]
+   [org.webjars.npm/bulma "0.6.2"]
    #_[org.webjars/material-design-icons "3.0.1"]
    [org.webjars/font-awesome "4.7.0"]
    #_[org.webjars.bower/material-design-iconic-font "2.2.0"]
@@ -103,7 +103,7 @@
 
    ;; Development tools
    [binaryage/devtools              "0.9.9"   :scope "test"]
-   [binaryage/dirac                 "1.2.29"  :scope "test"]
+   [binaryage/dirac                 "1.2.30"  :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
    [org.clojure/tools.reader        "1.2.1"   :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.2"   :scope "test"]
