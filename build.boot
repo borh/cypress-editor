@@ -51,8 +51,8 @@
    [tolitius/boot-check "0.1.9" :scope "test"]
    [org.clojure/test.check "0.10.0-alpha2" :scope "test"]
 
-   [org.clojure/clojure "1.9.0"]
-   [org.clojure/clojurescript "1.9.946"]
+   [org.clojure/clojure "1.10.0-alpha4"]
+   [org.clojure/clojurescript "1.10.238"]
 
    [org.clojure/tools.nrepl "0.2.13"]
 
@@ -61,15 +61,15 @@
    [aero "1.1.3"]
    [aleph "0.4.3"]
    [crypto-random "1.2.0" :exclusions [commons-codec]]
-   [prismatic/schema "1.1.7"]
+   [prismatic/schema "1.1.9"]
    [bidi "2.1.3" :exclusions [ring/ring-core]]
    [com.stuartsierra/component "0.3.2"]
    [hiccup "2.0.0-alpha1"]
    [org.clojure/tools.namespace "0.3.0-alpha4"]
 
    [com.taoensso/sente "1.12.0"]
-   [com.taoensso/tempura "1.1.2"]
-   [com.taoensso/encore "2.94.0"]
+   [com.taoensso/tempura "1.2.1"]
+   [com.taoensso/encore "2.96.0"]
 
    [orchestra "2017.11.12-1" :scope "test"]
 
@@ -78,50 +78,51 @@
    [re-frame "0.10.5"]
    [day8.re-frame/test "0.1.5" :scope "test"]
    [re-frame-datatable "0.6.0"]
-   [day8.re-frame/http-fx "0.1.5"]
-   [day8.re-frame/async-flow-fx "0.0.8"]
+   [day8.re-frame/http-fx "0.1.6"]
+   [day8.re-frame/async-flow-fx "0.0.10"]
    #_[day8.re-frame/undo "0.3.2"] ; TODO
    #_[com.smxemail/re-frame-cookie-fx "0.0.2"] ; TODO
    [akiroz.re-frame/storage "0.1.2"]
    [re-learn "0.1.1"] ; TODO
-   [rid3 "0.2.0"]
+   [rid3 "0.2.1"]
    #_[thi.ng/geom "0.0.1062"]
-   [re-frisk "0.5.3" :scope "test"]
-   [day8.re-frame/trace "0.1.22-react16" :scope "test"]
+   [re-frisk "0.5.4" :scope "test"]
+   #_[day8.re-frame/trace "0.1.22-react16" :scope "test"]
+   [day8.re-frame/re-frame-10x "0.3.3-react16" :scope "test"]
    [secretary "1.2.3"]
    ;; [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
-   [org.webjars.npm/bulma "0.6.2"]
+   [org.webjars.npm/bulma "0.7.0"]
    #_[org.webjars/material-design-icons "3.0.1"]
-   [org.webjars/font-awesome "4.7.0"]
+   [org.webjars/font-awesome "5.0.10"]
    #_[org.webjars.bower/material-design-iconic-font "2.2.0"]
    [org.webjars.npm/balloon-css "0.5.0"]
 
-   [com.cognitect/transit-clj "0.8.300"]
-   [com.cognitect/transit-cljs "0.8.243"]
+   [com.cognitect/transit-clj "0.8.309"]
+   [com.cognitect/transit-cljs "0.8.256"]
    [com.andrewmcveigh/cljs-time "0.5.2"] ;; for advanced compilation
 
    ;; Development tools
-   [binaryage/devtools              "0.9.9"   :scope "test"]
-   [binaryage/dirac                 "1.2.30"  :scope "test"]
+   [binaryage/devtools              "0.9.10"  :scope "test"]
+   [binaryage/dirac                 "1.2.33"  :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
-   [org.clojure/tools.reader        "1.2.1"   :scope "test"]
+   [org.clojure/tools.reader "1.3.0-alpha3"   :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.2"   :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
-   [org.clojure/data.priority-map   "0.0.7"   :scope "test"]
-   [org.clojure/core.memoize        "0.5.9"   :scope "test"]
-   [org.clojure/core.cache          "0.6.5"   :scope "test"]
+   [org.clojure/data.priority-map   "0.0.9"   :scope "test"]
+   [org.clojure/core.memoize        "0.7.1"   :scope "test"]
+   [org.clojure/core.cache          "0.7.1"   :scope "test"]
    [org.clojure/core.async          "0.4.474" :scope "test"]
    [com.google.code.findbugs/jsr305 "3.0.2" :scope "test"]
-   [http-kit "2.3.0-alpha5" :scope "test"]
+   [http-kit "2.3.0" :scope "test"]
 
    ;; Logging
    [clj-logging-config "1.9.12" :scope "test"] ;; dirac?
-   [org.clojure/tools.logging "0.4.0"]
-   [org.slf4j/jcl-over-slf4j "1.8.0-beta0"]
-   [org.slf4j/jul-to-slf4j "1.8.0-beta0"]
-   [org.slf4j/log4j-over-slf4j "1.8.0-beta0"]
-   [ch.qos.logback/logback-classic "1.2.3"
+   [org.clojure/tools.logging "0.5.0-alpha"]
+   [org.slf4j/jcl-over-slf4j "1.8.0-beta2"]
+   [org.slf4j/jul-to-slf4j "1.8.0-beta2"]
+   [org.slf4j/log4j-over-slf4j "1.8.0-beta2"]
+   [ch.qos.logback/logback-classic "1.3.0-alpha4"
     :exclusions [org.slf4j/slf4j-api]]])
 
 (require '[adzerk.boot-test :refer :all]
@@ -200,7 +201,8 @@
                                                :print-config-overrides true}}
                             :closure-defines {"goog.DEBUG" true
                                               "re_frame.trace.trace_enabled_QMARK_" true}
-                            :preloads ['day8.re-frame.trace.preload]
+                            :preloads ['day8.re-frame-10x.preload]
+                            :main "cypress-editor.app"
                             :parallel-build true})
    (dev-system)
    (target)))
