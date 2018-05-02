@@ -16,7 +16,7 @@
       [:meta {:http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1"}]
       [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"}]
       [:link {:rel "stylesheet" :href "assets/bulma/css/bulma.css" :type "text/css"}]
-      [:link {:rel "stylesheet" :href "assets/font-awesome/css/font-awesome.min.css" :type "text/css"}]
+      [:link {:rel "stylesheet" :href "assets/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" :type "text/css"}]
       [:link {:rel "stylesheet" :href "assets/balloon-css/balloon.min.css" :type "text/css"}]
       [:link {:rel "stylesheet" :href "app.css" :type "text/css"}]
       (if author [:meta {:name "author" :content author}])
@@ -28,11 +28,11 @@
 (defn fa-icon
   ([icon]
    (fa-icon icon nil))
-  ([icon {:keys [size on-click]}]
+  ([icon {:keys [size on-click variation] :or {variation "fas"}}]
    [:span (cond-> {:class "icon"}
             size (update :class str " " (name size))
             on-click (assoc :on-click on-click))
-    [:i {:class (str "fa fa-" (name icon))}]]))
+    [:i {:class (str variation " fa-" (name icon))}]]))
 
 (s/def ::nav-items (s/map-of
                     (s/alt :left :left :center :center :right :right)
@@ -51,7 +51,7 @@
         navbar-menu (cond-> [:div.navbar-menu {:id "navMenu"}]
                       (:center nav-items) (conj (into [:div.navbar-start] (:center nav-items)))
                       (:right nav-items)  (conj (conj (into [:div.navbar-end] (:right nav-items))
-                                                      [:a.navbar-item (fa-icon :language) " EN"])))]
+                                                      [:a.navbar-item (fa-icon :language) "　EN"])))]
     [:nav.navbar.has-shadow
      [:div.container
       navbar-brand
@@ -80,10 +80,10 @@
            [:p (fa-icon :home) [:a {:href "https://hinoki-project.org/"} " Hinoki Project"]]
            [:p
             (fa-icon :envelope) " first name @ lang.osaka-u.ac.jp"]
-           [:p (fa-icon :github)
+           [:p (fa-icon :github-square {:variation "fab"})
             [:a {:href "https://github.com/borh"}
              " borh"]]
-           [:p (fa-icon :twitter)
+           [:p (fa-icon :twitter-square {:variation "fab"})
             [:a {:href "https://twitter.com/bhodoscek"}
              " bhodoscek"]]]]]
         [:div.columns

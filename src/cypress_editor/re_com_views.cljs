@@ -119,7 +119,7 @@
                  ::dt/render-fn
                  (fn [id]
                    (ui/fa-icon
-                    :file-text
+                    :file-alt
                     {:size :is-small
                      :on-click (fn [_]
                                  (dispatch [:get/sources-by-sentence-id id]))}))
@@ -300,7 +300,7 @@
         [:a.navbar-item {:on-click (fn []
                                      (cookies/remove "auth-token")
                                      (utils/redirect "login"))}
-         (ui/fa-icon :sign-out)
+         (ui/fa-icon :sign-out-alt)
          "ログアウト"]]])))
 
 (defn connection-status-box []
@@ -318,7 +318,7 @@
           :data-balloon-length "large"
           :data-balloon-pos "down"})
        (if (not @status)
-         (ui/fa-icon :chain-broken)
+         (ui/fa-icon :unlink)
          (ui/fa-icon :link))])))
 
 (defn login-box []
