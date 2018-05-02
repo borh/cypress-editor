@@ -89,6 +89,7 @@
    [re-frisk "0.5.4" :scope "test"]
    #_[day8.re-frame/trace "0.1.22-react16" :scope "test"]
    [day8.re-frame/re-frame-10x "0.3.3-react16" :scope "test"]
+   [day8.re-frame/tracing "0.5.1" :scope "test"]
    [secretary "1.2.3"]
    ;; [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
@@ -191,7 +192,9 @@
    (sass)
    (cljs-devtools)
    (reload #_:on-jsload #_'cypress-editor.app/main)
-   (dirac :nrepl-opts {:client false})
+   (dirac :nrepl-opts {:port 8230
+                       :nrepl-middleware ['dirac.nrepl/middleware]
+                       :client false})
    (cljs :ids #{"cypress_editor"}
          :optimizations :none
          :source-map true
@@ -200,8 +203,11 @@
                                                :fn-symbol "λ"
                                                :print-config-overrides true}}
                             :closure-defines {"goog.DEBUG" true
+                                              "day8.re_frame.tracing.trace_enabled_QMARK_" true
                                               "re_frame.trace.trace_enabled_QMARK_" true}
-                            :preloads ['day8.re-frame-10x.preload]
+                            :preloads ['day8.re-frame-10x.preload
+                                       'devtools.preload
+                                       'dirac.runtime.preload]
                             :main "cypress-editor.app"
                             :parallel-build true})
    (dev-system)
@@ -210,14 +216,14 @@
 (deftask build
   "This is used for creating optimized static resources under static"
   []
+  (set-env! :dependencies (fn [deps] (conj deps '[day8.re-frame/tracing-stubs "0.5.1"])))
   (comp
    (sass :output-style :compressed)
    (cljs :ids #{"cypress_editor"}
          :optimizations :advanced
          :source-map true
          :compiler-options {:closure-defines {"goog.DEBUG" false}
-                            :parallel-build true})
-   #_(target :dir #{"static"})))
+                            :parallel-build true})))
 
 (defn- run-system [profile]
   (println "Running system with profile" profile)
