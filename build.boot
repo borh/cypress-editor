@@ -59,7 +59,7 @@
    ;; Backend (server) deps
    [yada "1.2.4"]
    [aero "1.1.3"]
-   [aleph "0.4.3"]
+   [aleph "0.4.5-alpha6"]
    [crypto-random "1.2.0" :exclusions [commons-codec]]
    [prismatic/schema "1.1.9"]
    [bidi "2.1.3" :exclusions [ring/ring-core]]
