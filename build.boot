@@ -43,23 +43,31 @@
    [weasel "0.7.0" :scope "test"] ;; Websocket Server
 
    [adzerk/boot-cljs-repl "0.3.3" :scope "test"]
-   [adzerk/boot-reload "0.5.2" :scope "test"]
+   [adzerk/boot-reload "0.6.0" :scope "test"]
    [deraen/boot-sass "0.3.1"]
    [reloaded.repl "0.2.4" :scope "test"]
 
    [adzerk/boot-test "1.2.0" :scope "test"]
-   [tolitius/boot-check "0.1.9" :scope "test"]
-   [org.clojure/test.check "0.10.0-alpha2" :scope "test"]
+   [tolitius/boot-check "0.1.11" :scope "test"]
+   [org.clojure/test.check "0.10.0-alpha3" :scope "test"]
 
-   [org.clojure/clojure "1.10.0-alpha4"]
-   [org.clojure/clojurescript "1.10.238"]
+   [org.clojure/clojure "1.10.0-alpha6"]
+   [org.clojure/clojurescript "1.10.339"]
 
    [org.clojure/tools.nrepl "0.2.13"]
 
    ;; Backend (server) deps
    [yada "1.2.4"]
    [aero "1.1.3"]
-   [aleph "0.4.5-alpha6"]
+   [aleph "0.4.6" :exclusions [io.netty/netty-transport
+                               io.netty/netty-transport-native-epoll
+                               io.netty/netty-codec
+                               io.netty/netty-codec-http
+                               io.netty/netty-handler
+                               io.netty/netty-handler-proxy
+                               io.netty/netty-resolver
+                               io.netty/netty-resolver-dns]]
+   [io.netty/netty-all "4.1.29.Final"]
    [crypto-random "1.2.0" :exclusions [commons-codec]]
    [prismatic/schema "1.1.9"]
    [bidi "2.1.3" :exclusions [ring/ring-core]]
@@ -67,19 +75,19 @@
    [hiccup "2.0.0-alpha1"]
    [org.clojure/tools.namespace "0.3.0-alpha4"]
 
-   [com.taoensso/sente "1.12.0"]
+   [com.taoensso/sente "1.13.1"]
    [com.taoensso/tempura "1.2.1"]
-   [com.taoensso/encore "2.96.0"]
+   [com.taoensso/encore "2.97.0"]
 
-   [orchestra "2017.11.12-1" :scope "test"]
+   [orchestra "2018.08.19-1" :scope "test"]
 
    ;; Frontend deps
    [reagent "LATEST"]
-   [re-frame "0.10.5"]
+   [re-frame "0.10.6"]
    [day8.re-frame/test "0.1.5" :scope "test"]
    [re-frame-datatable "0.6.0"]
    [day8.re-frame/http-fx "0.1.6"]
-   [day8.re-frame/async-flow-fx "0.0.10"]
+   [day8.re-frame/async-flow-fx "0.0.11"]
    #_[day8.re-frame/undo "0.3.2"] ; TODO
    #_[com.smxemail/re-frame-cookie-fx "0.0.2"] ; TODO
    [akiroz.re-frame/storage "0.1.2"]
@@ -93,28 +101,28 @@
    [secretary "1.2.3"]
    ;; [funcool/hodgepodge "0.1.4"] ;; TODO: LocalStorage
 
-   [org.webjars.npm/bulma "0.7.0"]
+   [org.webjars.npm/bulma "0.7.1"]
    #_[org.webjars/material-design-icons "3.0.1"]
-   [org.webjars/font-awesome "5.0.10"]
+   [org.webjars/font-awesome "5.3.1"]
    #_[org.webjars.bower/material-design-iconic-font "2.2.0"]
    [org.webjars.npm/balloon-css "0.5.0"]
 
-   [com.cognitect/transit-clj "0.8.309"]
+   [com.cognitect/transit-clj "0.8.313"]
    [com.cognitect/transit-cljs "0.8.256"]
    [com.andrewmcveigh/cljs-time "0.5.2"] ;; for advanced compilation
 
    ;; Development tools
    [binaryage/devtools              "0.9.10"  :scope "test"]
-   [binaryage/dirac                 "1.2.33"  :scope "test"]
+   [binaryage/dirac                 "1.2.37"  :scope "test"]
    [powerlaces/boot-cljs-devtools   "0.2.0"   :scope "test"]
-   [org.clojure/tools.reader "1.3.0-alpha3"   :scope "test"]
+   [org.clojure/tools.reader        "1.3.0"   :scope "test"]
    [org.clojure/tools.analyzer.jvm  "0.7.2"   :scope "test"]
    [org.clojure/tools.analyzer      "0.6.9"   :scope "test"]
-   [org.clojure/data.priority-map   "0.0.9"   :scope "test"]
+   [org.clojure/data.priority-map   "0.0.10"  :scope "test"]
    [org.clojure/core.memoize        "0.7.1"   :scope "test"]
    [org.clojure/core.cache          "0.7.1"   :scope "test"]
    [org.clojure/core.async          "0.4.474" :scope "test"]
-   [com.google.code.findbugs/jsr305 "3.0.2" :scope "test"]
+   [com.google.code.findbugs/jsr305 "3.0.2"   :scope "test"]
    [http-kit "2.3.0" :scope "test"]
 
    ;; Logging
